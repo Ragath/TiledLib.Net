@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.0.2" orientation="orthogonal" renderorder="right-down" width="10" height="10" tilewidth="16" tileheight="16" nextobjectid="13">
+ <tileset firstgid="1" source="External_tileset.json"/>
+ <tileset firstgid="1441" source="tsx_tileset.tsx"/>
+ <layer name="Tile Layer 1" width="10" height="10">
+  <data encoding="csv">
+1,1,1,1,1,1,1,1,1,1,
+1,522,523,523,523,523,523,523,642,1,
+1,562,121,122,122,122,122,123,1,1,
+1,562,161,162,162,162,162,163,1,1,
+1,562,161,162,162,162,162,163,1,1,
+1,562,161,162,162,162,162,163,1,1,
+1,562,201,202,202,202,202,203,563,1,
+1,562,243,244,244,244,244,245,1,1,
+1,601,283,284,284,284,284,285,1,1,
+1,1,323,324,324,324,324,325,1,1
+</data>
+ </layer>
+ <objectgroup name="Object Layer 2">
+  <object id="7" gid="1441" x="128" y="48" width="16" height="16"/>
+  <object id="10" gid="1445" x="32" y="64" width="16" height="16"/>
+  <object id="11" gid="1445" x="48" y="80" width="16" height="16"/>
+  <object id="12" gid="1445" x="80" y="64" width="16" height="16"/>
+ </objectgroup>
+ <imagelayer name="Image Layer 1" visible="0" opacity="0.63">
+  <image source="sewer_tileset.png" width="192" height="217"/>
+ </imagelayer>
+ <objectgroup name="Object Layer 1">
+  <object id="1" x="48" y="16" width="64" height="48"/>
+  <object id="2" x="16" y="80" width="48" height="48">
+   <ellipse/>
+  </object>
+  <object id="3" x="96" y="80">
+   <polygon points="0,0 32,16 0,64 -16,16"/>
+  </object>
+  <object id="4" x="128" y="64" width="16" height="32">
+   <ellipse/>
+  </object>
+  <object id="5" x="16" y="16" width="16" height="16"/>
+  <object id="6" x="32" y="48">
+   <polygon points="0,0 -16,16 0,48"/>
+  </object>
+ </objectgroup>
+ <layer name="Tile Layer 2" width="10" height="10" visible="0" opacity="0.93">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,243,244,245,0,0,243,244,245,0,
+0,283,284,285,0,0,283,284,285,0,
+0,323,324,325,0,0,323,324,325,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,243,244,244,244,244,245,0,0,
+0,0,283,284,284,284,284,285,0,0,
+0,0,323,324,324,324,324,325,0,0
+</data>
+ </layer>
+</map>

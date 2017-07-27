@@ -1,0 +1,12 @@
+{ "columns":40,
+ "image":"Overworld.png",
+ "imageheight":576,
+ "imagewidth":640,
+ "margin":0,
+ "name":"External_Tileset",
+ "spacing":0,
+ "tilecount":1440,
+ "tileheight":16,
+ "tilewidth":16,
+ "type":"tileset"
+}

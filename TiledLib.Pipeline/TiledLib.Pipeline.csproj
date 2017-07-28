@@ -9,6 +9,10 @@
     <Authors>Daniel Sör</Authors>
     <Company>Daniel Sör</Company>
     <PackageTags>Tiled MonoGame ContentPipeline Content Pipeline tmx map importer</PackageTags>
+    <PackageProjectUrl>https://github.com/Ragath/TiledLib.Net</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/Ragath/TiledLib.Net/blob/master/LICENSE</PackageLicenseUrl>
+    <RepositoryUrl>https://github.com/Ragath/TiledLib.Net</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
   <ItemGroup>
@@ -22,5 +26,5 @@
     <ProjectReference Include="..\TiledLib\TiledLib.csproj" />
   </ItemGroup>
 
-  <Import Project="..\GitVersionWorkaround.targets"/>
+  <Import Project="..\GitVersionWorkaround.targets" />
 </Project>

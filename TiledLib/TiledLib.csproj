@@ -9,6 +9,10 @@
     <Company>Daniel Sör</Company>
     <Authors>Daniel Sör</Authors>
     <PackageTags>Tiled TiledLib tmx map parser</PackageTags>
+    <PackageProjectUrl>https://github.com/Ragath/TiledLib.Net</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/Ragath/TiledLib.Net/blob/master/LICENSE</PackageLicenseUrl>
+    <RepositoryUrl>https://github.com/Ragath/TiledLib.Net</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
   <ItemGroup>

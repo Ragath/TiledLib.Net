@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Xml;
 using System.Xml.Serialization;
@@ -165,5 +166,60 @@ namespace TiledLib
                 ts.imageheight = int.Parse(reader["height"]);
             }
         }
+
+
+
+
+
+        static int[] ReadCSV(this XmlReader reader, int size)
+        {
+            var data = reader.ReadElementContentAsString()
+                .Split(new[] { '\r', '\n', ',' }, StringSplitOptions.RemoveEmptyEntries)
+                .Select(int.Parse)
+                .ToArray();
+
+            if (data.Length == size)
+                return data;
+            else
+                throw new XmlException();
+        }
+
+        static int[] ReadBase64(this XmlReader reader, int size)
+        {
+            var buffer = new byte[size * 4];
+            var count = reader.ReadElementContentAsBase64(buffer, 0, buffer.Length);
+            if (reader.ReadElementContentAsBase64(buffer, 0, buffer.Length) != 0)
+                throw new InvalidDataException();
+            var data = new int[count / 4];
+            Buffer.BlockCopy(buffer, 0, data, 0, count);
+            return data;
+        }
+
+        public static int[] ReadData(this XmlReader reader, int count, out string encoding, out string compression)
+        {
+            encoding = reader["encoding"];
+            compression = reader["compression"];
+
+            switch (encoding)
+            {
+                case "csv":
+                    return reader.ReadCSV(count);
+                case "base64":
+                    switch (compression)
+                    {
+                        case null:
+                            return reader.ReadBase64(count);
+                        case "gzip":
+                            throw new NotImplementedException("gzip");
+                        case "zlib":
+                            throw new NotImplementedException("zlib");
+                        default:
+                            throw new XmlException(compression);
+                    }
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
     }
 }

@@ -17,9 +17,6 @@ namespace TiledLib.Layer
 
         public void ReadXml(XmlReader reader)
         {
-            //<imagelayer name="Image Layer 1" visible="0" opacity="0.63">
-            //   <image source="sewer_tileset.png" width="192" height="217"/>
-            //</imagelayer>
             LayerType = LayerType.imagelayer;
             Name = reader["name"] ?? throw new KeyNotFoundException("name");
             Visible = reader["visible"].ParseBool() ?? true;
@@ -27,8 +24,8 @@ namespace TiledLib.Layer
             if (reader.ReadToDescendant("image"))
             {
                 Image = reader["source"] ?? throw new KeyNotFoundException("source");
-                Width = reader["width"].ParseInt32() ?? throw new KeyNotFoundException("width");
-                Height = reader["height"].ParseInt32() ?? throw new KeyNotFoundException("height");
+                Width = reader["width"].ParseInt32() ?? -1;
+                Height = reader["height"].ParseInt32() ?? -1;
             }
         }
 

@@ -11,6 +11,12 @@ namespace TiledLib.Layer
     [XmlRoot("layer")]
     public class TileLayer : BaseLayer, IXmlSerializable
     {
+        [JsonProperty("encoding")]
+        public string Encoding { get; set; }
+
+        [JsonProperty("compression")]
+        public string Compression { get; set; }
+
         [JsonRequired]
         public int[] data { get; set; }
 
@@ -24,16 +30,10 @@ namespace TiledLib.Layer
             reader.Read();
             if (!reader.IsStartElement("data"))
                 throw new XmlException();
-            switch (reader["encoding"])
-            {
-                case "csv":
-                    data = reader.ReadElementContentAsString().Split(new[] { '\r', '\n', ',' }, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToArray();
-                    if (data.Length != Width * Height)
-                        throw new XmlException();
-                    break;
-                default:
-                    throw new NotImplementedException();
-            }
+
+            data = TmxParsing.ReadData(reader, Width * Height, out var encoding, out var compression);
+            Encoding = encoding;
+            Compression = compression;
         }
 
         public void WriteXml(XmlWriter writer)

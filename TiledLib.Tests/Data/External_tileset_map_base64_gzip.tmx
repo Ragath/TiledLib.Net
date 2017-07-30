@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.0.2" orientation="orthogonal" renderorder="right-down" width="10" height="10" tilewidth="16" tileheight="16" nextobjectid="13">
+ <tileset firstgid="1" source="External_tileset.json"/>
+ <tileset firstgid="1441" source="tsx_tileset.tsx"/>
+ <layer name="Tile Layer 1" width="10" height="10">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC2NkYGBgJBJzMTEwcOPATUwIdUZAdiWQrkLD1WjmgdQtBNKL0PBiOqg7CaRPoeHTQGyM5o/PQPoLGv6KZl4kUJ00kCGDhmUZMcPQGUi4oGFXJHUA0k769pABAAA=
+  </data>
+ </layer>
+ <objectgroup name="Object Layer 2">
+  <object id="7" gid="1441" x="128" y="48" width="16" height="16"/>
+  <object id="10" gid="1445" x="32" y="64" width="16" height="16"/>
+  <object id="11" gid="1445" x="48" y="80" width="16" height="16"/>
+  <object id="12" gid="1445" x="80" y="64" width="16" height="16"/>
+ </objectgroup>
+ <imagelayer name="Image Layer 1" visible="0" opacity="0.63">
+  <image source="sewer_tileset.png"/>
+ </imagelayer>
+ <objectgroup name="Object Layer 1">
+  <object id="1" x="48" y="16" width="64" height="48"/>
+  <object id="2" x="16" y="80" width="48" height="48">
+   <ellipse/>
+  </object>
+  <object id="3" x="96" y="80">
+   <polygon points="0,0 32,16 0,64 -16,16"/>
+  </object>
+  <object id="4" x="128" y="64" width="16" height="32">
+   <ellipse/>
+  </object>
+  <object id="5" x="16" y="16" width="16" height="16"/>
+  <object id="6" x="32" y="48">
+   <polygon points="0,0 -16,16 0,48"/>
+  </object>
+ </objectgroup>
+ <layer name="Tile Layer 2" width="10" height="10" visible="0" opacity="0.93">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC2NgGDjwGYi/APFXAmLSjAwMMkAsy4hfzBnIdgFiVwJi5LgRGX/Fog7mHmQsi8VOmHuQMbLbANdwEEOQAQAA
+  </data>
+ </layer>
+</map>

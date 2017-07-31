@@ -7,16 +7,15 @@ using Newtonsoft.Json;
 namespace TiledLib.Tests
 {
     [TestClass]
-    public class External_tileset_TmxTests
+    public class ParseTests
     {
-        const string Filename = @"Data\External_tileset_map.tmx";
-
-        [TestMethod]
-        public void TestTmxParsing()
+        [DataTestMethod]
+        [DataRow(@"Data\External_tileset_map.tmx")]
+        public void TestTmxParsing(string file)
         {
-            using (var mapStream = File.OpenRead(Filename))
+            using (var mapStream = File.OpenRead(file))
             {
-                var result = Map.FromStream(mapStream);
+                var result = new XmlSerializer(typeof(Map)).Deserialize(mapStream) as Map;
 
                 Assert.IsNotNull(result);
                 Assert.IsNotNull(result.Layers);
@@ -24,34 +23,13 @@ namespace TiledLib.Tests
             }
         }
 
-        [TestMethod]
-        public void TestTileIndexing()
+        [DataTestMethod]
+        [DataRow(@"Data\Level0.json")]
+        public void TestJsonParsing(string file)
         {
-            using (var mapStream = File.OpenRead(Filename))
-            {
-                var result = Map.FromStream(mapStream);
-                Assert.IsNotNull(result);
-
-
-                Tileset LoadTileset(ExternalTileset t)
-                {
-                    using (var stream = File.OpenRead(Path.Combine(Path.GetDirectoryName(Filename), t.source)))
-                    {
-                        return Tileset.FromStream(stream);
-                    }
-                }
-
-                foreach (var ts in result.Tilesets.OfType<ExternalTileset>())
-                    ts.LoadTileset(LoadTileset);
-                var q = from t in result.Tilesets
-                        from i in Enumerable.Range(t.firstgid, t.Rows * t.Columns)
-                        select new
-                        {
-                            index = i,
-                            tile = t[i]
-                        };
-                CollectionAssert.AllItemsAreUnique(q.ToArray().Select(i => i.index).ToArray());
-            }
+            var mapData = File.ReadAllText(file);
+            var result = JsonConvert.DeserializeObject<Map>(mapData);
+            Assert.IsNotNull(result);
         }
     }
 }

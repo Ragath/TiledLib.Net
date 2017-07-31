@@ -1,35 +1,25 @@
 ﻿using System.IO;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
 
 namespace TiledLib.Tests
 {
     [TestClass]
-    public class External_tilesetTests
+    public class TilesetTests
     {
-        const string Filename = @"Data\External_tileset_map.json";
-        
-        [TestMethod]
-        public void TestJsonParsing()
+        [DataTestMethod]
+        [DataRow(@"Data\External_tileset_map.json")]
+        [DataRow(@"Data\External_tileset_map.tmx")]
+        [DataRow(@"Data\Level0.json")]
+        public void TestTileIndexing(string file)
         {
-            using (var stream = File.OpenRead(Filename))
-            {
-                var result = Map.FromStream(stream);
-                Assert.IsNotNull(result);
-            }
-        }
-
-        [TestMethod]
-        public void TestTileIndexing()
-        {
-            using (var mapStream = File.OpenRead(Filename))
+            using (var mapStream = File.OpenRead(file))
             {
                 var map = Map.FromStream(mapStream);
 
                 Tileset LoadTileset(ExternalTileset t)
                 {
-                    using (var stream = File.OpenRead(Path.Combine(Path.GetDirectoryName(Filename), t.source)))
+                    using (var stream = File.OpenRead(Path.Combine(Path.GetDirectoryName(file), t.source)))
                     {
                         return Tileset.FromStream(stream);
                     }

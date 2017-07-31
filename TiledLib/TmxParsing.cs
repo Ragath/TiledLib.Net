@@ -184,15 +184,38 @@ namespace TiledLib
                 throw new XmlException();
         }
 
-        static int[] ReadBase64(this XmlReader reader, int size)
+        static int[] ReadBase64(this XmlReader reader, int count)
         {
-            var buffer = new byte[size * 4];
-            var count = reader.ReadElementContentAsBase64(buffer, 0, buffer.Length);
+            var buffer = new byte[count * sizeof(int)];
+            var size = reader.ReadElementContentAsBase64(buffer, 0, buffer.Length);
             if (reader.ReadElementContentAsBase64(buffer, 0, buffer.Length) != 0)
                 throw new InvalidDataException();
-            var data = new int[count / 4];
-            Buffer.BlockCopy(buffer, 0, data, 0, count);
+            var data = new int[size / sizeof(int)];
+            Buffer.BlockCopy(buffer, 0, data, 0, size);
             return data;
+        }
+        static int[] ReadBase64Decompress<T>(this XmlReader reader, Func<Stream,Zlib.CompressionMode, T> streamFactory, int size)
+            where T : Stream
+        {
+            var buffer = new byte[size * sizeof(int)];
+
+            var total = reader.ReadElementContentAsBase64(buffer, 0, buffer.Length);
+            if (reader.ReadElementContentAsBase64(buffer, 0, buffer.Length) != 0)
+                throw new InvalidDataException();
+
+            using (var mstream = new MemoryStream(buffer, 0, total))
+            using (var stream = streamFactory(mstream, Zlib.CompressionMode.Decompress))
+            {
+                var data = new int[size];
+                var pos = 0;
+                int count;
+                while ((count = stream.Read(buffer, 0, buffer.Length)) > 0)
+                {
+                    Buffer.BlockCopy(buffer, 0, data, pos, count);
+                    pos += count;
+                }
+                return data;
+            }
         }
 
         public static int[] ReadData(this XmlReader reader, int count, out string encoding, out string compression)
@@ -210,14 +233,14 @@ namespace TiledLib
                         case null:
                             return reader.ReadBase64(count);
                         case "gzip":
-                            throw new NotImplementedException("gzip");
+                            return reader.ReadBase64Decompress((stream, mode) => new Zlib.GZipStream(stream, mode), count);
                         case "zlib":
-                            throw new NotImplementedException("zlib");
+                            return reader.ReadBase64Decompress((stream, mode) => new Zlib.ZlibStream(stream, mode), count);
                         default:
                             throw new XmlException(compression);
                     }
                 default:
-                    throw new NotImplementedException();
+                    throw new NotImplementedException($"Encoding: {encoding}");
             }
         }
 

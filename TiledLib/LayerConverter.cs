@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using TiledLib.Layer;
@@ -13,15 +14,15 @@ namespace TiledLib
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             var jo = JObject.Load(reader);
-            byte[] bytes = null;
+            byte[] buffer = null;
             BaseLayer result;
             switch (jo["type"].Value<string>())
             {
                 case "tilelayer":
                     result = new TileLayer();
-                    if (jo["encoding"].Value<string>() == "base64")
+                    if (jo["encoding"]?.Value<string>() == "base64")
                     {
-                        bytes = Convert.FromBase64String(jo["data"].Value<string>());
+                        buffer = Convert.FromBase64String(jo["data"].Value<string>());
                         jo["data"].Replace(JToken.FromObject(new int[0]));
                     }
                     break;
@@ -36,12 +37,46 @@ namespace TiledLib
             }
             serializer.Populate(jo.CreateReader(), result);
 
-            if (result is TileLayer tl && bytes != null)
+            if (result is TileLayer tl && buffer != null)
                 switch (tl.Compression)
                 {
                     case null:
-                        tl.data = new int[bytes.Length / sizeof(int)];
-                        Buffer.BlockCopy(bytes, 0, tl.data, 0, bytes.Length);
+                        tl.data = new int[buffer.Length / sizeof(int)];
+                        Buffer.BlockCopy(buffer, 0, tl.data, 0, buffer.Length);
+                        break;
+                    case "zlib":
+                        using (var mStream = new MemoryStream(buffer))
+                        {
+                            using (var stream = new Zlib.ZlibStream(mStream, Zlib.CompressionMode.Decompress))
+                            {
+                                var bufferSize = result.Width * result.Height * sizeof(int);
+                                Array.Resize(ref buffer, bufferSize);
+                                stream.Read(buffer, 0, bufferSize);
+
+                                if (stream.ReadByte() != -1)
+                                    throw new JsonException();
+
+                                tl.data = new int[result.Width * result.Height];
+                                Buffer.BlockCopy(buffer, 0, tl.data, 0, buffer.Length);
+                            }
+                        }
+                        break;
+                    case "gzip":
+                        using (var mStream = new MemoryStream(buffer))
+                        {
+                            using (var stream = new Zlib.GZipStream(mStream, Zlib.CompressionMode.Decompress))
+                            {
+                                var bufferSize = result.Width * result.Height * sizeof(int);
+                                Array.Resize(ref buffer, bufferSize);
+                                stream.Read(buffer, 0, bufferSize);
+
+                                if (stream.ReadByte() != -1)
+                                    throw new JsonException();
+
+                                tl.data = new int[result.Width * result.Height];
+                                Buffer.BlockCopy(buffer, 0, tl.data, 0, buffer.Length);
+                            }
+                        }
                         break;
                     default:
                         throw new NotImplementedException($"Compression: {tl.Compression}");

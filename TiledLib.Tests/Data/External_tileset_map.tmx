@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" tiledversion="1.0.2" orientation="orthogonal" renderorder="right-down" width="10" height="10" tilewidth="16" tileheight="16" nextobjectid="13">
+ <properties>
+  <property name="TextProperty">adf
+sdffd4156
+.å.ä.ö.</property>
+  <property name="foo" value="bar"/>
+ </properties>
  <tileset firstgid="1" source="External_tileset.json"/>
  <tileset firstgid="1441" source="tsx_tileset.tsx"/>
  <layer name="Tile Layer 1" width="10" height="10">
+  <properties>
+   <property name="layerBool" type="bool" value="true"/>
+  </properties>
   <data encoding="csv">
 1,1,1,1,1,1,1,1,1,1,
 1,522,523,523,523,523,523,523,642,1,
@@ -23,7 +32,7 @@
   <object id="12" gid="1445" x="80" y="64" width="16" height="16"/>
  </objectgroup>
  <imagelayer name="Image Layer 1" visible="0" opacity="0.63">
-  <image source="sewer_tileset.png" width="192" height="217"/>
+  <image source="sewer_tileset.png"/>
  </imagelayer>
  <objectgroup name="Object Layer 1">
   <object id="1" x="48" y="16" width="64" height="48"/>

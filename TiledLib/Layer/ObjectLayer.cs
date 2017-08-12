@@ -19,11 +19,17 @@ namespace TiledLib.Layer
 
         public void ReadXml(XmlReader reader)
         {
+            if (!reader.IsStartElement("objectgroup"))
+                throw new XmlException(reader.Name);
+
             LayerType = LayerType.objectgroup;
 
             reader.ReadLayerAttributes(this);
-
             Objects = reader.ReadObjectLayerElements().ToArray();
+            if (reader.Name == "objectgroup")
+                reader.ReadEndElement();
+            else
+                throw new XmlException(reader.Name);
         }
 
         public void WriteXml(XmlWriter writer)

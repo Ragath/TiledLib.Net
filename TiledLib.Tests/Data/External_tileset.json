@@ -7,6 +7,28 @@
  "spacing":0,
  "tilecount":1440,
  "tileheight":16,
+ "tileproperties":
+    {
+     "128":
+        {
+         "foo":"bar"
+        },
+     "168":
+        {
+         "foo":"bar"
+        }
+    },
+ "tilepropertytypes":
+    {
+     "128":
+        {
+         "foo":"string"
+        },
+     "168":
+        {
+         "foo":"string"
+        }
+    },
  "tilewidth":16,
  "type":"tileset"
 }

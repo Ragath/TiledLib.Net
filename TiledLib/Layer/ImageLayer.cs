@@ -17,16 +17,23 @@ namespace TiledLib.Layer
 
         public void ReadXml(XmlReader reader)
         {
+            if (!reader.IsStartElement("imagelayer"))
+                throw new XmlException();
+
             LayerType = LayerType.imagelayer;
             Name = reader["name"] ?? throw new KeyNotFoundException("name");
             Visible = reader["visible"].ParseBool() ?? true;
             Opacity = reader["opacity"].ParseDouble() ?? 1.0;
+
             if (reader.ReadToDescendant("image"))
             {
                 Image = reader["source"] ?? throw new KeyNotFoundException("source");
                 Width = reader["width"].ParseInt32() ?? -1;
                 Height = reader["height"].ParseInt32() ?? -1;
+                reader.Read();
             }
+
+            reader.ReadEndElement();
         }
 
         public void WriteXml(XmlWriter writer)

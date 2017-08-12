@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml;
+using System.Xml.Linq;
 using System.Xml.Serialization;
 using TiledLib.Layer;
 using TiledLib.Objects;
@@ -90,7 +91,7 @@ namespace TiledLib
             layer.Opacity = reader["opacity"].ParseDouble() ?? 1.0;
             layer.Visible = reader["visible"].ParseBool() ?? true;
         }
-        //------------Map-----------//
+
         public static void ReadMapAttributes(this XmlReader reader, Map map)
         {
             map.Version = reader["version"];
@@ -107,46 +108,55 @@ namespace TiledLib
         {
             var tilesets = new List<ITileset>();
             var layers = new List<BaseLayer>();
-            while (reader.Read())
-                if (reader.IsStartElement())
+            reader.ReadStartElement("map");
+            while (reader.IsStartElement())
+                switch (reader.Name)
                 {
-                    switch (reader.Name)
-                    {
-                        case "tileset":
-                            if (reader["source"] == null)
-                            {
-                                var xmlSerializer = new XmlSerializer(typeof(Tileset));
-                                tilesets.Add((Tileset)xmlSerializer.Deserialize(reader));
-                            }
-                            else
-                                tilesets.Add(new ExternalTileset { firstgid = int.Parse(reader["firstgid"]), source = reader["source"] });
-                            //        
-                            break;
-                        case "layer":
-                            var xmlSerializer1 = new XmlSerializer(typeof(TileLayer));
-                            layers.Add((BaseLayer)xmlSerializer1.Deserialize(reader));
-                            break;
-                        case "objectgroup":
-                            var xmlSerializer2 = new XmlSerializer(typeof(ObjectLayer));
-                            layers.Add((BaseLayer)xmlSerializer2.Deserialize(reader));
-                            break;
-                        case "imagelayer":
-                            var xmlSerializer3 = new XmlSerializer(typeof(ImageLayer));
-                            layers.Add((BaseLayer)xmlSerializer3.Deserialize(reader));
-                            break;
-                        default:
-                            throw new XmlException(reader.Name);
-                    }
-
+                    case "tileset":
+                        if (reader["source"] == null)
+                        {
+                            var xmlSerializer = new XmlSerializer(typeof(Tileset));
+                            tilesets.Add((Tileset)xmlSerializer.Deserialize(reader));
+                        }
+                        else
+                        {
+                            tilesets.Add(new ExternalTileset { firstgid = int.Parse(reader["firstgid"]), source = reader["source"] });
+                            reader.Read();
+                        }
+                        break;
+                    case "layer":
+                        var xmlSerializer1 = new XmlSerializer(typeof(TileLayer));
+                        layers.Add((BaseLayer)xmlSerializer1.Deserialize(reader));
+                        break;
+                    case "objectgroup":
+                        var xmlSerializer2 = new XmlSerializer(typeof(ObjectLayer));
+                        layers.Add((BaseLayer)xmlSerializer2.Deserialize(reader));
+                        break;
+                    case "imagelayer":
+                        var xmlSerializer3 = new XmlSerializer(typeof(ImageLayer));
+                        layers.Add((BaseLayer)xmlSerializer3.Deserialize(reader));
+                        break;
+                    case "properties":
+                        reader.ReadProperties(map.Properties);
+                        break;
+                    default:
+                        throw new XmlException(reader.Name);
                 }
+
+            if (reader.Name == "map")
+                reader.ReadEndElement();
+            else
+                throw new XmlException(reader.Name);
 
             map.Tilesets = tilesets.ToArray();
             map.Layers = layers.ToArray();
         }
 
-        //------------Map-----------//
+
         public static void ReadTileset(this XmlReader reader, Tileset ts)
         {
+            if (!reader.IsStartElement("tileset"))
+                throw new XmlException(reader.Name);
             ts.name = reader["name"];
             ts.tilewidth = int.Parse(reader["tilewidth"]);
             ts.tileheight = int.Parse(reader["tilewidth"]);
@@ -155,19 +165,68 @@ namespace TiledLib
             var tileCount = int.Parse(reader["tilecount"]);
             var columns = int.Parse(reader["columns"]);
 
+            reader.ReadStartElement("tileset");
+            while (reader.IsStartElement())
+                switch (reader.Name)
+                {
+                    case "image":
+                        ts.ImagePath = reader["source"];
+                        ts.imagewidth = int.Parse(reader["width"]);
+                        ts.imageheight = int.Parse(reader["height"]);
+                        reader.Skip();
+                        break;
+                    case "properties":
+                        reader.ReadProperties(ts.Properties);
+                        break;
+                    case "tile":
+                        reader.ReadTile(ts.TileProperties);
+                        break;
+                    default:
+                        break;
+                }
 
-
-            if (!reader.ReadToDescendant("image"))
-                throw new XmlException();
+            if (reader.Name == "tileset")
+                reader.ReadEndElement();
             else
-            {
-                ts.ImagePath = reader["source"];
-                ts.imagewidth = int.Parse(reader["width"]);
-                ts.imageheight = int.Parse(reader["height"]);
-            }
+                throw new XmlException(reader.Name);
         }
 
+        static void ReadTile(this XmlReader reader, Dictionary<int, Dictionary<string, string>> tileProperties)
+        {
+            if (!reader.IsStartElement("tile"))
+                throw new XmlException(reader.Name);
 
+            var id = int.Parse(reader["id"]);
+            Dictionary<string, string> properties;
+            if (!tileProperties.TryGetValue(id, out properties) || properties == null)
+                properties = tileProperties[id] = new Dictionary<string, string>();
+
+            reader.ReadStartElement("tile");
+            while (reader.IsStartElement())
+                switch (reader.Name)
+                {
+                    case "properties":
+                        reader.ReadProperties(properties);
+                        break;
+                    default:
+                        throw new XmlException(reader.Name);
+                }
+
+            if (reader.Name == "tile")
+                reader.ReadEndElement();
+            else
+                throw new XmlException(reader.Name);
+        }
+
+        public static void ReadProperties(this XmlReader reader, Dictionary<string, string> properties)
+        {
+            if (!reader.IsStartElement("properties"))
+                throw new XmlException(reader.Name);
+
+            var parent = XNode.ReadFrom(reader) as XElement;
+            foreach (var e in parent.Elements())
+                properties[e.Attribute("name").Value] = e.IsEmpty ? e.Attribute("value").Value : e.Value;
+        }
 
 
 
@@ -194,7 +253,7 @@ namespace TiledLib
             Buffer.BlockCopy(buffer, 0, data, 0, size);
             return data;
         }
-        static int[] ReadBase64Decompress<T>(this XmlReader reader, Func<Stream,Zlib.CompressionMode, T> streamFactory, int size)
+        static int[] ReadBase64Decompress<T>(this XmlReader reader, Func<Stream, Zlib.CompressionMode, T> streamFactory, int size)
             where T : Stream
         {
             var buffer = new byte[size * sizeof(int)];

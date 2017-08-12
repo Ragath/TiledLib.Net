@@ -179,7 +179,7 @@ namespace TiledLib
                         reader.ReadProperties(ts.Properties);
                         break;
                     case "tile":
-                        reader.ReadTile(ts.TileProperties);
+                        reader.ReadTile(ts.TileProperties,ts.TileAnimations);
                         break;
                     default:
                         break;
@@ -191,7 +191,7 @@ namespace TiledLib
                 throw new XmlException(reader.Name);
         }
 
-        static void ReadTile(this XmlReader reader, Dictionary<int, Dictionary<string, string>> tileProperties)
+        static void ReadTile(this XmlReader reader, Dictionary<int, Dictionary<string, string>> tileProperties, Dictionary<int, Frame[]> tileAnimations)
         {
             if (!reader.IsStartElement("tile"))
                 throw new XmlException(reader.Name);
@@ -208,14 +208,30 @@ namespace TiledLib
                     case "properties":
                         reader.ReadProperties(properties);
                         break;
+                    case "animation":
+                        tileAnimations[id] = reader.ReadAnimation();
+                        break;
                     default:
-                        throw new XmlException(reader.Name);
+                        reader.Skip(); //TODO: Add logging.
+                        break;
                 }
 
             if (reader.Name == "tile")
                 reader.ReadEndElement();
             else
                 throw new XmlException(reader.Name);
+        }
+
+        static Frame[] ReadAnimation(this XmlReader reader)
+        {
+            if (!reader.IsStartElement("animation"))
+                throw new XmlException(reader.Name);
+
+            var parent = XNode.ReadFrom(reader) as XElement;
+            return parent
+                .Elements()
+                .Select(e => new Frame { TileId = int.Parse(e.Attribute("tileid").Value), Duration_ms = int.Parse(e.Attribute("duration").Value) })
+                .ToArray();
         }
 
         public static void ReadProperties(this XmlReader reader, Dictionary<string, string> properties)

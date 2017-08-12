@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.0.2" orientation="orthogonal" renderorder="right-down" width="10" height="10" tilewidth="16" tileheight="16" nextobjectid="13">
+<map version="1.0" tiledversion="1.0.2" orientation="orthogonal" renderorder="right-down" width="10" height="10" tilewidth="16" tileheight="16" nextobjectid="14">
  <properties>
   <property name="TextProperty">adf
 sdffd4156
@@ -21,7 +21,7 @@ sdffd4156
 1,562,161,162,162,162,162,163,1,1,
 1,562,201,202,202,202,202,203,563,1,
 1,562,243,244,244,244,244,245,1,1,
-1,601,283,284,284,284,284,285,1,1,
+1,601,283,284,124,284,284,285,1,1,
 1,1,323,324,324,324,324,325,1,1
 </data>
  </layer>
@@ -30,6 +30,7 @@ sdffd4156
   <object id="10" gid="1445" x="32" y="64" width="16" height="16"/>
   <object id="11" gid="1445" x="48" y="80" width="16" height="16"/>
   <object id="12" gid="1445" x="80" y="64" width="16" height="16"/>
+  <object id="13" gid="1544" x="128" y="144" width="16" height="16"/>
  </objectgroup>
  <imagelayer name="Image Layer 1" visible="0" opacity="0.63">
   <image source="sewer_tileset.png"/>

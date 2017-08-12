@@ -70,6 +70,8 @@ namespace TiledLib
         public int Rows => (imageheight + spacing - margin * 2) / (tileheight + spacing);
         public int TileCount => Columns * Rows;
 
+        [JsonIgnore] //TODO: Add json support
+        public Dictionary<int, Frame[]> TileAnimations { get; } = new Dictionary<int, Frame[]>();
 
         public static Tileset FromStream(System.IO.Stream stream)
         {

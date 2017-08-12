@@ -29,4 +29,15 @@
    <property name="val" type="int" value="0"/>
   </properties>
  </tile>
+ <tile id="103">
+  <animation>
+   <frame tileid="103" duration="100"/>
+   <frame tileid="104" duration="100"/>
+   <frame tileid="105" duration="100"/>
+   <frame tileid="106" duration="100"/>
+   <frame tileid="107" duration="100"/>
+   <frame tileid="108" duration="100"/>
+   <frame tileid="109" duration="100"/>
+  </animation>
+ </tile>
 </tileset>

@@ -29,6 +29,37 @@
          "foo":"string"
         }
     },
+ "tiles":
+    {
+     "123":
+        {
+         "animation":[
+                {
+                 "duration":100,
+                 "tileid":123
+                }, 
+                {
+                 "duration":100,
+                 "tileid":124
+                }, 
+                {
+                 "duration":100,
+                 "tileid":125
+                }, 
+                {
+                 "duration":100,
+                 "tileid":163
+                }, 
+                {
+                 "duration":100,
+                 "tileid":164
+                }, 
+                {
+                 "duration":100,
+                 "tileid":165
+                }]
+        }
+    },
  "tilewidth":16,
  "type":"tileset"
 }

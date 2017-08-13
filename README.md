@@ -3,5 +3,5 @@
 Cross-platform Tiled map parsing utilities.
 
 ## Nugets
-- [TiledLib](https://www.nuget.org/packages/TiledLib/)
-- [TiledLib.Pipeline](https://www.nuget.org/packages/TiledLib.Pipeline/)
+[![](Docs/Images/nuget.png) TiledLib](https://www.nuget.org/packages/TiledLib/)  
+[![](Docs/Images/nuget.png) TiledLib.Pipeline](https://www.nuget.org/packages/TiledLib.Pipeline/)  

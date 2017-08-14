@@ -186,7 +186,7 @@ namespace TiledLib
 
             ts.name = reader["name"];
             ts.tilewidth = int.Parse(reader["tilewidth"]);
-            ts.tileheight = int.Parse(reader["tilewidth"]);
+            ts.tileheight = int.Parse(reader["tileheight"]);
             ts.spacing = int.Parse(reader["spacing"] ?? "0");
 
             var tileCount = reader["tilecount"].ParseInt32();

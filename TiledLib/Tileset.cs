@@ -37,7 +37,7 @@ namespace TiledLib
         {
             get
             {
-                if (id != 0 && TileProperties.TryGetValue(id - 1, out var tile) && tile.TryGetValue(property, out var value))
+                if (id != 0 && TileProperties.TryGetValue(id - firstgid, out var tile) && tile.TryGetValue(property, out var value))
                     return value;
                 else
                     return null;

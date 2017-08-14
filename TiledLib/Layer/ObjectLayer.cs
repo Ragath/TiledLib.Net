@@ -20,16 +20,30 @@ namespace TiledLib.Layer
         public void ReadXml(XmlReader reader)
         {
             if (!reader.IsStartElement("objectgroup"))
-                throw new XmlException(reader.Name);
+                throw new XmlException();
 
             LayerType = LayerType.objectgroup;
-
             reader.ReadLayerAttributes(this);
-            Objects = reader.ReadObjectLayerElements().ToArray();
+
+            reader.ReadStartElement("objectgroup");
+            var objects = new List<BaseObject>();
+            while (reader.IsStartElement())
+                switch (reader.Name)
+                {
+                    case "properties":
+                        reader.ReadProperties(Properties);
+                        break;
+                    case "object":
+                        objects.Add(reader.ReadObject());
+                        break;
+                    default:
+                        throw new XmlException(reader.Name);
+                }
+            Objects = objects.ToArray();
             if (reader.Name == "objectgroup")
                 reader.ReadEndElement();
             else
-                throw new XmlException(reader.Name);
+                throw new XmlException(reader.Name);            
         }
 
         public void WriteXml(XmlWriter writer)

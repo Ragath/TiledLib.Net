@@ -12,69 +12,92 @@ namespace TiledLib
 {
     static class TmxParsing
     {
-        public static IEnumerable<BaseObject> ReadObjectLayerElements(this XmlReader reader)
+        public static BaseObject ReadObject(this XmlReader reader)
         {
-            if (reader.ReadToDescendant("object"))
-                do
-                {
-                    var x = reader["x"].ParseInt32().Value;
-                    var y = reader["y"].ParseInt32().Value;
-                    var w = reader["width"].ParseInt32();
-                    var h = reader["height"].ParseInt32();
-                    var name = reader["name"];
+            if (!reader.IsStartElement("object"))
+                throw new XmlException(reader.Name);
 
-                    if (reader.IsEmptyElement)
-                        yield return new RectangleObject
-                        {
-                            X = x,
-                            Y = y,
-                            Width = w.Value,
-                            Height = h.Value,
-                            Name = name
-                        };
-                    else
+            var x = reader["x"].ParseInt32().Value;
+            var y = reader["y"].ParseInt32().Value;
+            var w = reader["width"].ParseInt32();
+            var h = reader["height"].ParseInt32();
+            var name = reader["name"];
+            var type = reader["type"];
+
+            BaseObject result = null;
+            var properties = new Dictionary<string, string>();
+            if (reader.IsEmptyElement)
+                reader.Skip();
+            else
+            {
+                reader.ReadStartElement("object");
+
+                while (reader.IsStartElement())
+                    switch (reader.Name)
                     {
-                        reader.Read();
-                        if (!reader.IsEmptyElement)
-                            throw new XmlException();
-
-                        switch (reader.Name)
-                        {
-                            case "ellipse":
-                                yield return new EllipseObject
-                                {
-                                    X = x,
-                                    Y = y,
-                                    Width = w.Value,
-                                    Height = h.Value,
-                                    Name = name,
-                                    IsEllipse = true
-                                };
-                                reader.Read();
-                                break;
-                            case "polygon":
-                                var pts = from p in reader["points"].Split(' ')
-                                          let split = p.IndexOf(',')
-                                          select new Position(int.Parse(p.Substring(0, split)), int.Parse(p.Substring(split + 1)));
-
-                                yield return new PolygonObject
-                                {
-                                    X = x,
-                                    Y = y,
-                                    Name = name,
-                                    polygon = pts.ToArray()
-                                    //Width = w,
-                                    //Height = h,
-                                };
-                                reader.Read();
-                                break;
-                            default:
-                                throw new XmlException();
-                        }
+                        case "properties":
+                            reader.ReadProperties(properties);
+                            break;
+                        case "ellipse":
+                            result = new EllipseObject(properties)
+                            {
+                                X = x,
+                                Y = y,
+                                Width = w.Value,
+                                Height = h.Value,
+                                Name = name,
+                                IsEllipse = true,
+                                ObjectType = type
+                            };
+                            reader.Skip();
+                            break;
+                        case "polygon":
+                            result = new PolygonObject(properties)
+                            {
+                                X = x,
+                                Y = y,
+                                Name = name,
+                                polygon = reader.ReadPoints().ToArray(),
+                                ObjectType = type
+                            };
+                            reader.Skip();
+                            break;
+                        case "polyline":
+                            result = new PolyLineObject(properties)
+                            {
+                                X = x,
+                                Y = y,
+                                Name = name,
+                                polyline = reader.ReadPoints().ToArray(),
+                                ObjectType = type
+                            };
+                            reader.Skip();
+                            break;
+                        default:
+                            throw new XmlException(reader.Name);
                     }
-                }
-                while (reader.ReadToNextSibling("object"));
+
+                if (reader.Name == "object")
+                    reader.ReadEndElement();
+                else
+                    throw new XmlException($"Expected </object>, found: {reader.Name}");
+            }
+
+            return result ?? new RectangleObject(properties)
+            {
+                X = x,
+                Y = y,
+                Width = w.Value,
+                Height = h.Value,
+                Name = name,
+                ObjectType = type
+            };
         }
+
+        static IEnumerable<Position> ReadPoints(this XmlReader reader)
+            => from p in reader["points"].Split(' ')
+               let split = p.IndexOf(',')
+               select new Position(int.Parse(p.Substring(0, split)), int.Parse(p.Substring(split + 1)));
 
         public static void ReadLayerAttributes(this XmlReader reader, BaseLayer layer)
         {
@@ -179,7 +202,7 @@ namespace TiledLib
                         reader.ReadProperties(ts.Properties);
                         break;
                     case "tile":
-                        reader.ReadTile(ts.TileProperties,ts.TileAnimations);
+                        reader.ReadTile(ts.TileProperties, ts.TileAnimations);
                         break;
                     default:
                         break;

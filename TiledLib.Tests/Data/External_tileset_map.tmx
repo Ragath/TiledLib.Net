@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.0.2" orientation="orthogonal" renderorder="right-down" width="10" height="10" tilewidth="16" tileheight="16" nextobjectid="14">
+<map version="1.0" tiledversion="1.0.2" orientation="orthogonal" renderorder="right-down" width="10" height="10" tilewidth="16" tileheight="16" nextobjectid="15">
  <properties>
   <property name="TextProperty">adf
 sdffd4156
@@ -36,7 +36,14 @@ sdffd4156
   <image source="sewer_tileset.png"/>
  </imagelayer>
  <objectgroup name="Object Layer 1">
-  <object id="1" x="48" y="16" width="64" height="48"/>
+  <properties>
+   <property name="foo" value="bar"/>
+  </properties>
+  <object id="1" type="foo_type" x="48" y="16" width="64" height="48">
+   <properties>
+    <property name="rect" value="property"/>
+   </properties>
+  </object>
   <object id="2" x="16" y="80" width="48" height="48">
    <ellipse/>
   </object>
@@ -44,11 +51,17 @@ sdffd4156
    <polygon points="0,0 32,16 0,64 -16,16"/>
   </object>
   <object id="4" x="128" y="64" width="16" height="32">
+   <properties>
+    <property name="foo" type="int" value="4"/>
+   </properties>
    <ellipse/>
   </object>
   <object id="5" x="16" y="16" width="16" height="16"/>
   <object id="6" x="32" y="48">
    <polygon points="0,0 -16,16 0,48"/>
+  </object>
+  <object id="14" type="pline" x="16" y="144">
+   <polyline points="0,0 32,16 48,0 48,-16"/>
   </object>
  </objectgroup>
  <layer name="Tile Layer 2" width="10" height="10" visible="0" opacity="0.93">

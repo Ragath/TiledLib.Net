@@ -1,7 +1,12 @@
-﻿namespace TiledLib.Objects
+﻿using System.Collections.Generic;
+
+namespace TiledLib.Objects
 {
-    class PolygonObject : BaseObject
+    public class PolygonObject : BaseObject
     {
+        internal PolygonObject(Dictionary<string, string> properties) : base(properties) { }
+        public PolygonObject() : base(new Dictionary<string, string>()) { }
+
         public Position[] polygon { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
@@ -8,6 +9,9 @@ namespace TiledLib.Objects
 {
     public class EllipseObject : BaseObject, IXmlSerializable
     {
+        public EllipseObject(Dictionary<string, string> properties) : base(properties) { }
+        public EllipseObject() : base(new Dictionary<string, string>()) { }
+
         [JsonProperty("ellipse")]
         public bool IsEllipse { get; set; }
 

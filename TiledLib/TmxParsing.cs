@@ -180,6 +180,10 @@ namespace TiledLib
         {
             if (!reader.IsStartElement("tileset"))
                 throw new XmlException(reader.Name);
+
+            if (reader["firstgid"] != null)
+                ts.firstgid = int.Parse(reader["firstgid"]);
+
             ts.name = reader["name"];
             ts.tilewidth = int.Parse(reader["tilewidth"]);
             ts.tileheight = int.Parse(reader["tilewidth"]);

@@ -48,9 +48,14 @@ namespace TiledLib
         {
             get
             {
+                if (id == 0)
+                    return default(Tile);
+
+                var orientation = (TileOrientation)id & TileOrientation.MaskFlip;
+
                 var columns = Columns;
                 var rows = Rows;
-                var index = id - firstgid;
+                var index = ((int)TileOrientation.MaskID & id) - firstgid;
                 if (index < 0 || index >= rows * columns)
                     throw new ArgumentOutOfRangeException();
 
@@ -61,7 +66,8 @@ namespace TiledLib
                     Top = row * (tileheight + spacing) + margin,
                     Left = (index - row * columns) * (tilewidth + spacing) + margin,
                     Width = tilewidth,
-                    Height = tileheight
+                    Height = tileheight,
+                    Orientation = orientation
                 };
             }
         }

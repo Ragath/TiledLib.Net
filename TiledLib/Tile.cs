@@ -6,5 +6,7 @@
         public int Top;
         public int Width;
         public int Height;
+
+        public TileOrientation Orientation;
     }
 }

@@ -9,11 +9,11 @@ namespace TiledLib.Tests
     public class LayerFormatTests
     {
         [DataTestMethod]
-        [DataRow(@"Data\External_tileset_map.json")]
-        [DataRow(@"Data\External_tileset_map.tmx")]
-        [DataRow(@"Data\External_tileset_map_base64.json")]
-        [DataRow(@"Data\External_tileset_map_base64.tmx")]
-        [DataRow(@"Data\Level0.json")]
+        [DataRow("Data/External_tileset_map.json")]
+        [DataRow("Data/External_tileset_map.tmx")]
+        [DataRow("Data/External_tileset_map_base64.json")]
+        [DataRow("Data/External_tileset_map_base64.tmx")]
+        [DataRow("Data/Level0.json")]
         public void TestUncompressedDecoding(string file)
         {
             using (var stream = File.OpenRead(file))
@@ -29,10 +29,10 @@ namespace TiledLib.Tests
         }
 
         [DataTestMethod]
-        [DataRow(@"Data\External_tileset_map_base64_gzip.tmx", @"Data\External_tileset_map_base64.tmx")]
-        [DataRow(@"Data\External_tileset_map_base64_zlib.tmx", @"Data\External_tileset_map_base64.tmx")]
-        [DataRow(@"Data\External_tileset_map_base64_zlib.json", @"Data\External_tileset_map_base64.json")]
-        [DataRow(@"Data\External_tileset_map_base64_gzip.json", @"Data\External_tileset_map_base64.json")]
+        [DataRow("Data/External_tileset_map_base64_gzip.tmx", "Data/External_tileset_map_base64.tmx")]
+        [DataRow("Data/External_tileset_map_base64_zlib.tmx", "Data/External_tileset_map_base64.tmx")]
+        [DataRow("Data/External_tileset_map_base64_zlib.json", "Data/External_tileset_map_base64.json")]
+        [DataRow("Data/External_tileset_map_base64_gzip.json", "Data/External_tileset_map_base64.json")]
         public void TestCompression(string file, string referenceFile)
         {
             Map referenceMap;

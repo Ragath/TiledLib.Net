@@ -8,9 +8,9 @@ namespace TiledLib.Tests
     public class TilesetTests
     {
         [DataTestMethod]
-        [DataRow(@"Data\External_tileset_map.json")]
-        [DataRow(@"Data\External_tileset_map.tmx")]
-        [DataRow(@"Data\Level0.json")]
+        [DataRow("Data/External_tileset_map.json")]
+        [DataRow("Data/External_tileset_map.tmx")]
+        [DataRow("Data/Level0.json")]
         public void TestTileIndexing(string file)
         {
             using (var mapStream = File.OpenRead(file))

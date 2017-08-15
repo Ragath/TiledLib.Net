@@ -10,7 +10,7 @@ namespace TiledLib.Tests
     public class ParseTests
     {
         [DataTestMethod]
-        [DataRow(@"Data\External_tileset_map.tmx")]
+        [DataRow("Data/External_tileset_map.tmx")]
         public void TestTmxParsing(string file)
         {
             using (var mapStream = File.OpenRead(file))
@@ -24,7 +24,7 @@ namespace TiledLib.Tests
         }
 
         [DataTestMethod]
-        [DataRow(@"Data\Level0.json")]
+        [DataRow("Data/Level0.json")]
         public void TestJsonParsing(string file)
         {
             var mapData = File.ReadAllText(file);

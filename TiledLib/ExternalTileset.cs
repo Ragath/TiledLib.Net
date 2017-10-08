@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 namespace TiledLib
 {
-
     public class ExternalTileset : ITileset
     {
         public string source { get; set; }
@@ -16,7 +15,7 @@ namespace TiledLib
         public int Columns => Tileset.Columns;
 
         public int imageheight => Tileset.imageheight;
-        public string ImagePath => Tileset.ImagePath;
+        public string ImagePath => System.IO.Path.IsPathRooted(Tileset.ImagePath) ? Tileset.ImagePath : System.IO.Path.Combine(System.IO.Path.GetDirectoryName(source), Tileset.ImagePath);
         public int imagewidth => Tileset.imagewidth;
         public int margin => Tileset.margin;
         public string name => Tileset.name;
@@ -34,7 +33,7 @@ namespace TiledLib
         public Dictionary<int, Dictionary<string, string>> TileProperties => Tileset.TileProperties;
 
         public int tilewidth => Tileset.tilewidth;
-        public string transparentcolor => Tileset.transparentcolor;        
+        public string transparentcolor => Tileset.transparentcolor;
 
         public Tile this[int id] => Tileset[id];
 

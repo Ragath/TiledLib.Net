@@ -33,29 +33,29 @@ namespace TiledLib
         [JsonProperty("tileproperties")]
         public Dictionary<int, Dictionary<string, string>> TileProperties { get; } = new Dictionary<int, Dictionary<string, string>>();
 
-        public string this[int id, string property]
+        public string this[int gid, string property]
         {
             get
             {
-                if (id != 0 && TileProperties.TryGetValue(id - firstgid, out var tile) && tile.TryGetValue(property, out var value))
+                if (gid != 0 && TileProperties.TryGetValue(gid - firstgid, out var tile) && tile.TryGetValue(property, out var value))
                     return value;
                 else
                     return null;
             }
         }
 
-        public Tile this[int id]
+        public Tile this[int gid]
         {
             get
             {
-                if (id == 0)
+                if (gid == 0)
                     return default(Tile);
 
-                var orientation = (TileOrientation)id & TileOrientation.MaskFlip;
+                var orientation = (TileOrientation)gid & TileOrientation.MaskFlip;
 
                 var columns = Columns;
                 var rows = Rows;
-                var index = ((int)TileOrientation.MaskID & id) - firstgid;
+                var index = ((int)TileOrientation.MaskID & gid) - firstgid;
                 if (index < 0 || index >= rows * columns)
                     throw new ArgumentOutOfRangeException();
 

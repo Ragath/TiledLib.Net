@@ -1,7 +1,6 @@
 ﻿using System.IO;
 using System.Linq;
 using Microsoft.Xna.Framework.Content.Pipeline;
-using TiledLib.Layer;
 
 namespace TiledLib.Pipeline
 {

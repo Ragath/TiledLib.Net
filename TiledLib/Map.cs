@@ -60,8 +60,8 @@ namespace TiledLib
 
                 if (tsLoader != null)
                     foreach (var item in map.Tilesets)
-                        if (item is ExternalTileset e)
-                            e._Tileset = new Lazy<Tileset>(() =>
+                        if (item is ExternalTileset ets)
+                            ets.LoadTileset(e =>
                             {
                                 using (var s = tsLoader(e))
                                 {

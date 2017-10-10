@@ -6,7 +6,8 @@ namespace TiledLib
     [JsonConverter(typeof(TilesetConverter))]
     public interface ITileset
     {
-        Tile this[int id] { get; }
+        Tile this[int gid] { get; }
+        string this[int gid, string property] { get; }
 
         int Columns { get; }
         int firstgid { get; }

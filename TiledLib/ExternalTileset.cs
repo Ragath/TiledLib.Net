@@ -9,7 +9,7 @@ namespace TiledLib
 
         public int firstgid { get; set; }
 
-        internal Lazy<Tileset> _Tileset { get; set; }
+        private Lazy<Tileset> _Tileset { get; set; }
         ITileset Tileset => _Tileset.Value;
 
         public int Columns => Tileset.Columns;
@@ -35,7 +35,8 @@ namespace TiledLib
         public int tilewidth => Tileset.tilewidth;
         public string transparentcolor => Tileset.transparentcolor;
 
-        public Tile this[int id] => Tileset[id];
+        public Tile this[int gid] => Tileset[gid];
+        public string this[int gid, string property] => Tileset[gid, property];
 
         public void LoadTileset()
         {

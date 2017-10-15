@@ -84,7 +84,7 @@ namespace TiledLib
                 sb.Clear();
                 for (int x = 0; x < layer.Width; x++, i++)
                 {
-                    sb.Append(layer.data[i]);
+                    sb.Append(layer.Data[i]);
                     sb.Append(',');
                 }
                 if (y + 1 == layer.Height)
@@ -96,8 +96,8 @@ namespace TiledLib
 
         static void WriteBase64(this XmlWriter writer, TileLayer layer)
         {
-            var buffer = new byte[layer.data.Length * sizeof(int)];
-            Buffer.BlockCopy(layer.data, 0, buffer, 0, buffer.Length);
+            var buffer = new byte[layer.Data.Length * sizeof(int)];
+            Buffer.BlockCopy(layer.Data, 0, buffer, 0, buffer.Length);
 
             writer.WriteRaw(Environment.NewLine);
             writer.WriteBase64(buffer, 0, buffer.Length);
@@ -157,7 +157,7 @@ namespace TiledLib
                                 X = x,
                                 Y = y,
                                 Name = name,
-                                polygon = reader.ReadPoints().ToArray(),
+                                Polygon = reader.ReadPoints().ToArray(),
                                 ObjectType = type
                             };
                             reader.Skip();
@@ -169,7 +169,7 @@ namespace TiledLib
                                 X = x,
                                 Y = y,
                                 Name = name,
-                                polyline = reader.ReadPoints().ToArray(),
+                                Polyline = reader.ReadPoints().ToArray(),
                                 ObjectType = type
                             };
                             reader.Skip();
@@ -188,7 +188,7 @@ namespace TiledLib
                 result = new TileObject(properties)
                 {
                     Id = id,
-                    gid = gid.Value,
+                    Gid = gid.Value,
                     X = x,
                     Y = y,
                     Width = w.Value,
@@ -216,7 +216,7 @@ namespace TiledLib
                 writer.WriteAttribute("id", entity.Id);
 
             if (entity is TileObject t)
-                writer.WriteAttribute("gid", t.gid);
+                writer.WriteAttribute("gid", t.Gid);
 
             if (entity.Name != null)
                 writer.WriteAttribute("name", entity.Name);
@@ -257,14 +257,14 @@ namespace TiledLib
                     writer.WriteProperties(entity.Properties);
 
                     writer.WriteStartElement("polygon");
-                    writer.WritePoints(o.polygon);
+                    writer.WritePoints(o.Polygon);
                     writer.WriteEndElement();
                     break;
                 case PolyLineObject o:
                     writer.WriteProperties(entity.Properties);
 
                     writer.WriteStartElement("polyline");
-                    writer.WritePoints(o.polyline);
+                    writer.WritePoints(o.Polyline);
                     writer.WriteEndElement();
                     break;
                 default:

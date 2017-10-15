@@ -28,7 +28,7 @@ namespace TiledLib.Tests
                 foreach (var ts in map.Tilesets.OfType<ExternalTileset>())
                     ts.LoadTileset(LoadTileset);
                 var q = from t in map.Tilesets
-                        from i in Enumerable.Range(t.firstgid, t.Rows * t.Columns)
+                        from i in Enumerable.Range(t.FirstGid, t.Rows * t.Columns)
                         select new
                         {
                             index = i,

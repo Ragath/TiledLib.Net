@@ -10,21 +10,21 @@ namespace TiledLib
         string this[int gid, string property] { get; }
 
         int Columns { get; }
-        int firstgid { get; }
-        int imageheight { get; }
+        int FirstGid { get; }
+        int ImageHeight { get; }
         string ImagePath { get; }
-        int imagewidth { get; }
-        int margin { get; }
-        string name { get; }
+        int ImageWidth { get; }
+        int Margin { get; }
+        string Name { get; }
 
         Dictionary<string, string> Properties { get; }
         int Rows { get; }
-        int spacing { get; }
+        int Spacing { get; }
         int TileCount { get; }
-        int tileheight { get; }
+        int TileHeight { get; }
+        int TileWidth { get; }
 
         Dictionary<int, Dictionary<string, string>> TileProperties { get; }
-        int tilewidth { get; }
-        string transparentcolor { get; }
+        string TransparentColor { get; }
     }
 }

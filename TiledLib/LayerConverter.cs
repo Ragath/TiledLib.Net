@@ -41,8 +41,8 @@ namespace TiledLib
                 switch (tl.Compression)
                 {
                     case null:
-                        tl.data = new int[buffer.Length / sizeof(int)];
-                        Buffer.BlockCopy(buffer, 0, tl.data, 0, buffer.Length);
+                        tl.Data = new int[buffer.Length / sizeof(int)];
+                        Buffer.BlockCopy(buffer, 0, tl.Data, 0, buffer.Length);
                         break;
                     case "zlib":
                         using (var mStream = new MemoryStream(buffer))
@@ -56,8 +56,8 @@ namespace TiledLib
                                 if (stream.ReadByte() != -1)
                                     throw new JsonException();
 
-                                tl.data = new int[result.Width * result.Height];
-                                Buffer.BlockCopy(buffer, 0, tl.data, 0, buffer.Length);
+                                tl.Data = new int[result.Width * result.Height];
+                                Buffer.BlockCopy(buffer, 0, tl.Data, 0, buffer.Length);
                             }
                         }
                         break;
@@ -73,8 +73,8 @@ namespace TiledLib
                                 if (stream.ReadByte() != -1)
                                     throw new JsonException();
 
-                                tl.data = new int[result.Width * result.Height];
-                                Buffer.BlockCopy(buffer, 0, tl.data, 0, buffer.Length);
+                                tl.Data = new int[result.Width * result.Height];
+                                Buffer.BlockCopy(buffer, 0, tl.Data, 0, buffer.Length);
                             }
                         }
                         break;

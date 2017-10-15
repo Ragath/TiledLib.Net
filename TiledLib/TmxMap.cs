@@ -59,7 +59,7 @@ namespace TiledLib
                         }
                         else
                         {
-                            tilesets.Add(new ExternalTileset { firstgid = int.Parse(reader["firstgid"]), source = reader["source"] });
+                            tilesets.Add(new ExternalTileset { FirstGid = int.Parse(reader["firstgid"]), source = reader["source"] });
                             reader.Read();
                         }
                         break;
@@ -99,23 +99,23 @@ namespace TiledLib
                 {
                     case ExternalTileset ts:
                         writer.WriteStartElement("tileset");
-                        writer.WriteAttribute("firstgid", ts.firstgid);
+                        writer.WriteAttribute("firstgid", ts.FirstGid);
                         writer.WriteAttribute("source", ts.source);
                         writer.WriteEndElement();
                         break;
                     case Tileset ts:
                         writer.WriteStartElement("tileset");
                         {
-                            if (ts.firstgid < 1)
-                                throw new ArgumentOutOfRangeException(nameof(Tileset.firstgid));
-                            writer.WriteAttribute("firstgid", ts.firstgid);
-                            if (ts.name != null)
-                                writer.WriteAttribute("name", ts.name);
+                            if (ts.FirstGid < 1)
+                                throw new ArgumentOutOfRangeException(nameof(Tileset.FirstGid));
+                            writer.WriteAttribute("firstgid", ts.FirstGid);
+                            if (ts.Name != null)
+                                writer.WriteAttribute("name", ts.Name);
 
-                            writer.WriteAttribute("tilewidth", ts.tilewidth);
-                            writer.WriteAttribute("tileheight", ts.tileheight);
-                            if (ts.spacing != 0)
-                                writer.WriteAttribute("spacing", ts.spacing);
+                            writer.WriteAttribute("tilewidth", ts.TileWidth);
+                            writer.WriteAttribute("tileheight", ts.TileHeight);
+                            if (ts.Spacing != 0)
+                                writer.WriteAttribute("spacing", ts.Spacing);
                             if (ts.TileCount != 0)
                                 writer.WriteAttribute("tilecount", ts.TileCount);
                             if (ts.Columns != 0)
@@ -124,10 +124,10 @@ namespace TiledLib
                             writer.WriteStartElement("image");
                             {
                                 writer.WriteAttribute("source", ts.ImagePath);
-                                if (ts.imagewidth != 0)
-                                    writer.WriteAttribute("width", ts.imagewidth);
-                                if (ts.imageheight != 0)
-                                    writer.WriteAttribute("height", ts.imageheight);
+                                if (ts.ImageWidth != 0)
+                                    writer.WriteAttribute("width", ts.ImageWidth);
+                                if (ts.ImageHeight != 0)
+                                    writer.WriteAttribute("height", ts.ImageHeight);
                             }
                             writer.WriteEndElement();
 

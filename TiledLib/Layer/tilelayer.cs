@@ -18,7 +18,7 @@ namespace TiledLib.Layer
         public string Compression { get; set; }
 
         [JsonRequired]
-        public int[] data { get; set; }
+        public int[] Data { get; set; }
 
         public XmlSchema GetSchema() => null;
 
@@ -40,7 +40,7 @@ namespace TiledLib.Layer
                         break;
                     case "data":
                         foundData = true;
-                        data = reader.ReadData(Width * Height, out var encoding, out var compression);
+                        Data = reader.ReadData(Width * Height, out var encoding, out var compression);
                         Encoding = encoding;
                         Compression = compression;
                         break;

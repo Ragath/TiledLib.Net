@@ -10,23 +10,23 @@ namespace TiledLib
     [XmlRoot("tileset")]
     public class Tileset : ITileset, IXmlSerializable
     {
-        public string name { get; set; }
+        public string Name { get; set; }
 
-        public int firstgid { get; set; }
+        public int FirstGid { get; set; }
 
         [JsonProperty("image")]
         public string ImagePath { get; set; }
 
-        public int imageheight { get; set; }
-        public int imagewidth { get; set; }
+        public int ImageHeight { get; set; }
+        public int ImageWidth { get; set; }
 
-        public int margin { get; set; }
-        public int spacing { get; set; }
+        public int Margin { get; set; }
+        public int Spacing { get; set; }
 
-        public int tileheight { get; set; }
-        public int tilewidth { get; set; }
+        public int TileHeight { get; set; }
+        public int TileWidth { get; set; }
 
-        public string transparentcolor { get; set; }
+        public string TransparentColor { get; set; }
 
         [JsonProperty("properties")]
         public Dictionary<string, string> Properties { get; } = new Dictionary<string, string>();
@@ -37,7 +37,7 @@ namespace TiledLib
         {
             get
             {
-                if (gid != 0 && TileProperties.TryGetValue(gid - firstgid, out var tile) && tile.TryGetValue(property, out var value))
+                if (gid != 0 && TileProperties.TryGetValue(gid - FirstGid, out var tile) && tile.TryGetValue(property, out var value))
                     return value;
                 else
                     return null;
@@ -55,7 +55,7 @@ namespace TiledLib
 
                 var columns = Columns;
                 var rows = Rows;
-                var index = ((int)TileOrientation.MaskID & gid) - firstgid;
+                var index = ((int)TileOrientation.MaskID & gid) - FirstGid;
                 if (index < 0 || index >= rows * columns)
                     throw new ArgumentOutOfRangeException();
 
@@ -63,17 +63,17 @@ namespace TiledLib
 
                 return new Tile
                 {
-                    Top = row * (tileheight + spacing) + margin,
-                    Left = (index - row * columns) * (tilewidth + spacing) + margin,
-                    Width = tilewidth,
-                    Height = tileheight,
+                    Top = row * (TileHeight + Spacing) + Margin,
+                    Left = (index - row * columns) * (TileWidth + Spacing) + Margin,
+                    Width = TileWidth,
+                    Height = TileHeight,
                     Orientation = orientation
                 };
             }
         }
 
-        public int Columns => (imagewidth + spacing - margin * 2) / (tilewidth + spacing);
-        public int Rows => (imageheight + spacing - margin * 2) / (tileheight + spacing);
+        public int Columns => (ImageWidth + Spacing - Margin * 2) / (TileWidth + Spacing);
+        public int Rows => (ImageHeight + Spacing - Margin * 2) / (TileHeight + Spacing);
         public int TileCount => Columns * Rows;
 
         [JsonIgnore] //TODO: Add json support

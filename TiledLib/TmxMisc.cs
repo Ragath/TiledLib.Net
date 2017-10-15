@@ -33,12 +33,12 @@ namespace TiledLib
                 throw new XmlException(reader.Name);
 
             if (reader["firstgid"] != null)
-                ts.firstgid = int.Parse(reader["firstgid"]);
+                ts.FirstGid = int.Parse(reader["firstgid"]);
 
-            ts.name = reader["name"];
-            ts.tilewidth = int.Parse(reader["tilewidth"]);
-            ts.tileheight = int.Parse(reader["tileheight"]);
-            ts.spacing = int.Parse(reader["spacing"] ?? "0");
+            ts.Name = reader["name"];
+            ts.TileWidth = int.Parse(reader["tilewidth"]);
+            ts.TileHeight = int.Parse(reader["tileheight"]);
+            ts.Spacing = int.Parse(reader["spacing"] ?? "0");
 
             var tileCount = reader["tilecount"].ParseInt32();
             var columns = reader["columns"].ParseInt32();
@@ -49,8 +49,8 @@ namespace TiledLib
                 {
                     case "image":
                         ts.ImagePath = reader["source"];
-                        ts.imagewidth = int.Parse(reader["width"]);
-                        ts.imageheight = int.Parse(reader["height"]);
+                        ts.ImageWidth = int.Parse(reader["width"]);
+                        ts.ImageHeight = int.Parse(reader["height"]);
                         reader.Skip();
                         break;
                     case "properties":

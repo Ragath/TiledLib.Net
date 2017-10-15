@@ -30,11 +30,11 @@ namespace TiledLib.Tests
                     for (int y = 0, i = 0; y < layer.Height; y++)
                         for (int x = 0; x < layer.Width; x++, i++)
                         {
-                            var gid = layer.data[i];
+                            var gid = layer.Data[i];
                             if (gid == 0)
                                 continue;
 
-                            var tileset = map.Tilesets.Single(ts => gid >= ts.firstgid && ts.firstgid + ts.TileCount > gid);
+                            var tileset = map.Tilesets.Single(ts => gid >= ts.FirstGid && ts.FirstGid + ts.TileCount > gid);
                             var tile = tileset[gid];
 
                             Assert.AreNotEqual(0, tile.Width);

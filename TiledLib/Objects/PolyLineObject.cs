@@ -7,6 +7,6 @@ namespace TiledLib.Objects
         internal PolyLineObject(Dictionary<string, string> properties) : base(properties) { }
         public PolyLineObject() : base(new Dictionary<string, string>()) { }
 
-        public Position[] polyline { get; set; }
+        public Position[] Polyline { get; set; }
     }
 }

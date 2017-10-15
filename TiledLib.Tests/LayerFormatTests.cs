@@ -24,7 +24,7 @@ namespace TiledLib.Tests
                 Assert.IsNotNull(result.Layers);
                 Assert.IsTrue(result.Layers.Any());
                 foreach (var tl in result.Layers.OfType<TileLayer>())
-                    Assert.IsFalse(tl.data.All(i => i == 0));
+                    Assert.IsFalse(tl.Data.All(i => i == 0));
             }
         }
 
@@ -49,7 +49,7 @@ namespace TiledLib.Tests
                 Assert.IsNotNull(result.Layers);
                 Assert.IsTrue(result.Layers.Any());
                 foreach (var tl in result.Layers.OfType<TileLayer>())
-                    Assert.IsFalse(tl.data.All(i => i == 0));
+                    Assert.IsFalse(tl.Data.All(i => i == 0));
 
                 Assert.AreEqual(referenceMap.Layers.Length, result.Layers.Length);
                 for (int i = 0; i < referenceMap.Layers.Length; i++)
@@ -59,7 +59,7 @@ namespace TiledLib.Tests
                         Assert.IsNotNull(layer);
                         Assert.IsNotNull(layer.Compression);
                         Assert.AreEqual("base64", layer.Encoding);
-                        CollectionAssert.AreEqual(refLayer.data, layer.data);
+                        CollectionAssert.AreEqual(refLayer.Data, layer.Data);
                     }
             }
         }

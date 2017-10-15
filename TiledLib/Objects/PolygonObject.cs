@@ -7,6 +7,6 @@ namespace TiledLib.Objects
         internal PolygonObject(Dictionary<string, string> properties) : base(properties) { }
         public PolygonObject() : base(new Dictionary<string, string>()) { }
 
-        public Position[] polygon { get; set; }
+        public Position[] Polygon { get; set; }
     }
 }

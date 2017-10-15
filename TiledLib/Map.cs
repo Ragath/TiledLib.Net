@@ -38,6 +38,9 @@ namespace TiledLib
         [JsonProperty("tileheight")]
         public int CellHeight { get; set; }
 
+        [JsonProperty("nextobjectid")]
+        public int NextObjectId { get; set; }
+
         [JsonProperty("layers")]
         public BaseLayer[] Layers { get; set; }
 
@@ -54,7 +57,7 @@ namespace TiledLib
         /// <returns>Tiled Map</returns>
         public static Map FromStream(Stream stream, Func<ExternalTileset, Stream> tsLoader = null)
         {
-            using (var reader = new StreamReader(stream))
+            using (var reader = new StreamReader(stream, System.Text.Encoding.UTF8, true, 1024, true))
             {
                 var map = reader.ContainsJson() ? reader.ReadJsonMap() : reader.ReadTmxMap();
 
@@ -82,7 +85,9 @@ namespace TiledLib
 
         public void WriteXml(XmlWriter writer)
         {
-            throw new NotImplementedException();
+            writer.WriteMapAttributes(this);
+            writer.WriteMapElements(this);
+            //HACK: throw new NotImplementedException();
         }
     }
 }

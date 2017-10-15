@@ -9,6 +9,6 @@ namespace TiledLib.Objects
         public TileObject() : base(new Dictionary<string, string>()) { }
 
         [JsonProperty("gid")]
-        public int gId { get; set; }
+        public int gid { get; set; }
     }
 }

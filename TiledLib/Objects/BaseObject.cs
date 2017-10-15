@@ -16,6 +16,8 @@ namespace TiledLib.Objects
         [JsonProperty("visible")]
         public bool Visible { get; set; }
 
+        [JsonProperty("id")]
+        public int Id { get; set; }
 
         [JsonProperty("x")]
         public int X { get; set; }

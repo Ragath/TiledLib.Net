@@ -11,6 +11,8 @@ namespace TiledLib
         public static Map ReadJsonMap(this System.IO.TextReader reader) => (Map)JsonSerializer.Deserialize(reader, typeof(Map));
         public static Map ReadTmxMap(this System.IO.TextReader reader) => (Map)XmlSerializer.Deserialize(reader);
 
+        public static void WriteTmxMap(this System.IO.TextWriter writer, Map map) => XmlSerializer.Serialize(writer, map);
+
         static long GetPosition(this System.IO.StreamReader reader) => reader.BaseStream.Position;
         static void SetPosition(this System.IO.StreamReader reader, long position)
         {

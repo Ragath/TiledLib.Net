@@ -8,6 +8,7 @@ namespace TiledLib
     {
         unknown = 0,
         orthogonal,
-        isometric
+        isometric,
+        hexagonal
     };
 }

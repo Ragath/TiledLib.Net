@@ -27,6 +27,7 @@ namespace TiledLib
             map.HexSideLength = reader["hexsidelength"] == null ? (int?)null : int.Parse(reader["hexsidelength"]);
 
             map.NextObjectId = reader["nextobjectid"].ParseInt32() ?? 0;
+            map.BackgroundColor = reader["backgroundcolor"];
         }
 
         public static void WriteMapAttributes(this XmlWriter writer, Map map)
@@ -43,6 +44,8 @@ namespace TiledLib
             writer.WriteAttribute("hexsidelength", map.HexSideLength);
             writer.WriteAttribute("staggeraxis", map.StaggerAxis);
             writer.WriteAttribute("staggerindex", map.StaggerIndex);
+            if(map.BackgroundColor != null)
+                writer.WriteAttribute("backgroundcolor", map.BackgroundColor);
 
             if (map.NextObjectId != 0)
                 writer.WriteAttribute("nextobjectid", map.NextObjectId);

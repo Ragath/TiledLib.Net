@@ -56,6 +56,9 @@ namespace TiledLib
         [JsonProperty("staggerindex")]
         public StaggerIndex? StaggerIndex { get; set; }
 
+        [JsonProperty("backgroundcolor")]
+        public string BackgroundColor { get; set; }
+
         [JsonProperty("properties")]
         public Dictionary<string, string> Properties { get; } = new Dictionary<string, string>();
 

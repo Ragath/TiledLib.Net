@@ -130,6 +130,14 @@ namespace TiledLib
                             if (ts.Columns != 0)
                                 writer.WriteAttribute("columns", ts.Columns);
 
+                            if(ts.TileOffset != null)
+                            {
+                                writer.WriteStartElement("tileoffset");
+                                writer.WriteAttribute("x", ts.TileOffset.X);
+                                writer.WriteAttribute("y", ts.TileOffset.Y);
+                                writer.WriteEndElement();
+                            }
+
                             writer.WriteStartElement("image");
                             {
                                 writer.WriteAttribute("source", ts.ImagePath);

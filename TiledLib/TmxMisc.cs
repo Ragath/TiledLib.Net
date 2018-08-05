@@ -47,6 +47,12 @@ namespace TiledLib
             while (reader.IsStartElement())
                 switch (reader.Name)
                 {
+                    case "tileoffset":
+                        ts.TileOffset = new TileOffset();
+                        ts.TileOffset.X = int.Parse(reader["x"]);
+                        ts.TileOffset.Y = int.Parse(reader["y"]);
+                        reader.Skip();
+                        break;
                     case "image":
                         ts.ImagePath = reader["source"];
                         ts.ImageWidth = int.Parse(reader["width"]);

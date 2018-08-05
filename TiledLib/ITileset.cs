@@ -26,5 +26,7 @@ namespace TiledLib
 
         Dictionary<int, Dictionary<string, string>> TileProperties { get; }
         string TransparentColor { get; }
+
+        TileOffset TileOffset { get; }
     }
 }

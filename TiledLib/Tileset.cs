@@ -28,6 +28,9 @@ namespace TiledLib
 
         public string TransparentColor { get; set; }
 
+        [JsonProperty("tileoffset")]
+        public TileOffset TileOffset { get; set; }
+
         [JsonProperty("properties")]
         public Dictionary<string, string> Properties { get; } = new Dictionary<string, string>();
         [JsonProperty("tileproperties")]

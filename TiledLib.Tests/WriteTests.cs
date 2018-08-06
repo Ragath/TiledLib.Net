@@ -13,6 +13,7 @@ namespace TiledLib.Tests
         [DataRow("Data/tileset_map_base64.tmx")]
         [DataRow("Data/External_tileset_map.tmx")]
         [DataRow("Data/External_tileset_map_base64.tmx")]
+        [DataRow("Data/Hexagonal_tileset.tmx")]
         public void TestWriting(string file)
         {
             using (var original = new MemoryStream())
@@ -42,6 +43,9 @@ namespace TiledLib.Tests
                         foreach (var item in new[] { "type=\"bool\"", "type=\"int\"" })
                             while (expected.StartsWith(item))
                                 expected = expected.Substring(item.Length).Trim();
+                        // Also not supported
+                        if(expected.StartsWith("infinite=\"0\""))
+                            expected = expected.Substring(12).Trim();
 
                         result = result.Substring(1).Trim();
                     }

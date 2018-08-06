@@ -35,6 +35,8 @@ namespace TiledLib
         public int TileWidth => Tileset.TileWidth;
         public string TransparentColor => Tileset.TransparentColor;
 
+        public TileOffset TileOffset => Tileset.TileOffset;
+
         public Tile this[int gid] => Tileset[gid];
         public string this[int gid, string property] => Tileset[gid, property];
 

@@ -47,6 +47,12 @@ namespace TiledLib
             while (reader.IsStartElement())
                 switch (reader.Name)
                 {
+                    case "tileoffset":
+                        ts.TileOffset = new TileOffset();
+                        ts.TileOffset.X = int.Parse(reader["x"]);
+                        ts.TileOffset.Y = int.Parse(reader["y"]);
+                        reader.Skip();
+                        break;
                     case "image":
                         ts.ImagePath = reader["source"];
                         ts.ImageWidth = int.Parse(reader["width"]);
@@ -60,6 +66,7 @@ namespace TiledLib
                         reader.ReadTile(ts.TileProperties, ts.TileAnimations);
                         break;
                     default:
+                        reader.Skip();
                         break;
                 }
 
@@ -79,25 +86,32 @@ namespace TiledLib
             if (!tileProperties.TryGetValue(id, out properties) || properties == null)
                 properties = tileProperties[id] = new Dictionary<string, string>();
 
-            reader.ReadStartElement("tile");
-            while (reader.IsStartElement())
-                switch (reader.Name)
-                {
-                    case "properties":
-                        reader.ReadProperties(properties);
-                        break;
-                    case "animation":
-                        tileAnimations[id] = reader.ReadAnimation();
-                        break;
-                    default:
-                        reader.Skip(); //TODO: Add logging.
-                        break;
-                }
-
-            if (reader.Name == "tile")
-                reader.ReadEndElement();
+            if (reader.IsEmptyElement)
+            {
+                reader.ReadStartElement("tile");
+            }
             else
-                throw new XmlException(reader.Name);
+            {
+                reader.ReadStartElement("tile");
+                while (reader.IsStartElement())
+                    switch (reader.Name)
+                    {
+                        case "properties":
+                            reader.ReadProperties(properties);
+                            break;
+                        case "animation":
+                            tileAnimations[id] = reader.ReadAnimation();
+                            break;
+                        default:
+                            reader.Skip(); //TODO: Add logging.
+                            break;
+                    }
+
+                if (reader.Name == "tile")
+                    reader.ReadEndElement();
+                else
+                    throw new XmlException(reader.Name);
+            }
         }
 
         static Frame[] ReadAnimation(this XmlReader reader)
@@ -186,6 +200,13 @@ namespace TiledLib
             }
         }
 
+        public static void WriteAttribute(this XmlWriter writer, string localName, int? value)
+        {
+            if (value == null)
+                return;
+            writer.WriteAttribute(localName, value.Value);
+        }
+
 
         public static void WriteAttribute(this XmlWriter writer, string localName, Orientation value)
         {
@@ -198,6 +219,9 @@ namespace TiledLib
                     break;
                 case Orientation.isometric:
                     writer.WriteAttributeString(localName, "isometric");
+                    break;
+                case Orientation.hexagonal:
+                    writer.WriteAttributeString(localName, "hexagonal");
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(value));
@@ -212,6 +236,40 @@ namespace TiledLib
                     break;
                 case RenderOrder.rightdown:
                     writer.WriteAttributeString(localName, "right-down");
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(value));
+            }
+        }
+
+        public static void WriteAttribute(this XmlWriter writer, string localName, StaggerAxis? value)
+        {
+            if (value == null)
+                return;
+            switch (value.Value)
+            {
+                case StaggerAxis.x:
+                    writer.WriteAttributeString(localName, "x");
+                    break;
+                case StaggerAxis.y:
+                    writer.WriteAttributeString(localName, "y");
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(value));
+            }
+        }
+
+        public static void WriteAttribute(this XmlWriter writer, string localName, StaggerIndex? value)
+        {
+            if (value == null)
+                return;
+            switch (value.Value)
+            {
+                case StaggerIndex.odd:
+                    writer.WriteAttributeString(localName, "odd");
+                    break;
+                case StaggerIndex.even:
+                    writer.WriteAttributeString(localName, "even");
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(value));

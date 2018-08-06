@@ -38,7 +38,7 @@ namespace TiledLib
         [JsonProperty("tileheight")]
         public int CellHeight { get; set; }
 
-        [JsonProperty("hexsidelength")]
+        [JsonProperty("hexsidelength", NullValueHandling = NullValueHandling.Ignore)]
         public int? HexSideLength { get; set; }
 
         [JsonProperty("nextobjectid")]
@@ -50,11 +50,11 @@ namespace TiledLib
         [JsonProperty("tilesets")]
         public ITileset[] Tilesets { get; set; }
 
-        [JsonProperty("staggeraxis")]
-        public StaggerAxis? StaggerAxis { get; set; }
+        [JsonProperty("staggeraxis", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public StaggerAxis StaggerAxis { get; set; }
 
-        [JsonProperty("staggerindex")]
-        public StaggerIndex? StaggerIndex { get; set; }
+        [JsonProperty("staggerindex", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public StaggerIndex StaggerIndex { get; set; }
 
         [JsonProperty("backgroundcolor")]
         public string BackgroundColor { get; set; }

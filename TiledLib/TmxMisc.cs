@@ -242,11 +242,11 @@ namespace TiledLib
             }
         }
 
-        public static void WriteAttribute(this XmlWriter writer, string localName, StaggerAxis? value)
+        public static void WriteAttribute(this XmlWriter writer, string localName, StaggerAxis value)
         {
-            if (value == null)
+            if (value == StaggerAxis.None)
                 return;
-            switch (value.Value)
+            switch (value)
             {
                 case StaggerAxis.x:
                     writer.WriteAttributeString(localName, "x");
@@ -259,11 +259,11 @@ namespace TiledLib
             }
         }
 
-        public static void WriteAttribute(this XmlWriter writer, string localName, StaggerIndex? value)
+        public static void WriteAttribute(this XmlWriter writer, string localName, StaggerIndex value)
         {
-            if (value == null)
+            if (value == StaggerIndex.None)
                 return;
-            switch (value.Value)
+            switch (value)
             {
                 case StaggerIndex.odd:
                     writer.WriteAttributeString(localName, "odd");

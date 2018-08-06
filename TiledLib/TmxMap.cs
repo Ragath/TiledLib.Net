@@ -18,13 +18,13 @@ namespace TiledLib
             map.TiledVersion = reader["tiledversion"];
             map.Orientation = (Orientation)Enum.Parse(typeof(Orientation), reader["orientation"]);
             map.RenderOrder = (RenderOrder)Enum.Parse(typeof(RenderOrder), reader["renderorder"]?.Replace("-", ""));
-            map.StaggerAxis = reader["staggeraxis"] == null ? null : (StaggerAxis?)Enum.Parse(typeof(StaggerAxis), reader["staggeraxis"]);
-            map.StaggerIndex = reader["staggerindex"] == null ? null : (StaggerIndex?)Enum.Parse(typeof(StaggerIndex), reader["staggerindex"]);
+            map.StaggerAxis = reader["staggeraxis"] == null ? StaggerAxis.None : (StaggerAxis)Enum.Parse(typeof(StaggerAxis), reader["staggeraxis"]);
+            map.StaggerIndex = reader["staggerindex"] == null ? StaggerIndex.None : (StaggerIndex)Enum.Parse(typeof(StaggerIndex), reader["staggerindex"]);
             map.Width = int.Parse(reader["width"]);
             map.Height = int.Parse(reader["height"]);
             map.CellWidth = int.Parse(reader["tilewidth"]);
             map.CellHeight = int.Parse(reader["tileheight"]);
-            map.HexSideLength = reader["hexsidelength"] == null ? (int?)null : int.Parse(reader["hexsidelength"]);
+            map.HexSideLength = reader["hexsidelength"] == null ? default(int?) : int.Parse(reader["hexsidelength"]);
 
             map.NextObjectId = reader["nextobjectid"].ParseInt32() ?? 0;
             map.BackgroundColor = reader["backgroundcolor"];

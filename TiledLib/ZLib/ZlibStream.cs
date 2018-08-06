@@ -8566,7 +8566,7 @@ namespace TiledLib.Zlib
                     throw new EncoderFallbackException(msg);
                 }
 
-                FallbackByte = value.HasValue ? charToByte[value.Value] : (byte?)null;
+                FallbackByte = value.HasValue ? charToByte[value.Value] : default(byte?);
             }
         }
 

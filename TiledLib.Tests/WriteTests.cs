@@ -40,12 +40,9 @@ namespace TiledLib.Tests
                     {
                         expected = expected.Substring(1).Trim();
                         //TODO: Implement support for property types.
-                        foreach (var item in new[] { "type=\"bool\"", "type=\"int\"" })
+                        foreach (var item in new[] { "type=\"bool\"", "type=\"int\"", "infinite=\"0\"" })
                             while (expected.StartsWith(item))
                                 expected = expected.Substring(item.Length).Trim();
-                        // Also not supported
-                        if(expected.StartsWith("infinite=\"0\""))
-                            expected = expected.Substring(12).Trim();
 
                         result = result.Substring(1).Trim();
                     }

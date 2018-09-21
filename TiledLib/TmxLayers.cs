@@ -174,6 +174,17 @@ namespace TiledLib
                             };
                             reader.Skip();
                             break;
+                        case "point":
+                            result = new PointObject(properties)
+                            {
+                                Id = id,
+                                X = x,
+                                Y = y,
+                                Name = name,
+                                ObjectType = type
+                            };
+                            reader.Skip();
+                            break;
                         default:
                             throw new XmlException(reader.Name);
                     }
@@ -267,54 +278,17 @@ namespace TiledLib
                     writer.WritePoints(o.Polyline);
                     writer.WriteEndElement();
                     break;
+                case PointObject o:
+                    writer.WriteProperties(entity.Properties);
+
+                    writer.WriteStartElement("point");
+                    writer.WriteEndElement();
+                    break;
                 default:
                     throw new NotImplementedException();
             }
 
             writer.WriteEndElement();
-
-            //                case "polygon":
-            //                    result = new PolygonObject(properties)
-            //                    {
-            //                        X = x,
-            //                        Y = y,
-            //                        Name = name,
-            //                        polygon = reader.ReadPoints().ToArray(),
-            //                        ObjectType = type
-            //                    };
-            //                    reader.Skip();
-            //                    break;
-            //                case "polyline":
-            //                    result = new PolyLineObject(properties)
-            //                    {
-            //                        X = x,
-            //                        Y = y,
-            //                        Name = name,
-            //                        polyline = reader.ReadPoints().ToArray(),
-            //                        ObjectType = type
-            //                    };
-            //                    reader.Skip();
-            //                    break;
-            //                default:
-            //                    throw new XmlException(reader.Name);
-            //            }
-
-            //        if (reader.Name == "object")
-            //            reader.ReadEndElement();
-            //        else
-            //            throw new XmlException($"Expected </object>, found: {reader.Name}");
-            //    }
-
-            //    return result ?? new RectangleObject(properties)
-            //    {
-            //        X = x,
-            //        Y = y,
-            //        Width = w.Value,
-            //        Height = h.Value,
-            //        Name = name,
-            //        ObjectType = type
-            //    };
-            //}
         }
 
 

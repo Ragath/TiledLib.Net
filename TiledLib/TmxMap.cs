@@ -109,57 +109,10 @@ namespace TiledLib
                         writer.WriteEndElement();
                         break;
                     case Tileset ts:
+                        if (ts.FirstGid < 1)
+                            throw new ArgumentOutOfRangeException(nameof(Tileset.FirstGid));
                         writer.WriteStartElement("tileset");
-                        {
-                            if (ts.FirstGid < 1)
-                                throw new ArgumentOutOfRangeException(nameof(Tileset.FirstGid));
-                            writer.WriteAttribute("firstgid", ts.FirstGid);
-                            if (ts.Name != null)
-                                writer.WriteAttribute("name", ts.Name);
-
-                            writer.WriteAttribute("tilewidth", ts.TileWidth);
-                            writer.WriteAttribute("tileheight", ts.TileHeight);
-                            if (ts.Spacing != 0)
-                                writer.WriteAttribute("spacing", ts.Spacing);
-                            if (ts.TileCount != 0)
-                                writer.WriteAttribute("tilecount", ts.TileCount);
-                            if (ts.Columns != 0)
-                                writer.WriteAttribute("columns", ts.Columns);
-
-                            if(ts.TileOffset != null)
-                            {
-                                writer.WriteStartElement("tileoffset");
-                                writer.WriteAttribute("x", ts.TileOffset.X);
-                                writer.WriteAttribute("y", ts.TileOffset.Y);
-                                writer.WriteEndElement();
-                            }
-
-                            writer.WriteStartElement("image");
-                            {
-                                writer.WriteAttribute("source", ts.ImagePath);
-                                if (ts.ImageWidth != 0)
-                                    writer.WriteAttribute("width", ts.ImageWidth);
-                                if (ts.ImageHeight != 0)
-                                    writer.WriteAttribute("height", ts.ImageHeight);
-                            }
-                            writer.WriteEndElement();
-
-                            writer.WriteProperties(ts.Properties);
-
-                            foreach (var t in ts.TileProperties)
-                            {
-                                writer.WriteStartElement("tile");
-                                {
-                                    writer.WriteAttribute("id", t.Key);
-
-                                    writer.WriteProperties(t.Value);
-                                    if (ts.TileAnimations != null)
-                                        if (ts.TileAnimations.TryGetValue(t.Key, out var anim) && anim?.Length > 0)
-                                            writer.WriteAnimation(anim);
-                                }
-                                writer.WriteEndElement();
-                            }
-                        }
+                        writer.WriteTileset(ts, false);
                         writer.WriteEndElement();
                         break;
                     default:
@@ -215,19 +168,6 @@ namespace TiledLib
 
             //map.Tilesets = tilesets.ToArray();
             //map.Layers = layers.ToArray();
-        }
-
-        static void WriteAnimation(this XmlWriter writer, Frame[] animation)
-        {
-            writer.WriteStartElement("animation");
-            foreach (var frame in animation)
-            {
-                writer.WriteStartElement("frame");
-                writer.WriteAttribute("tileid", frame.TileId);
-                writer.WriteAttribute("duration", frame.Duration_ms);
-                writer.WriteEndElement();
-            }
-            writer.WriteEndElement();
-        }        
+        }      
     }
 }

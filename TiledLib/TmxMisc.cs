@@ -33,6 +33,9 @@ namespace TiledLib
             if (!reader.IsStartElement("tileset"))
                 throw new XmlException(reader.Name);
 
+            ts.Version = reader["version"];
+            ts.TiledVersion = reader["tiledversion"];
+
             if (reader["firstgid"] != null)
                 ts.FirstGid = int.Parse(reader["firstgid"]);
 
@@ -80,6 +83,73 @@ namespace TiledLib
                 reader.ReadEndElement();
             else
                 throw new XmlException(reader.Name);
+        }
+
+        public static void WriteTileset(this XmlWriter writer, Tileset ts, bool isExternal)
+        {
+            if (isExternal)
+            {
+                if(ts.Version != null)
+                    writer.WriteAttribute("version", ts.Version);
+                if(ts.TiledVersion != null)
+                    writer.WriteAttribute("tiledversion", ts.TiledVersion);
+            }
+            else
+            {
+                writer.WriteAttribute("firstgid", ts.FirstGid);
+            }
+            if (ts.Name != null)
+                writer.WriteAttribute("name", ts.Name);
+
+            writer.WriteAttribute("tilewidth", ts.TileWidth);
+            writer.WriteAttribute("tileheight", ts.TileHeight);
+            if (ts.Spacing != 0)
+                writer.WriteAttribute("spacing", ts.Spacing);
+            if (ts.TileCount != 0)
+                writer.WriteAttribute("tilecount", ts.TileCount);
+            if (ts.Columns != 0)
+                writer.WriteAttribute("columns", ts.Columns);
+
+            if (ts.TileOffset != null)
+            {
+                writer.WriteStartElement("tileoffset");
+                writer.WriteAttribute("x", ts.TileOffset.X);
+                writer.WriteAttribute("y", ts.TileOffset.Y);
+                writer.WriteEndElement();
+            }
+
+            writer.WriteStartElement("image");
+            {
+                writer.WriteAttribute("source", ts.ImagePath);
+                if (ts.ImageWidth != 0)
+                    writer.WriteAttribute("width", ts.ImageWidth);
+                if (ts.ImageHeight != 0)
+                    writer.WriteAttribute("height", ts.ImageHeight);
+            }
+            writer.WriteEndElement();
+
+            writer.WriteProperties(ts.Properties);
+
+            foreach (var t in ts.TileProperties)
+            {
+                writer.WriteStartElement("tile");
+                {
+                    writer.WriteAttribute("id", t.Key);
+
+                    writer.WriteProperties(t.Value);
+                    if (ts.TileAnimations != null)
+                        if (ts.TileAnimations.TryGetValue(t.Key, out var anim) && anim?.Length > 0)
+                            writer.WriteAnimation(anim);
+                }
+                writer.WriteEndElement();
+            }
+
+            if (ts.WangSets != null)
+            {
+                writer.WriteStartElement("wangsets");
+                writer.WriteArray("wangset", ts.WangSets);
+                writer.WriteEndElement();
+            }
         }
 
         static void ReadTile(this XmlReader reader, Dictionary<int, Dictionary<string, string>> tileProperties, Dictionary<int, Frame[]> tileAnimations)
@@ -132,6 +202,18 @@ namespace TiledLib
                 .ToArray();
         }
 
+        static void WriteAnimation(this XmlWriter writer, Frame[] animation)
+        {
+            writer.WriteStartElement("animation");
+            foreach (var frame in animation)
+            {
+                writer.WriteStartElement("frame");
+                writer.WriteAttribute("tileid", frame.TileId);
+                writer.WriteAttribute("duration", frame.Duration_ms);
+                writer.WriteEndElement();
+            }
+            writer.WriteEndElement();
+        }
 
         static int[] ReadCSV(this XmlReader reader, int size)
         {
@@ -298,11 +380,22 @@ namespace TiledLib
         {
             var s = new XmlSerializer(typeof(T), new XmlRootAttribute(elementName));
             var results = new List<T>();
-            while(reader.IsStartElement())
+            while (reader.IsStartElement())
             {
                 results.Add((T)s.Deserialize(reader));
             }
             return results.ToArray();
+        }
+
+        public static void WriteArray<T>(this XmlWriter writer, string elementName, T[] values)
+        {
+            var s = new XmlSerializer(typeof(T), new XmlRootAttribute(elementName));
+            XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
+            ns.Add("", "");
+            foreach (var value in values)
+            {
+                s.Serialize(writer, value, ns);
+            }
         }
 
 

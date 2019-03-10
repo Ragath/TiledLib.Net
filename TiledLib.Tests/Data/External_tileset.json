@@ -6,32 +6,9 @@
  "name":"External_Tileset",
  "spacing":0,
  "tilecount":1440,
+ "tiledversion":"1.2.2",
  "tileheight":16,
- "tileproperties":
-    {
-     "128":
-        {
-         "foo":"bar"
-        },
-     "168":
-        {
-         "foo":"bar"
-        }
-    },
- "tilepropertytypes":
-    {
-     "128":
-        {
-         "foo":"string"
-        },
-     "168":
-        {
-         "foo":"string"
-        }
-    },
- "tiles":
-    {
-     "123":
+ "tiles":[
         {
          "animation":[
                 {
@@ -57,9 +34,383 @@
                 {
                  "duration":100,
                  "tileid":165
+                }],
+         "id":123
+        }, 
+        {
+         "id":128,
+         "properties":[
+                {
+                 "name":"foo",
+                 "type":"string",
+                 "value":"bar"
                 }]
-        }
-    },
+        }, 
+        {
+         "id":168,
+         "properties":[
+                {
+                 "name":"foo",
+                 "type":"string",
+                 "value":"bar"
+                }]
+        }],
  "tilewidth":16,
- "type":"tileset"
+ "type":"tileset",
+ "version":1.2,
+ "wangsets":[
+        {
+         "cornercolors":[
+                {
+                 "color":"#fffa67",
+                 "name":"Beach",
+                 "probability":1,
+                 "tile":-1
+                }, 
+                {
+                 "color":"#00a600",
+                 "name":"Grass",
+                 "probability":1,
+                 "tile":-1
+                }, 
+                {
+                 "color":"#0000ff",
+                 "name":"Water",
+                 "probability":1,
+                 "tile":-1
+                }],
+         "edgecolors":[],
+         "name":"Ground",
+         "tile":-1,
+         "wangtiles":[
+                {
+                 "dflip":false,
+                 "hflip":false,
+                 "tileid":0,
+                 "vflip":false,
+                 "wangid":[0, 2, 0, 2, 0, 2, 0, 2]
+                }, 
+                {
+                 "dflip":false,
+                 "hflip":false,
+                 "tileid":120,
+                 "vflip":false,
+                 "wangid":[0, 2, 0, 1, 0, 2, 0, 2]
+                }, 
+                {
+                 "dflip":false,
+                 "hflip":false,
+                 "tileid":121,
+                 "vflip":false,
+                 "wangid":[0, 2, 0, 1, 0, 1, 0, 2]
+                }, 
+                {
+                 "dflip":false,
+                 "hflip":false,
+                 "tileid":122,
+                 "vflip":false,
+                 "wangid":[0, 2, 0, 2, 0, 1, 0, 2]
+                }, 
+                {
+                 "dflip":false,
+                 "hflip":false,
+                 "tileid":160,
+                 "vflip":false,
+                 "wangid":[0, 1, 0, 1, 0, 2, 0, 2]
+                }, 
+                {
+                 "dflip":false,
+                 "hflip":false,
+                 "tileid":161,
+                 "vflip":false,
+                 "wangid":[0, 1, 0, 1, 0, 1, 0, 1]
+                }, 
+                {
+                 "dflip":false,
+                 "hflip":false,
+                 "tileid":162,
+                 "vflip":false,
+                 "wangid":[0, 2, 0, 2, 0, 1, 0, 1]
+                }, 
+                {
+                 "dflip":false,
+                 "hflip":false,
+                 "tileid":200,
+                 "vflip":false,
+                 "wangid":[0, 1, 0, 2, 0, 2, 0, 2]
+                }, 
+                {
+                 "dflip":false,
+                 "hflip":false,
+                 "tileid":201,
+                 "vflip":false,
+                 "wangid":[0, 1, 0, 2, 0, 2, 0, 1]
+                }, 
+                {
+                 "dflip":false,
+                 "hflip":false,
+                 "tileid":202,
+                 "vflip":false,
+                 "wangid":[0, 2, 0, 2, 0, 2, 0, 1]
+                }, 
+                {
+                 "dflip":false,
+                 "hflip":false,
+                 "tileid":240,
+                 "vflip":false,
+                 "wangid":[0, 1, 0, 2, 0, 0, 0, 1]
+                }, 
+                {
+                 "dflip":false,
+                 "hflip":false,
+                 "tileid":241,
+                 "vflip":false,
+                 "wangid":[0, 1, 0, 1, 0, 2, 0, 1]
+                }, 
+                {
+                 "dflip":false,
+                 "hflip":false,
+                 "tileid":242,
+                 "vflip":false,
+                 "wangid":[0, 2, 0, 3, 0, 2, 0, 2]
+                }, 
+                {
+                 "dflip":false,
+                 "hflip":false,
+                 "tileid":243,
+                 "vflip":false,
+                 "wangid":[0, 2, 0, 3, 0, 3, 0, 2]
+                }, 
+                {
+                 "dflip":false,
+                 "hflip":false,
+                 "tileid":244,
+                 "vflip":false,
+                 "wangid":[0, 2, 0, 2, 0, 3, 0, 2]
+                }, 
+                {
+                 "dflip":false,
+                 "hflip":false,
+                 "tileid":255,
+                 "vflip":false,
+                 "wangid":[0, 1, 0, 3, 0, 1, 0, 1]
+                }, 
+                {
+                 "dflip":false,
+                 "hflip":false,
+                 "tileid":256,
+                 "vflip":false,
+                 "wangid":[0, 1, 0, 3, 0, 3, 0, 1]
+                }, 
+                {
+                 "dflip":false,
+                 "hflip":false,
+                 "tileid":257,
+                 "vflip":false,
+                 "wangid":[0, 1, 0, 1, 0, 3, 0, 1]
+                }, 
+                {
+                 "dflip":false,
+                 "hflip":false,
+                 "tileid":280,
+                 "vflip":false,
+                 "wangid":[0, 2, 0, 1, 0, 1, 0, 1]
+                }, 
+                {
+                 "dflip":false,
+                 "hflip":false,
+                 "tileid":281,
+                 "vflip":false,
+                 "wangid":[0, 1, 0, 1, 0, 0, 0, 2]
+                }, 
+                {
+                 "dflip":false,
+                 "hflip":false,
+                 "tileid":282,
+                 "vflip":false,
+                 "wangid":[0, 3, 0, 3, 0, 2, 0, 2]
+                }, 
+                {
+                 "dflip":false,
+                 "hflip":false,
+                 "tileid":283,
+                 "vflip":false,
+                 "wangid":[0, 3, 0, 3, 0, 3, 0, 3]
+                }, 
+                {
+                 "dflip":false,
+                 "hflip":false,
+                 "tileid":284,
+                 "vflip":false,
+                 "wangid":[0, 2, 0, 2, 0, 3, 0, 3]
+                }, 
+                {
+                 "dflip":false,
+                 "hflip":false,
+                 "tileid":295,
+                 "vflip":false,
+                 "wangid":[0, 3, 0, 3, 0, 1, 0, 1]
+                }, 
+                {
+                 "dflip":false,
+                 "hflip":false,
+                 "tileid":297,
+                 "vflip":false,
+                 "wangid":[0, 1, 0, 1, 0, 3, 0, 3]
+                }, 
+                {
+                 "dflip":false,
+                 "hflip":false,
+                 "tileid":322,
+                 "vflip":false,
+                 "wangid":[0, 3, 0, 2, 0, 2, 0, 2]
+                }, 
+                {
+                 "dflip":false,
+                 "hflip":false,
+                 "tileid":323,
+                 "vflip":false,
+                 "wangid":[0, 3, 0, 2, 0, 2, 0, 3]
+                }, 
+                {
+                 "dflip":false,
+                 "hflip":false,
+                 "tileid":324,
+                 "vflip":false,
+                 "wangid":[0, 2, 0, 2, 0, 2, 0, 3]
+                }, 
+                {
+                 "dflip":false,
+                 "hflip":false,
+                 "tileid":335,
+                 "vflip":false,
+                 "wangid":[0, 3, 0, 1, 0, 1, 0, 1]
+                }, 
+                {
+                 "dflip":false,
+                 "hflip":false,
+                 "tileid":336,
+                 "vflip":false,
+                 "wangid":[0, 3, 0, 1, 0, 1, 0, 3]
+                }, 
+                {
+                 "dflip":false,
+                 "hflip":false,
+                 "tileid":337,
+                 "vflip":false,
+                 "wangid":[0, 1, 0, 1, 0, 1, 0, 3]
+                }, 
+                {
+                 "dflip":false,
+                 "hflip":false,
+                 "tileid":362,
+                 "vflip":false,
+                 "wangid":[0, 3, 0, 2, 0, 3, 0, 3]
+                }, 
+                {
+                 "dflip":false,
+                 "hflip":false,
+                 "tileid":363,
+                 "vflip":false,
+                 "wangid":[0, 3, 0, 3, 0, 2, 0, 3]
+                }, 
+                {
+                 "dflip":false,
+                 "hflip":false,
+                 "tileid":375,
+                 "vflip":false,
+                 "wangid":[0, 3, 0, 1, 0, 3, 0, 3]
+                }, 
+                {
+                 "dflip":false,
+                 "hflip":false,
+                 "tileid":376,
+                 "vflip":false,
+                 "wangid":[0, 3, 0, 3, 0, 1, 0, 3]
+                }, 
+                {
+                 "dflip":false,
+                 "hflip":false,
+                 "tileid":402,
+                 "vflip":false,
+                 "wangid":[0, 2, 0, 3, 0, 3, 0, 3]
+                }, 
+                {
+                 "dflip":false,
+                 "hflip":false,
+                 "tileid":403,
+                 "vflip":false,
+                 "wangid":[0, 3, 0, 3, 0, 3, 0, 2]
+                }, 
+                {
+                 "dflip":false,
+                 "hflip":false,
+                 "tileid":415,
+                 "vflip":false,
+                 "wangid":[0, 1, 0, 3, 0, 3, 0, 3]
+                }, 
+                {
+                 "dflip":false,
+                 "hflip":false,
+                 "tileid":416,
+                 "vflip":false,
+                 "wangid":[0, 3, 0, 3, 0, 3, 0, 1]
+                }, 
+                {
+                 "dflip":false,
+                 "hflip":false,
+                 "tileid":528,
+                 "vflip":false,
+                 "wangid":[0, 1, 0, 2, 0, 3, 0, 3]
+                }, 
+                {
+                 "dflip":false,
+                 "hflip":false,
+                 "tileid":529,
+                 "vflip":false,
+                 "wangid":[0, 3, 0, 3, 0, 2, 0, 1]
+                }, 
+                {
+                 "dflip":false,
+                 "hflip":false,
+                 "tileid":530,
+                 "vflip":false,
+                 "wangid":[0, 3, 0, 2, 0, 1, 0, 3]
+                }, 
+                {
+                 "dflip":false,
+                 "hflip":false,
+                 "tileid":531,
+                 "vflip":false,
+                 "wangid":[0, 3, 0, 1, 0, 2, 0, 3]
+                }, 
+                {
+                 "dflip":false,
+                 "hflip":false,
+                 "tileid":568,
+                 "vflip":false,
+                 "wangid":[0, 2, 0, 1, 0, 3, 0, 3]
+                }, 
+                {
+                 "dflip":false,
+                 "hflip":false,
+                 "tileid":569,
+                 "vflip":false,
+                 "wangid":[0, 3, 0, 3, 0, 1, 0, 2]
+                }, 
+                {
+                 "dflip":false,
+                 "hflip":false,
+                 "tileid":570,
+                 "vflip":false,
+                 "wangid":[0, 2, 0, 3, 0, 3, 0, 1]
+                }, 
+                {
+                 "dflip":false,
+                 "hflip":false,
+                 "tileid":571,
+                 "vflip":false,
+                 "wangid":[0, 1, 0, 3, 0, 3, 0, 2]
+                }]
+        }]
 }

@@ -36,6 +36,8 @@ namespace TiledLib
         [JsonProperty("tileproperties")]
         public Dictionary<int, Dictionary<string, string>> TileProperties { get; } = new Dictionary<int, Dictionary<string, string>>();
 
+        public WangSet[] WangSets { get; set; }
+
         public string this[int gid, string property]
         {
             get

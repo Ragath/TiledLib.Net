@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
+using System.Xml.Serialization;
 using TiledLib.Layer;
 
 namespace TiledLib
@@ -64,6 +65,11 @@ namespace TiledLib
                         break;
                     case "tile":
                         reader.ReadTile(ts.TileProperties, ts.TileAnimations);
+                        break;
+                    case "wangsets":
+                        reader.ReadStartElement();
+                        ts.WangSets = reader.ReadArray<WangSet>("wangset");
+                        reader.ReadEndElement();
                         break;
                     default:
                         reader.Skip();
@@ -287,5 +293,18 @@ namespace TiledLib
 
         public static void WriteAttribute(this XmlWriter writer, string localName, string value)
             => writer.WriteAttributeString(localName, value);
+
+        public static T[] ReadArray<T>(this XmlReader reader, string elementName)
+        {
+            var s = new XmlSerializer(typeof(T), new XmlRootAttribute(elementName));
+            var results = new List<T>();
+            while(reader.IsStartElement())
+            {
+                results.Add((T)s.Deserialize(reader));
+            }
+            return results.ToArray();
+        }
+
+
     }
 }

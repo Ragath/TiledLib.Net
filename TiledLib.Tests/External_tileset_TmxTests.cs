@@ -33,5 +33,23 @@ namespace TiledLib.Tests
             var result = JsonConvert.DeserializeObject<Map>(mapData);
             Assert.IsNotNull(result);
         }
+
+        [DataTestMethod]
+        [DataRow("Data/External_tileset.json")]
+        [DataRow("Data/External_tileset.tsx")]
+        public void TestWangParsing(string file)
+        {
+            using (var f = new FileStream(file, FileMode.Open))
+            {
+                var tileset = Tileset.FromStream(f);
+                Assert.AreEqual(1, tileset.WangSets.Length);
+                var set = tileset.WangSets[0];
+                Assert.AreEqual(3, set.CornerColors.Length);
+                Assert.IsTrue(set.WangTiles.Length > 0);
+                var grass = set.WangTiles.Single(x => x.TileId == 0);
+                grass.CompressedWangId = grass.CompressedWangId;
+                CollectionAssert.AreEqual(new[] { 0, 2, 0, 2, 0, 2, 0, 2 }, grass.WangId);
+            }
+        }
     }
 }

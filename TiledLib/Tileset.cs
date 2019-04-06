@@ -10,6 +10,10 @@ namespace TiledLib
     [XmlRoot("tileset")]
     public class Tileset : ITileset, IXmlSerializable
     {
+        public string Version { get; set; }
+
+        public string TiledVersion { get; set; }
+
         public string Name { get; set; }
 
         public int FirstGid { get; set; }
@@ -35,6 +39,8 @@ namespace TiledLib
         public Dictionary<string, string> Properties { get; } = new Dictionary<string, string>();
         [JsonProperty("tileproperties")]
         public Dictionary<int, Dictionary<string, string>> TileProperties { get; } = new Dictionary<int, Dictionary<string, string>>();
+
+        public WangSet[] WangSets { get; set; }
 
         public string this[int gid, string property]
         {
@@ -84,7 +90,7 @@ namespace TiledLib
 
         public static Tileset FromStream(System.IO.Stream stream)
         {
-            using (var reader = new System.IO.StreamReader(stream))
+            using (var reader = new System.IO.StreamReader(stream, System.Text.Encoding.UTF8, true, 1024, true))
             {
                 if (Utils.ContainsJson(reader))
                     return (Tileset)Utils.JsonSerializer.Deserialize(reader, typeof(Tileset));
@@ -102,7 +108,7 @@ namespace TiledLib
 
         public void WriteXml(XmlWriter writer)
         {
-            throw new NotImplementedException();
+            writer.WriteTileset(this, true);
         }
     }
 }

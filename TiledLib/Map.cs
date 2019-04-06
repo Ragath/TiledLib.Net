@@ -99,7 +99,6 @@ namespace TiledLib
         {
             writer.WriteMapAttributes(this);
             writer.WriteMapElements(this);
-            //HACK: throw new NotImplementedException();
         }
     }
 }

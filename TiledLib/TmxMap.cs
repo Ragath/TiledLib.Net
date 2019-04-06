@@ -134,6 +134,15 @@ namespace TiledLib
                                 writer.WriteEndElement();
                             }
 
+                            if(ts.Grid != null)
+                            {
+                                writer.WriteStartElement("grid");
+                                writer.WriteAttribute("orientation", ts.Grid.Orientation);
+                                writer.WriteAttribute("width", ts.Grid.Width);
+                                writer.WriteAttribute("height", ts.Grid.Height);
+                                writer.WriteEndElement();
+                            }
+
                             writer.WriteStartElement("image");
                             {
                                 writer.WriteAttribute("source", ts.ImagePath);

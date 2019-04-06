@@ -53,6 +53,13 @@ namespace TiledLib
                         ts.TileOffset.Y = int.Parse(reader["y"]);
                         reader.Skip();
                         break;
+                    case "grid":
+                        ts.Grid = new Grid();
+                        ts.Grid.Width = int.Parse(reader["width"]);
+                        ts.Grid.Height = int.Parse(reader["height"]);
+                        ts.Grid.Orientation = (Orientation)Enum.Parse(typeof(Orientation), reader["orientation"]);
+                        reader.Skip();
+                        break;
                     case "image":
                         ts.ImagePath = reader["source"];
                         ts.ImageWidth = int.Parse(reader["width"]);

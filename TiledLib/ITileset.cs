@@ -28,5 +28,7 @@ namespace TiledLib
         string TransparentColor { get; }
 
         TileOffset TileOffset { get; }
+
+        WangSet[] WangSets { get; }
     }
 }

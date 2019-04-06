@@ -37,6 +37,8 @@ namespace TiledLib
 
         public TileOffset TileOffset => Tileset.TileOffset;
 
+        public WangSet[] WangSets => Tileset.WangSets;
+
         public Tile this[int gid] => Tileset[gid];
         public string this[int gid, string property] => Tileset[gid, property];
 

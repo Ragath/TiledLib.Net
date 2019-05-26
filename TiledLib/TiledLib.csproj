@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard1.0;net45;net462</TargetFrameworks>
+    <TargetFrameworks>netstandard1.0;net45;net472</TargetFrameworks>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Description>Tiled Map library</Description>
     <PackageId>TiledLib</PackageId>
@@ -16,9 +16,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
     <PackageReference Include="System.Xml.XmlSerializer" Version="4.3.0" />
-    <PackageReference Include="GitVersionTask" Version="4.0.0-beta0012">
+    <PackageReference Include="GitVersionTask" Version="4.0.0">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
   </ItemGroup>

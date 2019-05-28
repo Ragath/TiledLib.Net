@@ -26,6 +26,8 @@ namespace TiledLib
         public int TileHeight { get; set; }
         public int TileWidth { get; set; }
 
+        public Grid Grid { get; set; }
+
         public string TransparentColor { get; set; }
 
         [JsonProperty("tileoffset")]

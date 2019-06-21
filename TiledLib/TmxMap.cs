@@ -40,7 +40,7 @@ namespace TiledLib
             writer.WriteAttribute("hexsidelength", map.HexSideLength);
             writer.WriteAttribute("staggeraxis", map.StaggerAxis);
             writer.WriteAttribute("staggerindex", map.StaggerIndex);
-            if(map.BackgroundColor != null)
+            if (map.BackgroundColor != null)
                 writer.WriteAttribute("backgroundcolor", map.BackgroundColor);
 
             if (map.NextObjectId != 0)
@@ -64,7 +64,7 @@ namespace TiledLib
                         }
                         else
                         {
-                            tilesets.Add(new ExternalTileset { FirstGid = int.Parse(reader["firstgid"]), source = reader["source"] });
+                            tilesets.Add(new ExternalTileset { FirstGid = int.Parse(reader["firstgid"]), Source = reader["source"] });
                             reader.Read();
                         }
                         break;
@@ -95,7 +95,7 @@ namespace TiledLib
             map.Tilesets = tilesets.ToArray();
             map.Layers = layers.ToArray();
         }
-        
+
         public static void WriteMapElements(this XmlWriter writer, Map map)
         {
             writer.WriteProperties(map.Properties);
@@ -105,7 +105,7 @@ namespace TiledLib
                     case ExternalTileset ts:
                         writer.WriteStartElement("tileset");
                         writer.WriteAttribute("firstgid", ts.FirstGid);
-                        writer.WriteAttribute("source", ts.source);
+                        writer.WriteAttribute("source", ts.Source);
                         writer.WriteEndElement();
                         break;
                     case Tileset ts:
@@ -126,7 +126,7 @@ namespace TiledLib
                             if (ts.Columns != 0)
                                 writer.WriteAttribute("columns", ts.Columns);
 
-                            if(ts.TileOffset != null)
+                            if (ts.TileOffset != null)
                             {
                                 writer.WriteStartElement("tileoffset");
                                 writer.WriteAttribute("x", ts.TileOffset.X);
@@ -134,7 +134,7 @@ namespace TiledLib
                                 writer.WriteEndElement();
                             }
 
-                            if(ts.Grid != null)
+                            if (ts.Grid != null)
                             {
                                 writer.WriteStartElement("grid");
                                 writer.WriteAttribute("orientation", ts.Grid.Orientation);
@@ -206,24 +206,6 @@ namespace TiledLib
                     default:
                         throw new NotImplementedException();
                 }
-            //        case "imagelayer":
-            //            var xmlSerializer3 = new XmlSerializer(typeof(ImageLayer));
-            //            layers.Add((BaseLayer)xmlSerializer3.Deserialize(reader));
-            //            break;
-            //        case "properties":
-            //            reader.ReadProperties(map.Properties);
-            //            break;
-            //        default:
-            //            throw new XmlException(reader.Name);
-            //    }
-
-            //if (reader.Name == "map")
-            //    reader.ReadEndElement();
-            //else
-            //    throw new XmlException(reader.Name);
-
-            //map.Tilesets = tilesets.ToArray();
-            //map.Layers = layers.ToArray();
         }
 
         static void WriteAnimation(this XmlWriter writer, Frame[] animation)
@@ -237,6 +219,6 @@ namespace TiledLib
                 writer.WriteEndElement();
             }
             writer.WriteEndElement();
-        }        
+        }
     }
 }

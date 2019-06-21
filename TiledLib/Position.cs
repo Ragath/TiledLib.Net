@@ -5,11 +5,11 @@ namespace TiledLib
     public struct Position
     {
         [JsonProperty("x")]
-        public readonly int X;
+        public readonly double X;
         [JsonProperty("y")]
-        public readonly int Y;
+        public readonly double Y;
 
-        public Position(int x, int y)
+        public Position(double x, double y)
         {
             X = x;
             Y = y;

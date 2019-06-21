@@ -48,16 +48,20 @@ namespace TiledLib
                 switch (reader.Name)
                 {
                     case "tileoffset":
-                        ts.TileOffset = new TileOffset();
-                        ts.TileOffset.X = int.Parse(reader["x"]);
-                        ts.TileOffset.Y = int.Parse(reader["y"]);
+                        ts.TileOffset = new TileOffset
+                        {
+                            X = int.Parse(reader["x"]),
+                            Y = int.Parse(reader["y"])
+                        };
                         reader.Skip();
                         break;
                     case "grid":
-                        ts.Grid = new Grid();
-                        ts.Grid.Width = int.Parse(reader["width"]);
-                        ts.Grid.Height = int.Parse(reader["height"]);
-                        ts.Grid.Orientation = (Orientation)Enum.Parse(typeof(Orientation), reader["orientation"]);
+                        ts.Grid = new Grid
+                        {
+                            Width = int.Parse(reader["width"]),
+                            Height = int.Parse(reader["height"]),
+                            Orientation = (Orientation)Enum.Parse(typeof(Orientation), reader["orientation"])
+                        };
                         reader.Skip();
                         break;
                     case "image":
@@ -89,8 +93,7 @@ namespace TiledLib
                 throw new XmlException(reader.Name);
 
             var id = int.Parse(reader["id"]);
-            Dictionary<string, string> properties;
-            if (!tileProperties.TryGetValue(id, out properties) || properties == null)
+            if (!tileProperties.TryGetValue(id, out var properties) || properties == null)
                 properties = tileProperties[id] = new Dictionary<string, string>();
 
             if (reader.IsEmptyElement)

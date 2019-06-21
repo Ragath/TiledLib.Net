@@ -20,13 +20,13 @@ namespace TiledLib.Objects
         public int Id { get; set; }
 
         [JsonProperty("x")]
-        public int X { get; set; }
+        public double X { get; set; }
         [JsonProperty("y")]
-        public int Y { get; set; }
+        public double Y { get; set; }
         [JsonProperty("width")]
-        public int Width { get; set; }
+        public double Width { get; set; }
         [JsonProperty("height")]
-        public int Height { get; set; }
+        public double Height { get; set; }
 
         [JsonProperty("properties")]
         public Dictionary<string, string> Properties { get; } = new Dictionary<string, string>();

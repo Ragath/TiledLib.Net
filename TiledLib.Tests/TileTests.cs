@@ -23,7 +23,7 @@ namespace TiledLib.Tests
         {
             using (var stream = File.OpenRead(filename))
             {
-                var map = Map.FromStream(stream, ts => File.OpenRead(Path.Combine(Path.GetDirectoryName(filename), ts.source)));
+                var map = Map.FromStream(stream, ts => File.OpenRead(Path.Combine(Path.GetDirectoryName(filename), ts.Source)));
 
                 foreach (var layer in map.Layers.OfType<TileLayer>())
                 {

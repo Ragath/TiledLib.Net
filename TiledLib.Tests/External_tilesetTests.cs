@@ -19,7 +19,7 @@ namespace TiledLib.Tests
 
                 Tileset LoadTileset(ExternalTileset t)
                 {
-                    using (var stream = File.OpenRead(Path.Combine(Path.GetDirectoryName(file), t.source)))
+                    using (var stream = File.OpenRead(Path.Combine(Path.GetDirectoryName(file), t.Source)))
                     {
                         return Tileset.FromStream(stream);
                     }

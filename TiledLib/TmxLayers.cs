@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Xml;
@@ -247,19 +248,19 @@ namespace TiledLib
 
             switch (entity)
             {
-                case EllipseObject o:
+                case EllipseObject _:
                     HW();
                     writer.WriteProperties(entity.Properties);
 
                     writer.WriteStartElement("ellipse");
                     writer.WriteEndElement();
                     break;
-                case RectangleObject o:
+                case RectangleObject _:
                     HW();
                     writer.WriteProperties(entity.Properties);
 
                     break;
-                case TileObject o:
+                case TileObject _:
                     HW();
                     writer.WriteProperties(entity.Properties);
 
@@ -278,7 +279,7 @@ namespace TiledLib
                     writer.WritePoints(o.Polyline);
                     writer.WriteEndElement();
                     break;
-                case PointObject o:
+                case PointObject _:
                     writer.WriteProperties(entity.Properties);
 
                     writer.WriteStartElement("point");
@@ -295,7 +296,7 @@ namespace TiledLib
         static IEnumerable<Position> ReadPoints(this XmlReader reader)
             => from p in reader["points"].Split(' ')
                let split = p.IndexOf(',')
-               select new Position(int.Parse(p.Substring(0, split)), int.Parse(p.Substring(split + 1)));
+               select new Position(double.Parse(p.Substring(0, split), CultureInfo.InvariantCulture), double.Parse(p.Substring(split + 1), CultureInfo.InvariantCulture));
 
         static void WritePoints(this XmlWriter writer, Position[] points)
         {
@@ -305,9 +306,9 @@ namespace TiledLib
             var sb = new StringBuilder(points.Length * 8);
             foreach (var p in points)
             {
-                sb.Append(p.X);
+                sb.Append(p.X.ToString("0.##", CultureInfo.InvariantCulture));
                 sb.Append(',');
-                sb.Append(p.Y);
+                sb.Append(p.Y.ToString("0.##", CultureInfo.InvariantCulture));
                 sb.Append(' ');
             }
             sb.Length--;

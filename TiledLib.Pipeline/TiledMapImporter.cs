@@ -13,7 +13,7 @@ namespace TiledLib.Pipeline
 
             using (var stream = File.OpenRead(filename))
             {
-                var map = Map.FromStream(stream, ts => File.OpenRead(GetPath(ts.source)));
+                var map = Map.FromStream(stream, ts => File.OpenRead(GetPath(ts.Source)));
 
                 foreach (var ts in map.Tilesets.OfType<ExternalTileset>())
                     ts.LoadTileset();

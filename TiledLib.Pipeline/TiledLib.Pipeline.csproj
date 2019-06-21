@@ -1,8 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  
+
   <PropertyGroup>
     <TargetFrameworks>net45;net472</TargetFrameworks>
+    <LangVersion>Latest</LangVersion>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <Description>Tiled Map MonoGame pipeline extensions</Description>
     <PackageId>TiledLib.Pipeline</PackageId>
     <Product>TiledLib.Pipeline</Product>

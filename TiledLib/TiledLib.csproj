@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard1.0;net45;net472</TargetFrameworks>
+    <LangVersion>Latest</LangVersion>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Description>Tiled Map library</Description>
     <PackageId>TiledLib</PackageId>

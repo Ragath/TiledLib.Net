@@ -6,7 +6,7 @@ namespace TiledLib
     [JsonConverter(typeof(StringEnumConverter))]
     public enum LayerType
     {
-        unknown = 0,
+        unknown = default,
         tilelayer,
         objectgroup,
         imagelayer

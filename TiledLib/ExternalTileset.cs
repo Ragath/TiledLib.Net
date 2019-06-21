@@ -20,22 +20,19 @@ namespace TiledLib
         public int Margin => Tileset.Margin;
         public string Name => Tileset.Name;
 
-        public Dictionary<string, string> Properties => Tileset.Properties;
-
         public int Rows => Tileset.Rows;
-
         public int Spacing => Tileset.Spacing;
-
         public int TileCount => Tileset.TileCount;
 
         public int TileHeight => Tileset.TileHeight;
-
-        public Dictionary<int, Dictionary<string, string>> TileProperties => Tileset.TileProperties;
-
         public int TileWidth => Tileset.TileWidth;
+
         public string TransparentColor => Tileset.TransparentColor;
 
         public TileOffset TileOffset => Tileset.TileOffset;
+
+        public Dictionary<string, string> Properties => Tileset.Properties;
+        public Dictionary<int, Dictionary<string, string>> TileProperties => Tileset.TileProperties;
 
         public Tile this[int gid] => Tileset[gid];
         public string this[int gid, string property] => Tileset[gid, property];

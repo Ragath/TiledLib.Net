@@ -133,7 +133,6 @@ namespace TiledLib
                 .ToArray();
         }
 
-
         static int[] ReadCSV(this XmlReader reader, int size)
         {
             var data = reader.ReadElementContentAsString()

@@ -38,29 +38,23 @@ namespace TiledLib
         [JsonProperty("tileproperties")]
         public Dictionary<int, Dictionary<string, string>> TileProperties { get; } = new Dictionary<int, Dictionary<string, string>>();
 
-        public string this[int gid, string property]
-        {
-            get
-            {
-                if (gid != 0 && TileProperties.TryGetValue(gid - FirstGid, out var tile) && tile.TryGetValue(property, out var value))
-                    return value;
-                else
-                    return null;
-            }
-        }
+
+
+        [JsonIgnore] //TODO: Add json support
+        public Dictionary<int, Frame[]> TileAnimations { get; } = new Dictionary<int, Frame[]>();
 
         public Tile this[int gid]
         {
             get
             {
                 if (gid == 0)
-                    return default(Tile);
+                    return default;
 
-                var orientation = (TileOrientation)gid & TileOrientation.MaskFlip;
+                var orientation = Utils.GetOrientation(gid);
 
                 var columns = Columns;
                 var rows = Rows;
-                var index = ((int)TileOrientation.MaskID & gid) - FirstGid;
+                var index = Utils.GetId(gid) - FirstGid;
                 if (index < 0 || index >= rows * columns)
                     throw new ArgumentOutOfRangeException();
 
@@ -77,12 +71,20 @@ namespace TiledLib
             }
         }
 
+        public string this[int gid, string property]
+        {
+            get
+            {
+                gid = Utils.GetId(gid);
+                return gid != 0
+                       && TileProperties.TryGetValue(gid - FirstGid, out var tile)
+                       && tile.TryGetValue(property, out var value) ? value : default;
+            }
+        }
+
         public int Columns => (ImageWidth + Spacing - Margin * 2) / (TileWidth + Spacing);
         public int Rows => (ImageHeight + Spacing - Margin * 2) / (TileHeight + Spacing);
         public int TileCount => Columns * Rows;
-
-        [JsonIgnore] //TODO: Add json support
-        public Dictionary<int, Frame[]> TileAnimations { get; } = new Dictionary<int, Frame[]>();
 
         public static Tileset FromStream(System.IO.Stream stream)
         {
@@ -106,5 +108,6 @@ namespace TiledLib
         {
             throw new NotImplementedException();
         }
+
     }
 }

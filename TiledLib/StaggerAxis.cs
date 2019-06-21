@@ -7,7 +7,7 @@ namespace TiledLib
     [JsonConverter(typeof(StringEnumConverter))]
     public enum StaggerAxis : byte
     {
-        None = 0,
+        None = default,
         [EnumMember(Value = "x")]
         x,
         [EnumMember(Value = "y")]

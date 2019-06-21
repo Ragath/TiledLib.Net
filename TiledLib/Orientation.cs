@@ -6,7 +6,7 @@ namespace TiledLib
     [JsonConverter(typeof(StringEnumConverter))]
     public enum Orientation
     {
-        unknown = 0,
+        unknown = default,
         orthogonal,
         isometric,
         hexagonal

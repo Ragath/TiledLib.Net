@@ -33,5 +33,8 @@ namespace TiledLib
             reader.SetPosition(startPosition);
             return true;
         }
+
+        public static int GetId(int gid) => gid & (int)TileOrientation.MaskID;
+        public static TileOrientation GetOrientation(int gid) => (TileOrientation)gid & TileOrientation.MaskFlip;
     }
 }

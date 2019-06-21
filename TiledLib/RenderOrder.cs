@@ -7,7 +7,7 @@ namespace TiledLib
     [JsonConverter(typeof(StringEnumConverter))]
     public enum RenderOrder : byte
     {
-        Unknown = 0,
+        Unknown = default,
         [EnumMember(Value = "left-up")]
         leftup,
         [EnumMember(Value = "left-down")]

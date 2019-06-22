@@ -41,6 +41,13 @@ namespace TiledLib
         [JsonProperty("hexsidelength", NullValueHandling = NullValueHandling.Ignore)]
         public int? HexSideLength { get; set; }
 
+
+        [JsonProperty("infinite")]
+        public bool Infinite { get; set; }
+
+        [JsonProperty("nextlayerid")]
+        public int NextLayerId { get; set; }
+
         [JsonProperty("nextobjectid")]
         public int NextObjectId { get; set; }
 
@@ -60,6 +67,7 @@ namespace TiledLib
         public string BackgroundColor { get; set; }
 
         [JsonProperty("properties")]
+        [JsonConverter(typeof(PropertiesConverter))]
         public Dictionary<string, string> Properties { get; } = new Dictionary<string, string>();
 
         /// <summary>

@@ -29,6 +29,7 @@ namespace TiledLib.Objects
         public double Height { get; set; }
 
         [JsonProperty("properties")]
+        [JsonConverter(typeof(PropertiesConverter))]
         public Dictionary<string, string> Properties { get; } = new Dictionary<string, string>();
 
         public BaseObject(Dictionary<string, string> properties) { Properties = properties; }

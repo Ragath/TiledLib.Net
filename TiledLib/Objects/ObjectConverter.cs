@@ -6,10 +6,7 @@ namespace TiledLib.Objects
 {
     class ObjectConverter : JsonConverter
     {
-        public override bool CanConvert(Type objectType)
-        {
-            return objectType == typeof(BaseObject);
-        }
+        public override bool CanConvert(Type objectType) => objectType == typeof(BaseObject);
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
@@ -32,13 +29,8 @@ namespace TiledLib.Objects
             return result;
         }
 
-        public override bool CanWrite
-        {
-            get { return false; }
-        }
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-        {
-            throw new NotImplementedException();
-        }
+        public override bool CanWrite => false;
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer) 
+            => throw new NotImplementedException();
     }
 }

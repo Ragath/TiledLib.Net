@@ -21,9 +21,14 @@ namespace TiledLib.Layer
                 throw new XmlException();
 
             LayerType = LayerType.imagelayer;
+
+            Id = reader["id"].ParseInt32().GetValueOrDefault();
             Name = reader["name"] ?? throw new KeyNotFoundException("name");
             Visible = reader["visible"].ParseBool() ?? true;
             Opacity = reader["opacity"].ParseDouble() ?? 1.0;
+
+            OffsetX = reader["offsetx"].ParseDouble().GetValueOrDefault();
+            OffsetY = reader["offsety"].ParseDouble().GetValueOrDefault();
 
             if (reader.ReadToDescendant("image"))
             {
@@ -36,9 +41,7 @@ namespace TiledLib.Layer
             reader.ReadEndElement();
         }
 
-        public void WriteXml(XmlWriter writer)
-        {
-            throw new NotImplementedException();
-        }
+        public void WriteXml(XmlWriter writer) 
+            => throw new NotImplementedException();
     }
 }

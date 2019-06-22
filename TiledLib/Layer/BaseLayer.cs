@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace TiledLib.Layer
@@ -6,6 +7,8 @@ namespace TiledLib.Layer
     [JsonConverter(typeof(LayerConverter))]
     public abstract class BaseLayer
     {
+        [JsonProperty("id", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public int Id { get; set; }
 
         [JsonProperty("name")]
         public string Name { get; set; }
@@ -27,12 +30,19 @@ namespace TiledLib.Layer
         public int Height { get; set; }
 
         [JsonProperty("x")]
+        [Obsolete("Use OffsetX instead.")]
         public int X { get; set; }
         [JsonProperty("y")]
+        [Obsolete("Use OffsetY instead.")]
         public int Y { get; set; }
 
+        [JsonProperty("offsetx")]
+        public double OffsetX { get; set; }
+        [JsonProperty("offsety")]
+        public double OffsetY { get; set; }
 
         [JsonProperty("properties")]
-        public Dictionary<string, string> Properties { get; } = new Dictionary<string, string>();        
+        [JsonConverter(typeof(PropertiesConverter))]
+        public Dictionary<string, string> Properties { get; } = new Dictionary<string, string>();
     }
 }

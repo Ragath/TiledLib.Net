@@ -34,6 +34,7 @@ namespace TiledLib
         public TileOffset TileOffset { get; set; }
 
         [JsonProperty("properties")]
+        [JsonConverter(typeof(PropertiesConverter))]
         public Dictionary<string, string> Properties { get; } = new Dictionary<string, string>();
         [JsonProperty("tileproperties")]
         public Dictionary<int, Dictionary<string, string>> TileProperties { get; } = new Dictionary<int, Dictionary<string, string>>();

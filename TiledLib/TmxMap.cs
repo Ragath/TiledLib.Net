@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Xml;
 using System.Xml.Serialization;
 using TiledLib.Layer;
@@ -20,9 +21,10 @@ namespace TiledLib
             map.Height = int.Parse(reader["height"]);
             map.CellWidth = int.Parse(reader["tilewidth"]);
             map.CellHeight = int.Parse(reader["tileheight"]);
-            map.HexSideLength = reader["hexsidelength"] == null ? default(int?) : int.Parse(reader["hexsidelength"]);
-
-            map.NextObjectId = reader["nextobjectid"].ParseInt32() ?? 0;
+            map.HexSideLength = reader["hexsidelength"].ParseInt32();
+            map.Infinite = reader["infinite"].ParseBool().GetValueOrDefault();
+            map.NextLayerId = reader["nextlayerid"].ParseInt32().GetValueOrDefault();
+            map.NextObjectId = reader["nextobjectid"].ParseInt32().GetValueOrDefault();
             map.BackgroundColor = reader["backgroundcolor"];
         }
 
@@ -42,6 +44,12 @@ namespace TiledLib
             writer.WriteAttribute("staggerindex", map.StaggerIndex);
             if (map.BackgroundColor != null)
                 writer.WriteAttribute("backgroundcolor", map.BackgroundColor);
+
+            if (decimal.TryParse(map.Version, NumberStyles.Any, CultureInfo.InvariantCulture, out var version) && version >= 1.2m || map.Infinite)
+                writer.WriteAttribute("infinite", map.Infinite);
+
+            if (map.NextLayerId != 0)
+                writer.WriteAttribute("nextlayerid", map.NextLayerId);
 
             if (map.NextObjectId != 0)
                 writer.WriteAttribute("nextobjectid", map.NextObjectId);
@@ -187,17 +195,23 @@ namespace TiledLib
                     case ImageLayer l:
                         writer.WriteStartElement("imagelayer");
                         {
+                            if (l.Id != default)
+                                writer.WriteAttribute("id", l.Id);
                             writer.WriteAttribute("name", l.Name);
                             if (!l.Visible)
                                 writer.WriteAttribute("visible", l.Visible);
                             if (l.Opacity != 1)
                                 writer.WriteAttribute("opacity", l.Opacity);
 
+                            if (l.OffsetX != default)
+                                writer.WriteAttribute("offsetx", l.OffsetX);
+                            if (l.OffsetY != default)
+                                writer.WriteAttribute("offsety", l.OffsetY);
+
 
                             writer.WriteStartElement("image");
                             {
                                 writer.WriteAttribute("source", l.Image);
-                                // <image source="sewer_tileset.png"/> 
                             }
                             writer.WriteEndElement();
                         }

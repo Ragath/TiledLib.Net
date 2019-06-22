@@ -14,65 +14,67 @@ namespace TiledLib
         public static void WriteTileLayer(this XmlWriter writer, TileLayer layer)
         {
             writer.WriteStartElement("layer");
-            writer.WriteAttribute("name", layer.Name);
-            writer.WriteAttribute("width", layer.Width);
-            writer.WriteAttribute("height", layer.Height);
-            if (!layer.Visible)
-                writer.WriteAttribute("visible", layer.Visible);
-            if (layer.Opacity != 1)
-                writer.WriteAttribute("opacity", layer.Opacity);
-            //<layer name="Tile Layer 1" width="10" height="10">
-            writer.WriteProperties(layer.Properties);
-            //  <properties>
-            //   <property name="layerBool" type="bool" value="true"/>
-            //  </properties>
-            writer.WriteStartElement("data");
-            writer.WriteAttribute("encoding", layer.Encoding);
-            //TODO: writer.WriteAttribute("compression", layer.Compression);
-            switch (layer.Encoding)
             {
-                case "csv":
-                    writer.WriteCSV(layer);
-                    break;
-                case "base64":
-                    writer.WriteBase64(layer);
-                    break;
-                default:
-                    throw new NotImplementedException();
-            }
+                if (layer.Id != default)
+                    writer.WriteAttribute("id", layer.Id);
+                writer.WriteAttribute("name", layer.Name);
+                writer.WriteAttribute("width", layer.Width);
+                writer.WriteAttribute("height", layer.Height);
+                if (!layer.Visible)
+                    writer.WriteAttribute("visible", layer.Visible);
+                if (layer.Opacity != 1)
+                    writer.WriteAttribute("opacity", layer.Opacity);
 
+                if (layer.OffsetX != default)
+                    writer.WriteAttribute("offsetx", layer.OffsetX);
+                if (layer.OffsetY != default)
+                    writer.WriteAttribute("offsety", layer.OffsetY);
+
+                writer.WriteProperties(layer.Properties);
+
+                writer.WriteStartElement("data");
+                {
+                    writer.WriteAttribute("encoding", layer.Encoding);
+                    //TODO: writer.WriteAttribute("compression", layer.Compression);
+                    switch (layer.Encoding)
+                    {
+                        case "csv":
+                            writer.WriteCSV(layer);
+                            break;
+                        case "base64":
+                            writer.WriteBase64(layer);
+                            break;
+                        default:
+                            throw new NotImplementedException();
+                    }
+                }
+                writer.WriteEndElement();
+            }
             writer.WriteEndElement();
-            //  <data encoding="csv">
-            //1,1,1,1,1,1,1,1,1,1,
-            //1,522,523,523,523,523,523,523,642,1,
-            //1,562,121,122,122,122,122,123,1,1,
-            //1,562,161,162,162,162,162,163,1,1,
-            //1,562,161,162,162,162,162,163,1,1,
-            //1,562,161,162,162,162,162,163,1,1,
-            //1,562,201,202,202,202,202,203,563,1,
-            //1,562,243,244,244,244,244,245,1,1,
-            //1,601,283,284,124,284,284,285,1,1,
-            //1,1,323,324,324,324,324,325,1,1
-            //</data>
-            writer.WriteEndElement();
-            //</layer>
         }
 
         public static void WriteObjectLayer(this XmlWriter writer, ObjectLayer layer)
         {
             writer.WriteStartElement("objectgroup");
+
+            if (layer.Id != default)
+                writer.WriteAttribute("id", layer.Id);
             writer.WriteAttribute("name", layer.Name);
             if (!layer.Visible)
                 writer.WriteAttribute("visible", layer.Visible);
             if (layer.Opacity != 1)
                 writer.WriteAttribute("opacity", layer.Opacity);
-            //<objectgroup name="Object Layer 2">
+
+            if (layer.OffsetX != default)
+                writer.WriteAttribute("offsetx", layer.OffsetX);
+            if (layer.OffsetY != default)
+                writer.WriteAttribute("offsety", layer.OffsetY);
+
             writer.WriteProperties(layer.Properties);
             foreach (var o in layer.Objects)
                 writer.WriteObject(o);
 
             writer.WriteEndElement();
-            // </objectgroup>            
         }
 
 
@@ -118,10 +120,10 @@ namespace TiledLib
 
             var gid = reader["gid"].ParseInt32();
 
-            var x = reader["x"].ParseInt32().Value;
-            var y = reader["y"].ParseInt32().Value;
-            var w = reader["width"].ParseInt32();
-            var h = reader["height"].ParseInt32();
+            var x = reader["x"].ParseDouble().Value;
+            var y = reader["y"].ParseDouble().Value;
+            var w = reader["width"].ParseDouble();
+            var h = reader["height"].ParseDouble();
 
             BaseObject result = null;
             var properties = new Dictionary<string, string>();

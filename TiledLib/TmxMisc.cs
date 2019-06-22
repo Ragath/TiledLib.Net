@@ -13,15 +13,19 @@ namespace TiledLib
     {
         public static void ReadLayerAttributes(this XmlReader reader, BaseLayer layer)
         {
+            layer.Id = reader["id"].ParseInt32().GetValueOrDefault();
             layer.Name = reader["name"] ?? throw new KeyNotFoundException("name");
             if (!(layer is ObjectLayer))
             {
                 layer.Width = reader["width"].ParseInt32() ?? throw new KeyNotFoundException("width");
                 layer.Height = reader["height"].ParseInt32() ?? throw new KeyNotFoundException("height");
 
-                layer.X = reader["x"].ParseInt32() ?? 0;
-                layer.Y = reader["y"].ParseInt32() ?? 0;
+                layer.X = reader["offsetx"] != null ? default : reader["x"].ParseInt32().GetValueOrDefault();
+                layer.Y = reader["offsety"] != null ? default : reader["y"].ParseInt32().GetValueOrDefault();
             }
+
+            layer.OffsetX = reader["offsetx"].ParseDouble().GetValueOrDefault();
+            layer.OffsetY = reader["offsety"].ParseDouble().GetValueOrDefault();
 
             layer.Opacity = reader["opacity"].ParseDouble() ?? 1.0;
             layer.Visible = reader["visible"].ParseBool() ?? true;

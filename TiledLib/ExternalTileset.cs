@@ -33,6 +33,7 @@ namespace TiledLib
 
         public Dictionary<string, string> Properties => Tileset.Properties;
         public Dictionary<int, Dictionary<string, string>> TileProperties => Tileset.TileProperties;
+        public Dictionary<int, Frame[]> TileAnimations => Tileset.TileAnimations;
 
         public Tile this[int gid] => Tileset[gid];
         public string this[int gid, string property] => Tileset[gid, property];

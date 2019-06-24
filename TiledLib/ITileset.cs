@@ -28,5 +28,6 @@ namespace TiledLib
         string TransparentColor { get; }
 
         TileOffset TileOffset { get; }
+        Dictionary<int, Frame[]> TileAnimations { get; }
     }
 }

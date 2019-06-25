@@ -1,5 +1,5 @@
 # TiledLib.Net
-[![Build Status](https://dev.azure.com/RagathGithub/TiledLib/_apis/build/status/TiledLib-CI?branchName=master)](https://dev.azure.com/RagathGithub/TiledLib/_build/latest?definitionId=1&branchName=master)
+[![Build Status](https://dev.azure.com/RagathGithub/TiledLib/_apis/build/status/TiledLib-CI?branchName=master)](https://dev.azure.com/RagathGithub/TiledLib/_build/latest?definitionId=1&branchName=master)  
 Cross-platform Tiled map parsing utilities.
 
 ## Nugets

@@ -1,18 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26430.16
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29009.5
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TiledLib", "TiledLib\TiledLib.csproj", "{39334840-001D-48E5-A13C-4A9CA6BAB142}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TiledLib.Pipeline", "TiledLib.Pipeline\TiledLib.Pipeline.csproj", "{8F4869B1-35A2-4EC7-86C5-D60143E3FC05}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TiledLib.Pipeline", "TiledLib.Pipeline\TiledLib.Pipeline.csproj", "{8F4869B1-35A2-4EC7-86C5-D60143E3FC05}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TiledLib.Tests", "TiledLib.Tests\TiledLib.Tests.csproj", "{13A3D034-B392-4027-ADEE-8BE3AF17FEC5}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D2294A44-0937-41AE-B138-0B236E65D43B}"
-	ProjectSection(SolutionItems) = preProject
-		GitVersionWorkaround.targets = GitVersionWorkaround.targets
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,5 +30,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A4C9B2C2-0F46-4ED8-A337-AB5382829540}
 	EndGlobalSection
 EndGlobal

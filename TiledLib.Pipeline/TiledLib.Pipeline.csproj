@@ -21,14 +21,10 @@
 
   <ItemGroup>
     <PackageReference Include="MonoGame.Framework.Content.Pipeline.Portable" Version="3.7.1.189" />
-    <PackageReference Include="GitVersionTask" Version="4.0.0">
-      <PrivateAssets>All</PrivateAssets>
-    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\TiledLib\TiledLib.csproj" />
   </ItemGroup>
 
-  <Import Project="..\GitVersionWorkaround.targets" />
 </Project>

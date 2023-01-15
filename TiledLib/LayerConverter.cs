@@ -35,21 +35,21 @@ public class LayerConverter : JsonConverter<BaseLayer>
             switch (tl.Compression)
             {
                 case null:
-                    tl.Data = new int[buffer.Length / sizeof(int)];
+                    tl.Data = new uint[buffer.Length / sizeof(uint)];
                     Buffer.BlockCopy(buffer, 0, tl.Data, 0, buffer.Length);
                     break;
                 case "zlib":
                     using (var mStream = new MemoryStream(buffer))
                     {
                         using var stream = new Zlib.ZlibStream(mStream, Zlib.CompressionMode.Decompress);
-                        var bufferSize = result.Width * result.Height * sizeof(int);
+                        var bufferSize = result.Width * result.Height * sizeof(uint);
                         Array.Resize(ref buffer, bufferSize);
                         stream.Read(buffer, 0, bufferSize);
 
                         if (stream.ReadByte() != -1)
                             throw new JsonException();
 
-                        tl.Data = new int[result.Width * result.Height];
+                        tl.Data = new uint[result.Width * result.Height];
                         Buffer.BlockCopy(buffer, 0, tl.Data, 0, buffer.Length);
                     }
                     break;
@@ -64,7 +64,7 @@ public class LayerConverter : JsonConverter<BaseLayer>
                         if (stream.ReadByte() != -1)
                             throw new JsonException();
 
-                        tl.Data = new int[result.Width * result.Height];
+                        tl.Data = new uint[result.Width * result.Height];
                         Buffer.BlockCopy(buffer, 0, tl.Data, 0, buffer.Length);
                     }
                     break;

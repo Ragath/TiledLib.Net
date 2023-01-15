@@ -136,11 +136,11 @@ static class TmxMisc
             .ToArray();
     }
 
-    static int[] ReadCSV(this XmlReader reader, int size)
+    static uint[] ReadCSV(this XmlReader reader, int size)
     {
         var data = reader.ReadElementContentAsString()
             .Split(new[] { '\r', '\n', ',' }, StringSplitOptions.RemoveEmptyEntries)
-            .Select(int.Parse)
+            .Select(uint.Parse)
             .ToArray();
 
         if (data.Length == size)
@@ -149,41 +149,39 @@ static class TmxMisc
             throw new XmlException();
     }
 
-    static int[] ReadBase64(this XmlReader reader, int count)
+    static uint[] ReadBase64(this XmlReader reader, int count)
     {
-        var buffer = new byte[count * sizeof(int)];
+        var buffer = new byte[count * sizeof(uint)];
         var size = reader.ReadElementContentAsBase64(buffer, 0, buffer.Length);
         if (reader.ReadElementContentAsBase64(buffer, 0, buffer.Length) != 0)
             throw new InvalidDataException();
-        var data = new int[size / sizeof(int)];
+        var data = new uint[size / sizeof(uint)];
         Buffer.BlockCopy(buffer, 0, data, 0, size);
         return data;
     }
-    static int[] ReadBase64Decompress<T>(this XmlReader reader, Func<Stream, Zlib.CompressionMode, T> streamFactory, int size)
+    static uint[] ReadBase64Decompress<T>(this XmlReader reader, Func<Stream, Zlib.CompressionMode, T> streamFactory, int size)
         where T : Stream
     {
-        var buffer = new byte[size * sizeof(int)];
+        var buffer = new byte[size * sizeof(uint)];
 
         var total = reader.ReadElementContentAsBase64(buffer, 0, buffer.Length);
         if (reader.ReadElementContentAsBase64(buffer, 0, buffer.Length) != 0)
             throw new InvalidDataException();
 
-        using (var mstream = new MemoryStream(buffer, 0, total))
-        using (var stream = streamFactory(mstream, Zlib.CompressionMode.Decompress))
+        using var mstream = new MemoryStream(buffer, 0, total);
+        using var stream = streamFactory(mstream, Zlib.CompressionMode.Decompress);
+        var data = new uint[size];
+        var pos = 0;
+        int count;
+        while ((count = stream.Read(buffer, 0, buffer.Length)) > 0)
         {
-            var data = new int[size];
-            var pos = 0;
-            int count;
-            while ((count = stream.Read(buffer, 0, buffer.Length)) > 0)
-            {
-                Buffer.BlockCopy(buffer, 0, data, pos, count);
-                pos += count;
-            }
-            return data;
+            Buffer.BlockCopy(buffer, 0, data, pos, count);
+            pos += count;
         }
+        return data;
     }
 
-    public static int[] ReadData(this XmlReader reader, int count, out string encoding, out string compression)
+    public static uint[] ReadData(this XmlReader reader, int count, out string encoding, out string compression)
     {
         encoding = reader["encoding"];
         compression = reader["compression"];

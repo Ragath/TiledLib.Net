@@ -46,7 +46,7 @@ public class Tileset : ITileset, IXmlSerializable
     [JsonIgnore] //TODO: Add json support
     public Dictionary<int, Frame[]> TileAnimations { get; init; } = new Dictionary<int, Frame[]>();
 
-    public Tile this[int gid]
+    public Tile this[uint gid]
     {
         get
         {
@@ -57,7 +57,7 @@ public class Tileset : ITileset, IXmlSerializable
 
             var columns = Columns;
             var rows = Rows;
-            var index = Utils.GetId(gid) - FirstGid;
+            var index = Utils.GetId(gid) - (int)FirstGid;
             if (index < 0 || index >= rows * columns)
                 throw new ArgumentOutOfRangeException();
 
@@ -74,13 +74,13 @@ public class Tileset : ITileset, IXmlSerializable
         }
     }
 
-    public string this[int gid, string property]
+    public string this[uint gid, string property]
     {
         get
         {
-            gid = Utils.GetId(gid);
-            return gid != 0
-                   && TileProperties.TryGetValue(gid - FirstGid, out var tile)
+            var id = Utils.GetId(gid);
+            return id != 0
+                   && TileProperties.TryGetValue(id - FirstGid, out var tile)
                    && tile.TryGetValue(property, out var value) ? value : default;
         }
     }

@@ -11,14 +11,12 @@ public class TiledMapImporter : ContentImporter<Map>
     {
         string GetPath(string path) => Path.IsPathRooted(path) ? path : Path.Combine(Path.GetDirectoryName(filename), path);
 
-        using (var stream = File.OpenRead(filename))
-        {
-            var map = Map.FromStream(stream, ts => File.OpenRead(GetPath(ts.Source)));
+        using var stream = File.OpenRead(filename);
+        var map = Map.FromStream(stream, ts => File.OpenRead(GetPath(ts.Source)));
 
-            foreach (var ts in map.Tilesets.OfType<ExternalTileset>())
-                ts.LoadTileset();
+        foreach (var ts in map.Tilesets.OfType<ExternalTileset>())
+            ts.LoadTileset();
 
-            return map;
-        }
+        return map;
     }
 }

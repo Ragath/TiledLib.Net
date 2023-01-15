@@ -67,7 +67,7 @@ public class Map : IXmlSerializable
 
     [JsonPropertyName("properties")]
     [JsonConverter(typeof(PropertiesConverter))]
-    public Dictionary<string, string> Properties { get; } = new Dictionary<string, string>();
+    public Dictionary<string, string> Properties { get; init; } = new Dictionary<string, string>();
 
     /// <summary>
     /// Parses map from JSON stream

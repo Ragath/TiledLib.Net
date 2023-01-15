@@ -37,14 +37,14 @@ public class Tileset : ITileset, IXmlSerializable
 
     [JsonPropertyName("properties")]
     [JsonConverter(typeof(PropertiesConverter))]
-    public Dictionary<string, string> Properties { get; } = new Dictionary<string, string>();
+    public Dictionary<string, string> Properties { get; init; } = new Dictionary<string, string>();
     [JsonPropertyName("tileproperties")]
-    public Dictionary<int, Dictionary<string, string>> TileProperties { get; } = new Dictionary<int, Dictionary<string, string>>();
+    public Dictionary<int, Dictionary<string, string>> TileProperties { get; init; } = new Dictionary<int, Dictionary<string, string>>();
 
 
 
     [JsonIgnore] //TODO: Add json support
-    public Dictionary<int, Frame[]> TileAnimations { get; } = new Dictionary<int, Frame[]>();
+    public Dictionary<int, Frame[]> TileAnimations { get; init; } = new Dictionary<int, Frame[]>();
 
     public Tile this[int gid]
     {

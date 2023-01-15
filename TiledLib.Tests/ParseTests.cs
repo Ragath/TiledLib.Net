@@ -27,5 +27,7 @@ public class ParseTests
         var result = JsonSerializer.Deserialize<Map>(mapStream, new JsonSerializerOptions(JsonSerializerDefaults.Web));
 
         Assert.IsNotNull(result);
+        Assert.IsNotNull(result.Layers);
+        Assert.IsTrue(result.Layers.Any());
     }
 }

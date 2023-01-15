@@ -92,7 +92,7 @@ public class Tileset : ITileset, IXmlSerializable
     public static Tileset FromStream(Stream stream)
     {
         if (Utils.ContainsJson(stream))
-            return JsonSerializer.Deserialize<Tileset>(stream);
+            return JsonSerializer.Deserialize<Tileset>(stream, new JsonSerializerOptions(JsonSerializerDefaults.Web));
         else
             return (Tileset)new XmlSerializer(typeof(Tileset)).Deserialize(stream);
 

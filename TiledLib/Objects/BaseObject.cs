@@ -1,37 +1,33 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿namespace TiledLib.Objects;
 
-namespace TiledLib.Objects
+[JsonConverter(typeof(ObjectConverter))]
+public abstract class BaseObject
 {
-    [JsonConverter(typeof(ObjectConverter))]
-    public abstract class BaseObject
-    {
-        [JsonProperty("name")]
-        public string Name { get; set; }
+    [JsonPropertyName("name")]
+    public string Name { get; set; }
 
-        [JsonProperty("type")]
-        public string ObjectType { get; set; }
+    [JsonPropertyName("type")]
+    public string ObjectType { get; set; }
 
 
-        [JsonProperty("visible")]
-        public bool Visible { get; set; }
+    [JsonPropertyName("visible")]
+    public bool Visible { get; set; }
 
-        [JsonProperty("id")]
-        public int Id { get; set; }
+    [JsonPropertyName("id")]
+    public int Id { get; set; }
 
-        [JsonProperty("x")]
-        public double X { get; set; }
-        [JsonProperty("y")]
-        public double Y { get; set; }
-        [JsonProperty("width")]
-        public double Width { get; set; }
-        [JsonProperty("height")]
-        public double Height { get; set; }
+    [JsonPropertyName("x")]
+    public double X { get; set; }
+    [JsonPropertyName("y")]
+    public double Y { get; set; }
+    [JsonPropertyName("width")]
+    public double Width { get; set; }
+    [JsonPropertyName("height")]
+    public double Height { get; set; }
 
-        [JsonProperty("properties")]
-        [JsonConverter(typeof(PropertiesConverter))]
-        public Dictionary<string, string> Properties { get; } = new Dictionary<string, string>();
+    [JsonPropertyName("properties")]
+    [JsonConverter(typeof(PropertiesConverter))]
+    public Dictionary<string, string> Properties { get; } = new Dictionary<string, string>();
 
-        public BaseObject(Dictionary<string, string> properties) { Properties = properties; }
-    }
+    public BaseObject(Dictionary<string, string> properties) { Properties = properties; }
 }

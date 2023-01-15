@@ -1,16 +1,13 @@
 ﻿using System.Runtime.Serialization;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
-namespace TiledLib
+namespace TiledLib;
+
+[JsonConverter(typeof(JsonStringEnumConverter))]
+public enum StaggerIndex : byte
 {
-    [JsonConverter(typeof(StringEnumConverter))]
-    public enum StaggerIndex : byte
-    {
-        None = default,
-        [EnumMember(Value = "odd")]
-        odd,
-        [EnumMember(Value = "even")]
-        even,
-    }
+    None = default,
+    [EnumMember(Value = "odd")]
+    odd,
+    [EnumMember(Value = "even")]
+    even,
 }

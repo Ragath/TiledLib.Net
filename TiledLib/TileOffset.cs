@@ -1,16 +1,10 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿namespace TiledLib;
 
-namespace TiledLib
+public class TileOffset
 {
-    public class TileOffset
-    {
-        [JsonProperty("x")]
-        public int X { get; set; }
+    [JsonPropertyName("x")]
+    public int X { get; set; }
 
-        [JsonProperty("y")]
-        public int Y { get; set; }
-    }
+    [JsonPropertyName("y")]
+    public int Y { get; set; }
 }

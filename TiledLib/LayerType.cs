@@ -1,14 +1,10 @@
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+namespace TiledLib;
 
-namespace TiledLib
+[JsonConverter(typeof(JsonStringEnumConverter))]
+public enum LayerType
 {
-    [JsonConverter(typeof(StringEnumConverter))]
-    public enum LayerType
-    {
-        unknown = default,
-        tilelayer,
-        objectgroup,
-        imagelayer
-    };
-}
+    unknown = default,
+    tilelayer,
+    objectgroup,
+    imagelayer
+};

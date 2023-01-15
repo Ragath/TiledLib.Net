@@ -1,24 +1,26 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFrameworks>netstandard1.0;netstandard2.0;net45;net472</TargetFrameworks>
-    <LangVersion>Latest</LangVersion>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Description>Tiled Map library</Description>
-    <PackageId>TiledLib</PackageId>
-    <Product>TiledLib</Product>
-    <Company>Daniel Sör</Company>
-    <Authors>Daniel Sör</Authors>
-    <PackageTags>Tiled TiledLib tmx map parser</PackageTags>
-    <PackageProjectUrl>https://github.com/Ragath/TiledLib.Net</PackageProjectUrl>
-    <PackageLicenseUrl>https://github.com/Ragath/TiledLib.Net/blob/master/LICENSE</PackageLicenseUrl>
-    <RepositoryUrl>https://github.com/Ragath/TiledLib.Net</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFrameworks>net6.0;net7.0</TargetFrameworks>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
-    <PackageReference Include="System.Xml.XmlSerializer" Version="4.3.0" />
-  </ItemGroup>
+	<PropertyGroup>
+		<Description>Tiled Map library</Description>
+		<Product>TiledLib</Product>
+		<Company>Daniel Sör</Company>
+		<Authors>Daniel Sör</Authors>
+		<PackageTags>Tiled TiledLib tmx map parser</PackageTags>
+		<PackageProjectUrl>https://github.com/Ragath/TiledLib.Net</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/Ragath/TiledLib.Net</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
+	</PropertyGroup>
+	
+	<ItemGroup>
+		<None Include="../LICENSE">
+			<Pack>True</Pack>
+			<PackagePath>/</PackagePath>
+		</None>
+	</ItemGroup>
 
 </Project>

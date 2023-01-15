@@ -1,10 +1,7 @@
-﻿using System.Collections.Generic;
+﻿namespace TiledLib.Objects;
 
-namespace TiledLib.Objects
+public class RectangleObject : BaseObject
 {
-    public class RectangleObject : BaseObject
-    {
-        internal RectangleObject(Dictionary<string, string> properties) : base(properties) { }
-        public RectangleObject() : base(new Dictionary<string, string>()) { }
-    }
+    internal RectangleObject(Dictionary<string, string> properties) : base(properties) { }
+    public RectangleObject() : base(new Dictionary<string, string>()) { }
 }

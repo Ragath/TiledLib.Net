@@ -1,36 +1,23 @@
-﻿using System;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+﻿namespace TiledLib.Objects;
 
-namespace TiledLib.Objects
+class ObjectConverter : JsonConverter<BaseObject>
 {
-    class ObjectConverter : JsonConverter
+    public override BaseObject Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        public override bool CanConvert(Type objectType) => objectType == typeof(BaseObject);
+        var jo = JsonElement.ParseValue(ref reader);
 
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        return jo switch
         {
-            var jo = JObject.Load(reader);
+            var a when a.TryGetProperty("gid", out var _) => a.Deserialize<TileObject>(options),
+            var a when a.TryGetProperty("polygon", out var _) => a.Deserialize<PolygonObject>(options),
+            var a when a.TryGetProperty("polyline", out var _) => a.Deserialize<PolyLineObject>(options),
+            var a when a.TryGetProperty("ellipse", out var _) => a.Deserialize<EllipseObject>(options),
+            _ => jo.Deserialize<RectangleObject>()
+        };
+    }
 
-            BaseObject result;
-            if (jo.Property("gid") != null)
-                result = new TileObject();
-            else if (jo.Property("polygon") != null)
-                result = new PolygonObject();
-            else if (jo.Property("polyline") != null)
-                result = new PolyLineObject();
-            else if (jo.Value<bool>("ellipse"))
-                result = new EllipseObject();
-            else
-                result = new RectangleObject();
-
-            serializer.Populate(jo.CreateReader(), result);
-
-            return result;
-        }
-
-        public override bool CanWrite => false;
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer) 
-            => throw new NotImplementedException();
+    public override void Write(Utf8JsonWriter writer, BaseObject value, JsonSerializerOptions options)
+    {
+        throw new NotImplementedException();
     }
 }

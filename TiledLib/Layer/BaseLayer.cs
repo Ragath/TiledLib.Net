@@ -1,48 +1,46 @@
-﻿using System;
-using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace TiledLib.Layer
+namespace TiledLib.Layer;
+
+[JsonConverter(typeof(LayerConverter))]
+public abstract class BaseLayer
 {
-    [JsonConverter(typeof(LayerConverter))]
-    public abstract class BaseLayer
-    {
-        [JsonProperty("id", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        public int Id { get; set; }
+    [JsonPropertyName("id")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+    public int Id { get; set; }
 
-        [JsonProperty("name")]
-        public string Name { get; set; }
+    [JsonPropertyName("name")]
+    public string Name { get; set; }
 
-        [JsonRequired, JsonProperty("type")]
-        public LayerType LayerType { get; set; }
+    [Required, JsonPropertyName("type")]
+    public LayerType LayerType { get; set; }
 
 
-        [JsonProperty("opacity")]
-        public double Opacity { get; set; }
+    [JsonPropertyName("opacity")]
+    public double Opacity { get; set; }
 
-        [JsonProperty("visible")]
-        public bool Visible { get; set; }
+    [JsonPropertyName("visible")]
+    public bool Visible { get; set; }
 
 
-        [JsonProperty("width")]
-        public int Width { get; set; }
-        [JsonProperty("height")]
-        public int Height { get; set; }
+    [JsonPropertyName("width")]
+    public int Width { get; set; }
+    [JsonPropertyName("height")]
+    public int Height { get; set; }
 
-        [JsonProperty("x")]
-        [Obsolete("Use OffsetX instead.")]
-        public int X { get; set; }
-        [JsonProperty("y")]
-        [Obsolete("Use OffsetY instead.")]
-        public int Y { get; set; }
+    [JsonPropertyName("x")]
+    [Obsolete("Use OffsetX instead.")]
+    public int X { get; set; }
+    [JsonPropertyName("y")]
+    [Obsolete("Use OffsetY instead.")]
+    public int Y { get; set; }
 
-        [JsonProperty("offsetx")]
-        public double OffsetX { get; set; }
-        [JsonProperty("offsety")]
-        public double OffsetY { get; set; }
+    [JsonPropertyName("offsetx")]
+    public double OffsetX { get; set; }
+    [JsonPropertyName("offsety")]
+    public double OffsetY { get; set; }
 
-        [JsonProperty("properties")]
-        [JsonConverter(typeof(PropertiesConverter))]
-        public Dictionary<string, string> Properties { get; } = new Dictionary<string, string>();
-    }
+    [JsonPropertyName("properties")]
+    [JsonConverter(typeof(PropertiesConverter))]
+    public Dictionary<string, string> Properties { get; } = new Dictionary<string, string>();
 }

@@ -1,39 +1,39 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFrameworks>net45;net472;netstandard2.0</TargetFrameworks>
-    <LangVersion>Latest</LangVersion>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+	</PropertyGroup>
 
-  <PropertyGroup>
-    <Description>Tiled Map MonoGame pipeline extensions</Description>
-    <PackageId>TiledLib.Pipeline</PackageId>
-    <Product>TiledLib.Pipeline</Product>
-    <Authors>Daniel Sör</Authors>
-    <Company>Daniel Sör</Company>
-    <PackageTags>Tiled MonoGame ContentPipeline Content Pipeline tmx map importer</PackageTags>
-    <PackageProjectUrl>https://github.com/Ragath/TiledLib.Net</PackageProjectUrl>
-    <PackageLicenseUrl>https://github.com/Ragath/TiledLib.Net/blob/master/LICENSE</PackageLicenseUrl>
-    <RepositoryUrl>https://github.com/Ragath/TiledLib.Net</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-  </PropertyGroup>
+	<PropertyGroup>
+		<Description>Tiled Map MonoGame pipeline extensions</Description>
+		<Product>TiledLib.Pipeline</Product>
+		<Authors>Daniel Sör</Authors>
+		<Company>Daniel Sör</Company>
+		<PackageTags>Tiled MonoGame ContentPipeline Content Pipeline tmx map importer</PackageTags>
+		<PackageProjectUrl>https://github.com/Ragath/TiledLib.Net</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/Ragath/TiledLib.Net</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
+	</PropertyGroup>
 
-  <Choose>
-    <When Condition="'$(TargetFramework)' == 'netstandard2.0'">
-      <ItemGroup>        
-        <PackageReference Include="MonoGame.Framework.Content.Pipeline" Version="3.8.0.1641" />
-      </ItemGroup>
-    </When>
-    <Otherwise>
-      <ItemGroup>
-        <PackageReference Include="MonoGame.Framework.Content.Pipeline.Portable" Version="3.7.1.189" />
-      </ItemGroup>
-    </Otherwise>
-	</Choose>
+	<ItemGroup>
+		<None Include="../LICENSE">
+			<Pack>True</Pack>
+			<PackagePath>/</PackagePath>
+		</None>
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\TiledLib\TiledLib.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="MonoGame.Framework.Content.Pipeline" Version="3.8.1.303">
+			<PrivateAssets>All</PrivateAssets>
+		</PackageReference>
+		<PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.1.303">
+			<PrivateAssets>All</PrivateAssets>
+		</PackageReference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\TiledLib\TiledLib.csproj" />
+	</ItemGroup>
 
 </Project>

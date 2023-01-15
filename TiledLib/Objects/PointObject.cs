@@ -1,10 +1,7 @@
-﻿using System.Collections.Generic;
+﻿namespace TiledLib.Objects;
 
-namespace TiledLib.Objects
+public class PointObject : BaseObject
 {
-    public class PointObject : BaseObject
-    {
-        internal PointObject(Dictionary<string, string> properties) : base(properties) { }
-        public PointObject() : base(new Dictionary<string, string>()) { }
-    }
+    internal PointObject(Dictionary<string, string> properties) : base(properties) { }
+    public PointObject() : base(new Dictionary<string, string>()) { }
 }

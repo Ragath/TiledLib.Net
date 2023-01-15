@@ -1,14 +1,10 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+﻿namespace TiledLib;
 
-namespace TiledLib
+[JsonConverter(typeof(JsonStringEnumConverter))]
+public enum Orientation
 {
-    [JsonConverter(typeof(StringEnumConverter))]
-    public enum Orientation
-    {
-        unknown = default,
-        orthogonal,
-        isometric,
-        hexagonal
-    };
-}
+    unknown = default,
+    orthogonal,
+    isometric,
+    hexagonal
+};

@@ -1,33 +1,24 @@
-﻿using System;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+﻿namespace TiledLib;
 
-namespace TiledLib
+
+public class TilesetConverter : JsonConverter<ITileset>
 {
 
-    public class TilesetConverter : JsonConverter
+    public override ITileset Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        public override bool CanConvert(Type objectType) => objectType == typeof(ITileset);
+        var jo = JsonElement.ParseValue(ref reader);
 
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
-        {
-            var jo = JObject.Load(reader);
+        ITileset result;
+        if (jo.TryGetProperty("source", out var _))
+            result = jo.Deserialize<ExternalTileset>(options);
+        else
+            result = jo.Deserialize<Tileset>(options);
 
-            ITileset result;
-            if (jo["source"] == null)
-                result = new Tileset();
-            else
-                result = new ExternalTileset();
+        return result;
+    }
 
-            serializer.Populate(jo.CreateReader(), result);
-            return result;
-        }
-
-        public override bool CanWrite => false;
-
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-        {
-            throw new NotImplementedException();
-        }
+    public override void Write(Utf8JsonWriter writer, ITileset value, JsonSerializerOptions options)
+    {
+        throw new NotImplementedException();
     }
 }

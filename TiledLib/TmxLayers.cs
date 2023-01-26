@@ -213,8 +213,8 @@ static class TmxLayers
             Id = id,
             X = x,
             Y = y,
-            Width = w.Value,
-            Height = h.Value,
+            Width = w ?? 0,
+            Height = h ?? 0,
             Name = name,
             ObjectType = type
         };

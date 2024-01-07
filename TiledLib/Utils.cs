@@ -36,6 +36,6 @@ public static class Utils
         return true;
     }
 
-    public static int GetId(int gid) => gid & (int)TileOrientation.MaskID;
-    public static TileOrientation GetOrientation(int gid) => (TileOrientation)gid & TileOrientation.MaskFlip;
+    public static int GetId(uint gid) => (int)(gid & (uint)TileOrientation.MaskID);
+    public static TileOrientation GetOrientation(uint gid) => (TileOrientation)gid & TileOrientation.MaskFlip;
 }

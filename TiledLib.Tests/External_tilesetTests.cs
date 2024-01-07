@@ -23,7 +23,7 @@ public class TilesetTests
                 ts.LoadTileset(LoadTileset);
 
             var q = from t in map.Tilesets
-                    from i in Enumerable.Range(t.FirstGid, t.Rows * t.Columns)
+                    from i in Enumerable.Range(t.FirstGid, t.Rows * t.Columns).Select(i => (uint)i)
                     select new
                     {
                         index = i,

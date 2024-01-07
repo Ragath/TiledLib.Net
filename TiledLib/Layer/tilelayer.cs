@@ -16,7 +16,7 @@ public class TileLayer : BaseLayer, IXmlSerializable
 
     [Required]
     [JsonPropertyName("data")]
-    public int[] Data { get; set; }
+    public uint[] Data { get; set; }
 
     public XmlSchema GetSchema() => null;
 

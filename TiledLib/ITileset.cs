@@ -3,8 +3,8 @@
 [JsonConverter(typeof(TilesetConverter))]
 public interface ITileset
 {
-    Tile this[int gid] { get; }
-    string this[int gid, string property] { get; }
+    Tile this[uint gid] { get; }
+    string this[uint gid, string property] { get; }
 
     int Columns { get; }
     int FirstGid { get; }

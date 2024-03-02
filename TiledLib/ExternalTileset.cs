@@ -12,7 +12,8 @@ public class ExternalTileset : ITileset
     public int Columns => Tileset.Columns;
 
     public int ImageHeight => Tileset.ImageHeight;
-    public string ImagePath => System.IO.Path.IsPathRooted(Tileset.ImagePath) ? Tileset.ImagePath : System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Source), Tileset.ImagePath);
+
+    public string ImagePath => System.IO.Path.IsPathRooted(Tileset.ImagePath) || Tileset.ImagePath == null ? Tileset.ImagePath : System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Source), Tileset.ImagePath);
     public int ImageWidth => Tileset.ImageWidth;
     public int Margin => Tileset.Margin;
     public string Name => Tileset.Name;
@@ -31,6 +32,10 @@ public class ExternalTileset : ITileset
     public Dictionary<string, string> Properties => Tileset.Properties;
     public Dictionary<int, Dictionary<string, string>> TileProperties => Tileset.TileProperties;
     public Dictionary<int, Frame[]> TileAnimations => Tileset.TileAnimations;
+
+    public Dictionary<int, string> TileSetImages => Tileset.TileSetImages;
+
+    public bool IsImageCollection => Tileset.IsImageCollection;
 
     public Tile this[uint gid] => Tileset[gid];
     public string this[uint gid, string property] => Tileset[gid, property];

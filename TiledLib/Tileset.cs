@@ -40,7 +40,9 @@ public class Tileset : ITileset, IXmlSerializable
     public Dictionary<string, string> Properties { get; init; } = new Dictionary<string, string>();
     [JsonPropertyName("tileproperties")]
     public Dictionary<int, Dictionary<string, string>> TileProperties { get; init; } = new Dictionary<int, Dictionary<string, string>>();
+    public Dictionary<int, string> TileSetImages { get; init; } = new Dictionary<int, string>();
 
+    public bool IsImageCollection => TileSetImages.Count > 0;
 
 
     [JsonIgnore] //TODO: Add json support

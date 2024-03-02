@@ -26,4 +26,8 @@ public interface ITileset
 
     TileOffset TileOffset { get; }
     Dictionary<int, Frame[]> TileAnimations { get; }
+
+    Dictionary<int, string> TileSetImages { get; }
+
+    bool IsImageCollection { get; }
 }

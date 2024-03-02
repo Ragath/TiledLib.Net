@@ -74,7 +74,7 @@ static class TmxMisc
                     reader.ReadProperties(ts.Properties);
                     break;
                 case "tile":
-                    reader.ReadTile(ts.TileProperties, ts.TileAnimations);
+                    reader.ReadTile(ts.TileProperties, ts.TileAnimations, ts.TileSetImages);
                     break;
                 default:
                     reader.Skip();
@@ -87,7 +87,7 @@ static class TmxMisc
             throw new XmlException(reader.Name);
     }
 
-    static void ReadTile(this XmlReader reader, Dictionary<int, Dictionary<string, string>> tileProperties, Dictionary<int, Frame[]> tileAnimations)
+    static void ReadTile(this XmlReader reader, Dictionary<int, Dictionary<string, string>> tileProperties, Dictionary<int, Frame[]> tileAnimations, Dictionary<int, string> tileSetImages)
     {
         if (!reader.IsStartElement("tile"))
             throw new XmlException(reader.Name);
@@ -111,6 +111,10 @@ static class TmxMisc
                         break;
                     case "animation":
                         tileAnimations[id] = reader.ReadAnimation();
+                        break;
+                    case "image":
+                        tileSetImages[id] = reader["source"];
+                        reader.Skip();
                         break;
                     default:
                         reader.Skip(); //TODO: Add logging.

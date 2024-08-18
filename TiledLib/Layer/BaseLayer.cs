@@ -42,5 +42,5 @@ public abstract class BaseLayer
 
     [JsonPropertyName("properties")]
     [JsonConverter(typeof(PropertiesConverter))]
-    public Dictionary<string, string> Properties { get; init; } = new Dictionary<string, string>();
+    public Dictionary<string, string> Properties { get; init; } = [];
 }

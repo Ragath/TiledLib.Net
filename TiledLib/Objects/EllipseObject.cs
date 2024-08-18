@@ -7,7 +7,7 @@ namespace TiledLib.Objects;
 public class EllipseObject : BaseObject, IXmlSerializable
 {
     public EllipseObject(Dictionary<string, string> properties) : base(properties) { }
-    public EllipseObject() : base(new Dictionary<string, string>()) { }
+    public EllipseObject() : base([]) { }
 
     [JsonPropertyName("ellipse")]
     public bool IsEllipse { get; set; }

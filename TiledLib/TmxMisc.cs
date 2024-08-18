@@ -94,7 +94,7 @@ static class TmxMisc
 
         var id = int.Parse(reader["id"]);
         if (!tileProperties.TryGetValue(id, out var properties) || properties == null)
-            properties = tileProperties[id] = new Dictionary<string, string>();
+            properties = tileProperties[id] = [];
 
         if (reader.IsEmptyElement)
         {
@@ -186,25 +186,18 @@ static class TmxMisc
         encoding = reader["encoding"];
         compression = reader["compression"];
 
-        switch (encoding)
+        return encoding switch
         {
-            case "csv":
-                return reader.ReadCSV(count);
-            case "base64":
-                switch (compression)
-                {
-                    case null:
-                        return reader.ReadBase64(count);
-                    case "gzip":
-                        return reader.ReadBase64Decompress((stream, mode) => new Zlib.GZipStream(stream, mode), count);
-                    case "zlib":
-                        return reader.ReadBase64Decompress((stream, mode) => new Zlib.ZlibStream(stream, mode), count);
-                    default:
-                        throw new XmlException(compression);
-                }
-            default:
-                throw new NotImplementedException($"Encoding: {encoding}");
-        }
+            "csv" => reader.ReadCSV(count),
+            "base64" => compression switch
+            {
+                null => reader.ReadBase64(count),
+                "gzip" => reader.ReadBase64Decompress((stream, mode) => new Zlib.GZipStream(stream, mode), count),
+                "zlib" => reader.ReadBase64Decompress((stream, mode) => new Zlib.ZlibStream(stream, mode), count),
+                _ => throw new XmlException(compression),
+            },
+            _ => throw new NotImplementedException($"Encoding: {encoding}"),
+        };
     }
 
     public static void WriteAttribute(this XmlWriter writer, string localName, int? value)
@@ -213,7 +206,6 @@ static class TmxMisc
             return;
         writer.WriteAttribute(localName, value.Value);
     }
-
 
     public static void WriteAttribute(this XmlWriter writer, string localName, Orientation value)
     {

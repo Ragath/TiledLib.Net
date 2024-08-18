@@ -27,7 +27,7 @@ public abstract class BaseObject
 
     [JsonPropertyName("properties")]
     [JsonConverter(typeof(PropertiesConverter))]
-    public Dictionary<string, string> Properties { get; init; } = new Dictionary<string, string>();
+    public Dictionary<string, string> Properties { get; init; } = [];
 
     public BaseObject(Dictionary<string, string> properties) { Properties = properties; }
 }

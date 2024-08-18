@@ -9,17 +9,15 @@ namespace TiledLib;
 [XmlRoot("map")]
 public class Map : IXmlSerializable
 {
-    [Required]
     [JsonPropertyName("version")]
     [JsonConverter(typeof(VersionConverter))]
-    public string Version { get; set; } = "1.0";
+    public required string Version { get; set; } = "1.0";
 
     [JsonPropertyName("tiledversion")]
     public string TiledVersion { get; set; }
 
-    [Required]
     [JsonPropertyName("orientation")]
-    public Orientation Orientation { get; set; }
+    public required Orientation Orientation { get; set; }
 
     [JsonPropertyName("renderorder")]
     public RenderOrder RenderOrder { get; set; }
@@ -67,7 +65,7 @@ public class Map : IXmlSerializable
 
     [JsonPropertyName("properties")]
     [JsonConverter(typeof(PropertiesConverter))]
-    public Dictionary<string, string> Properties { get; init; } = new Dictionary<string, string>();
+    public Dictionary<string, string> Properties { get; init; } = [];
 
     /// <summary>
     /// Parses map from JSON stream

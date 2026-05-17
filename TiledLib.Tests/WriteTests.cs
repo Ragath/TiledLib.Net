@@ -30,11 +30,11 @@ public class WriteTests
         }
 
         var expected = Encoding.UTF8.GetString(original.ToArray()).Replace("UTF-8", "utf-8");
-        var result = Encoding.UTF8.GetString(output.ToArray()).Substring(1); //Skip BOM
+        var result = Encoding.UTF8.GetString(output.ToArray())[1..]; //Skip BOM
 
         while (expected.Length > 0 && result.Length > 0 && char.ToLowerInvariant(expected[0]) == char.ToLowerInvariant(result[0]))
         {
-            expected = expected.Substring(1).Trim();
+            expected = expected[1..].Trim();
             //TODO: Implement support for property types.
             var attributes = new List<string>() { "type=\"bool\"", "type=\"int\"" };
             if (map.Version == "1.0")
@@ -42,9 +42,9 @@ public class WriteTests
 
             foreach (var item in attributes)
                 while (expected.StartsWith(item))
-                    expected = expected.Substring(item.Length).Trim();
+                    expected = expected[item.Length..].Trim();
 
-            result = result.Substring(1).Trim();
+            result = result[1..].Trim();
         }
         Assert.AreEqual(expected, result, ignoreCase: true);
     }

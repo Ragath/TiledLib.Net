@@ -295,7 +295,7 @@ static class TmxLayers
     static IEnumerable<Position> ReadPoints(this XmlReader reader)
         => from p in reader["points"].Split(' ')
            let split = p.IndexOf(',')
-           select new Position(double.Parse(p.Substring(0, split), CultureInfo.InvariantCulture), double.Parse(p.Substring(split + 1), CultureInfo.InvariantCulture));
+           select new Position(double.Parse(p[..split], CultureInfo.InvariantCulture), double.Parse(p[(split + 1)..], CultureInfo.InvariantCulture));
 
     static void WritePoints(this XmlWriter writer, Position[] points)
     {

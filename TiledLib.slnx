@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".config/dotnet-tools.json" />
+    <File Path=".github/workflows/dotnet.yml" />
+  </Folder>
+  <Project Path="TiledLib.Pipeline/TiledLib.Pipeline.csproj" />
+  <Project Path="TiledLib.Tests/TiledLib.Tests.csproj" />
+  <Project Path="TiledLib/TiledLib.csproj" />
+</Solution>

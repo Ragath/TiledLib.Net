@@ -5,7 +5,7 @@ namespace TiledLib.Tests;
 [TestClass]
 public class ParseTests
 {
-    [DataTestMethod]
+    [TestMethod]
     [DataRow("Data/External_tileset_map.tmx")]
     [DataRow("Data/Hexagonal_tileset.tmx")]
     public void TestTmxParsing(string file)
@@ -15,10 +15,10 @@ public class ParseTests
 
         Assert.IsNotNull(result);
         Assert.IsNotNull(result.Layers);
-        Assert.IsTrue(result.Layers.Any());
+        Assert.IsNotEmpty(result.Layers);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow("Data/Level0.json")]
     [DataRow("Data/Hexagonal_tileset.json")]
     public void TestJsonParsing(string file)
@@ -28,6 +28,6 @@ public class ParseTests
 
         Assert.IsNotNull(result);
         Assert.IsNotNull(result.Layers);
-        Assert.IsTrue(result.Layers.Any());
+        Assert.IsNotEmpty(result.Layers);
     }
 }

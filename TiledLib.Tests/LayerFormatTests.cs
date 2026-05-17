@@ -5,7 +5,7 @@ namespace TiledLib.Tests;
 [TestClass]
 public class LayerFormatTests
 {
-    [DataTestMethod]
+    [TestMethod]
     [DataRow("Data/External_tileset_map.json")]
     [DataRow("Data/External_tileset_map.tmx")]
     [DataRow("Data/External_tileset_map_base64.json")]
@@ -13,19 +13,17 @@ public class LayerFormatTests
     [DataRow("Data/Level0.json")]
     public void TestUncompressedDecoding(string file)
     {
-        using (var stream = File.OpenRead(file))
-        {
-            var result = Map.FromStream(stream);
+        using var stream = File.OpenRead(file);
+        var result = Map.FromStream(stream);
 
-            Assert.IsNotNull(result);
-            Assert.IsNotNull(result.Layers);
-            Assert.IsTrue(result.Layers.Any());
-            foreach (var tl in result.Layers.OfType<TileLayer>())
-                Assert.IsFalse(tl.Data.All(i => i == 0));
-        }
+        Assert.IsNotNull(result);
+        Assert.IsNotNull(result.Layers);
+        Assert.IsNotEmpty(result.Layers);
+        foreach (var tl in result.Layers.OfType<TileLayer>())
+            Assert.IsFalse(tl.Data.All(i => i == 0));
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow("Data/External_tileset_map_base64_gzip.tmx", "Data/External_tileset_map_base64.tmx")]
     [DataRow("Data/External_tileset_map_base64_zlib.tmx", "Data/External_tileset_map_base64.tmx")]
     [DataRow("Data/External_tileset_map_base64_zlib.json", "Data/External_tileset_map_base64.json")]
@@ -44,7 +42,7 @@ public class LayerFormatTests
 
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.Layers);
-            Assert.IsTrue(result.Layers.Any());
+            Assert.IsNotEmpty(result.Layers);
             foreach (var tl in result.Layers.OfType<TileLayer>())
                 Assert.IsFalse(tl.Data.All(i => i == 0));
 

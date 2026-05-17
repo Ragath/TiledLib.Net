@@ -191,9 +191,10 @@ static class TmxMisc
             "csv" => reader.ReadCSV(count),
             "base64" => compression switch
             {
-                null => reader.ReadBase64(count),
+                "" or null => reader.ReadBase64(count),
                 "gzip" => reader.ReadBase64Decompress((stream, mode) => new Zlib.GZipStream(stream, mode), count),
                 "zlib" => reader.ReadBase64Decompress((stream, mode) => new Zlib.ZlibStream(stream, mode), count),
+                "zstd" => reader.ReadBase64Decompress((stream, mode) => new ZstdSharp.DecompressionStream(stream), count),
                 _ => throw new XmlException(compression),
             },
             _ => throw new NotImplementedException($"Encoding: {encoding}"),

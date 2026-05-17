@@ -44,7 +44,7 @@ public class LayerConverter : JsonConverter<BaseLayer>
                         using var stream = new Zlib.ZlibStream(mStream, Zlib.CompressionMode.Decompress);
                         var bufferSize = result.Width * result.Height * sizeof(uint);
                         Array.Resize(ref buffer, bufferSize);
-                        stream.Read(buffer, 0, bufferSize);
+                        stream.ReadExactly(buffer, 0, bufferSize);
 
                         if (stream.ReadByte() != -1)
                             throw new JsonException();
@@ -59,7 +59,22 @@ public class LayerConverter : JsonConverter<BaseLayer>
                         using var stream = new Zlib.GZipStream(mStream, Zlib.CompressionMode.Decompress);
                         var bufferSize = result.Width * result.Height * sizeof(int);
                         Array.Resize(ref buffer, bufferSize);
-                        stream.Read(buffer, 0, bufferSize);
+                        stream.ReadExactly(buffer, 0, bufferSize);
+
+                        if (stream.ReadByte() != -1)
+                            throw new JsonException();
+
+                        tl.Data = new uint[result.Width * result.Height];
+                        Buffer.BlockCopy(buffer, 0, tl.Data, 0, buffer.Length);
+                    }
+                    break;
+                case "zstd":
+                    using (var mStream = new MemoryStream(buffer))
+                    {
+                        using var stream = new ZstdSharp.DecompressionStream(mStream);
+                        var bufferSize = result.Width * result.Height * sizeof(int);
+                        Array.Resize(ref buffer, bufferSize);
+                        stream.ReadExactly(buffer, 0, bufferSize);
 
                         if (stream.ReadByte() != -1)
                             throw new JsonException();

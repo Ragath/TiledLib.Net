@@ -1,8 +1,12 @@
 ﻿using System.Globalization;
+using System.Reflection.PortableExecutable;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Xml;
 using TiledLib.Layer;
 using TiledLib.Objects;
+using ZstdSharp;
 
 namespace TiledLib;
 
@@ -96,12 +100,28 @@ static class TmxLayers
 
     static void WriteBase64(this XmlWriter writer, TileLayer layer)
     {
-        var buffer = new byte[layer.Data.Length * sizeof(int)];
-        Buffer.BlockCopy(layer.Data, 0, buffer, 0, buffer.Length);
+        // var buffer = new byte[layer.Data.Length * sizeof(int)];
+        // Buffer.BlockCopy(layer.Data, 0, buffer, 0, buffer.Length);
+        //layer.Compression ??= "zlib";
+        writer.WriteRaw(Environment.NewLine);
+        var buffer = layer.Compression switch
+        {
+            "gzip" => Zlib.GZipStream.CompressBuffer(MemoryMarshal.AsBytes(layer.Data.AsSpan()).ToArray()),
+            "zlib" => Zlib.ZlibStream.CompressBuffer(MemoryMarshal.AsBytes(layer.Data.AsSpan()).ToArray()),
+            "zstd" => GetZstdCompressed(MemoryMarshal.AsBytes(layer.Data.AsSpan()).ToArray()),
+            "" or null => MemoryMarshal.AsBytes(layer.Data.AsSpan()).ToArray(),
+            _ => throw new NotImplementedException($"Compression method: <{layer.Compression}>")
+        };
+        writer.WriteBase64(buffer.Array, buffer.Offset, buffer.Count);
+        writer.WriteRaw(Environment.NewLine);
+    }
 
-        writer.WriteRaw(Environment.NewLine);
-        writer.WriteBase64(buffer, 0, buffer.Length);
-        writer.WriteRaw(Environment.NewLine);
+    static ArraySegment<byte> GetZstdCompressed(byte[] data)
+    {
+        using var compressor = new Compressor(1);
+        var compressed = new byte[Compressor.GetCompressBound(data.Length)];
+        var byteswritten = compressor.Wrap(data, compressed, 0);
+        return new ArraySegment<byte>(compressed, 0, byteswritten);
     }
 
 

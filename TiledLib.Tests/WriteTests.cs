@@ -24,7 +24,7 @@ public class WriteTests
         var map = Map.FromStream(original);
         original.Seek(0, SeekOrigin.Begin);
         using var output = new MemoryStream();
-        using (var writer = new StreamWriter(output, Encoding.UTF8, 1024, true))
+        using (var writer = new StreamWriter(output, encoding: Encoding.UTF8, leaveOpen: true))
         {
             new XmlSerializer(typeof(Map)).Serialize(writer, map);
         }
@@ -37,6 +37,7 @@ public class WriteTests
             expected = expected[1..].Trim();
             //TODO: Implement support for property types.
             var attributes = new List<string>() { "type=\"bool\"", "type=\"int\"" };
+            // expect migration
             if (map.Version == "1.0")
                 attributes.Add("infinite=\"0\"");
 

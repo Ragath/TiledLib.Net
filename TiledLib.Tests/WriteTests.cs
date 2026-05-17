@@ -7,6 +7,7 @@ namespace TiledLib.Tests;
 public class WriteTests
 {
     [TestMethod]
+    [DataRow("Data/empty.tmx")]
     [DataRow("Data/Hexagonal_tileset.tmx")]
     [DataRow("Data/External_tileset_map.tmx")]
     [DataRow("Data/tileset_map_base64.tmx")]

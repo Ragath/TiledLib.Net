@@ -42,8 +42,8 @@ static class TmxMap
         writer.WriteAttribute("staggerindex", map.StaggerIndex);
         if (map.BackgroundColor != null)
             writer.WriteAttribute("backgroundcolor", map.BackgroundColor);
-
-        if (decimal.TryParse(map.Version, NumberStyles.Any, CultureInfo.InvariantCulture, out var version) && version >= 1.2m || map.Infinite)
+        
+        if (Version.TryParse(map.Version, out var version) && version >= new Version(1, 2) || map.Infinite)
             writer.WriteAttribute("infinite", map.Infinite);
 
         if (map.NextLayerId != 0)
@@ -93,10 +93,16 @@ static class TmxMap
                     throw new XmlException(reader.Name);
             }
 
-        if (reader.Name == "map")
-            reader.ReadEndElement();
-        else
-            throw new XmlException(reader.Name);
+        switch (reader.Name)
+        {
+            case "map":
+                reader.ReadEndElement();
+                break;
+            case "":
+                break;
+            default:
+                throw new XmlException(reader.Name);
+        }
 
         map.Tilesets = tilesets.ToArray();
         map.Layers = layers.ToArray();

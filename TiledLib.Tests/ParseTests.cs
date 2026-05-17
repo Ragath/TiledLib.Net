@@ -19,6 +19,18 @@ public class ParseTests
     }
 
     [TestMethod]
+    [DataRow("Data/empty.tmx")]
+    public void TestEmptyTmxParsing(string file)
+    {
+        using var mapStream = File.OpenRead(file);
+        var result = new XmlSerializer(typeof(Map)).Deserialize(mapStream) as Map;
+
+        Assert.IsNotNull(result);
+        Assert.IsNotNull(result.Layers);
+        Assert.IsEmpty(result.Layers);
+    }
+
+    [TestMethod]
     [DataRow("Data/Level0.json")]
     [DataRow("Data/Hexagonal_tileset.json")]
     public void TestJsonParsing(string file)

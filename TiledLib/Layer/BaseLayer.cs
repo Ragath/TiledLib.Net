@@ -10,7 +10,7 @@ public abstract class BaseLayer
     public int Id { get; set; }
 
     [JsonPropertyName("name")]
-    public string Name { get; set; }
+    public required string Name { get; set; }
 
     [Required, JsonPropertyName("type")]
     public LayerType LayerType { get; set; }

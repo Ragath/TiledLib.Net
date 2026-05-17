@@ -2,6 +2,7 @@
 
 public static class PropertyExtensions
 {
-    public static string GetValue(this Dictionary<string, string> properties, string key)
-        => properties?.ContainsKey(key) == true ? properties[key] : null;
+    [Obsolete("Use GetValueOrDefault instead.")]
+    public static string? GetValue(this Dictionary<string, string> properties, string key)
+        => properties?.GetValueOrDefault(key);
 }

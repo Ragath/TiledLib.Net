@@ -5,18 +5,18 @@ namespace TiledLib;
 
 public class LayerConverter : JsonConverter<BaseLayer>
 {
-    public override BaseLayer Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    public override BaseLayer? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         var jo = JsonElement.ParseValue(ref reader);
-        byte[] buffer = null;
-        BaseLayer result;
+        byte[]? buffer = null;
+        BaseLayer? result;
         switch (jo.GetProperty("type").GetString())
         {
             case "tilelayer":
-                var jObject = JsonObject.Create(jo);
+                var jObject = JsonObject.Create(jo) ?? throw new NullReferenceException();
                 if (jObject["encoding"]?.GetValue<string>() == "base64")
                 {
-                    buffer = Convert.FromBase64String(jObject["data"].GetValue<string>());
+                    buffer = Convert.FromBase64String(jObject["data"]!.GetValue<string>());
                     jObject.Remove("data");
                 }
                 result = jObject.Deserialize<TileLayer>(options);

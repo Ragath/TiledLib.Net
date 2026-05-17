@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
@@ -14,7 +13,7 @@ public class Map : IXmlSerializable
     public required string Version { get; set; } = "1.0";
 
     [JsonPropertyName("tiledversion")]
-    public string TiledVersion { get; set; }
+    public string? TiledVersion { get; set; }
 
     [JsonPropertyName("orientation")]
     public required Orientation Orientation { get; set; }
@@ -47,10 +46,10 @@ public class Map : IXmlSerializable
     public int NextObjectId { get; set; }
 
     [JsonPropertyName("layers")]
-    public BaseLayer[] Layers { get; set; }
+    public BaseLayer[] Layers { get; set; } = [];
 
     [JsonPropertyName("tilesets")]
-    public ITileset[] Tilesets { get; set; }
+    public ITileset[] Tilesets { get; set; } = [];
 
     [JsonPropertyName("staggeraxis")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
@@ -61,7 +60,7 @@ public class Map : IXmlSerializable
     public StaggerIndex StaggerIndex { get; set; }
 
     [JsonPropertyName("backgroundcolor")]
-    public string BackgroundColor { get; set; }
+    public string? BackgroundColor { get; set; }
 
     [JsonPropertyName("properties")]
     [JsonConverter(typeof(PropertiesConverter))]
@@ -72,10 +71,12 @@ public class Map : IXmlSerializable
     /// </summary>
     /// <param name="stream">JSON stream</param>
     /// <returns>Tiled Map</returns>
-    public static Map FromStream(Stream stream, Func<ExternalTileset, Stream> tsLoader = null)
+    public static Map FromStream(Stream stream, Func<ExternalTileset, Stream>? tsLoader = null)
     {
         using var reader = new StreamReader(stream, System.Text.Encoding.UTF8, true, 1024, true);
         var map = reader.ContainsJson() ? reader.BaseStream.ReadJsonMap() : reader.ReadTmxMap();
+        if(map == null)
+            throw new NullReferenceException("Failed to parse map from stream");
 
         if (tsLoader != null)
             foreach (var item in map.Tilesets)
@@ -88,7 +89,7 @@ public class Map : IXmlSerializable
         return map;
     }
 
-    public XmlSchema GetSchema() => null;
+    public XmlSchema? GetSchema() => null;
 
     public void ReadXml(XmlReader reader)
     {

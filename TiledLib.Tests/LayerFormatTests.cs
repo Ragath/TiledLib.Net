@@ -20,7 +20,10 @@ public class LayerFormatTests
         Assert.IsNotNull(result.Layers);
         Assert.IsNotEmpty(result.Layers);
         foreach (var tl in result.Layers.OfType<TileLayer>())
+        {
+            Assert.IsNotNull(tl.Data);
             Assert.IsFalse(tl.Data.All(i => i == 0));
+        }
     }
 
     [TestMethod]
@@ -44,9 +47,12 @@ public class LayerFormatTests
             Assert.IsNotNull(result.Layers);
             Assert.IsNotEmpty(result.Layers);
             foreach (var tl in result.Layers.OfType<TileLayer>())
+            {
+                Assert.IsNotNull(tl.Data);
                 Assert.IsFalse(tl.Data.All(i => i == 0));
+            }
 
-            Assert.AreEqual(referenceMap.Layers.Length, result.Layers.Length);
+            Assert.HasCount(referenceMap.Layers.Length, result.Layers);
             for (int i = 0; i < referenceMap.Layers.Length; i++)
                 if (referenceMap.Layers[i] is TileLayer refLayer)
                 {

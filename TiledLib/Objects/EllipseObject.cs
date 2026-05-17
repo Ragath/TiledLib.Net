@@ -12,7 +12,7 @@ public class EllipseObject : BaseObject, IXmlSerializable
     [JsonPropertyName("ellipse")]
     public bool IsEllipse { get; set; }
 
-    public XmlSchema GetSchema() => null;
+    public XmlSchema? GetSchema() => null;
 
     public void ReadXml(XmlReader reader)
     {

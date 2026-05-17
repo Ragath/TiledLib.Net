@@ -7,12 +7,12 @@ namespace TiledLib;
 [XmlRoot("tileset")]
 public class Tileset : ITileset, IXmlSerializable
 {
-    public string Name { get; set; }
+    public required string Name { get; set; }
 
     public int FirstGid { get; set; }
 
     [JsonPropertyName("image")]
-    public string ImagePath { get; set; }
+    public string? ImagePath { get; set; }
 
     [JsonPropertyName("imageheight")]
     public int ImageHeight { get; set; }
@@ -27,13 +27,13 @@ public class Tileset : ITileset, IXmlSerializable
     [JsonPropertyName("tilewidth")]
     public int TileWidth { get; set; }
 
-    public Grid Grid { get; set; }
+    public Grid? Grid { get; set; }
 
     [JsonPropertyName("transparentcolor")]
-    public string TransparentColor { get; set; }
+    public string? TransparentColor { get; set; }
 
     [JsonPropertyName("tileoffset")]
-    public TileOffset TileOffset { get; set; }
+    public TileOffset? TileOffset { get; set; }
 
     [JsonPropertyName("properties")]
     [JsonConverter(typeof(PropertiesConverter))]
@@ -59,7 +59,7 @@ public class Tileset : ITileset, IXmlSerializable
             var rows = Rows;
             var index = Utils.GetId(gid) - (int)FirstGid;
             if (index < 0 || index >= rows * columns)
-                throw new ArgumentOutOfRangeException();
+                throw new ArgumentOutOfRangeException(nameof(gid));
 
             var row = index / columns;
 
@@ -74,7 +74,7 @@ public class Tileset : ITileset, IXmlSerializable
         }
     }
 
-    public string this[uint gid, string property]
+    public string? this[uint gid, string property]
     {
         get
         {
@@ -92,13 +92,13 @@ public class Tileset : ITileset, IXmlSerializable
     public static Tileset FromStream(Stream stream)
     {
         if (Utils.ContainsJson(stream))
-            return JsonSerializer.Deserialize<Tileset>(stream, new JsonSerializerOptions(JsonSerializerDefaults.Web));
+            return JsonSerializer.Deserialize<Tileset>(stream, new JsonSerializerOptions(JsonSerializerDefaults.Web)) ?? throw new NullReferenceException();
         else
-            return (Tileset)new XmlSerializer(typeof(Tileset)).Deserialize(stream);
+            return (Tileset)new XmlSerializer(typeof(Tileset)).Deserialize(stream)!;
 
     }
 
-    public XmlSchema GetSchema() => null;
+    public XmlSchema? GetSchema() => null;
 
     public void ReadXml(XmlReader reader)
     {

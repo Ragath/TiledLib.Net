@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using System.Xml;
+﻿using System.Xml;
 using System.Xml.Serialization;
 using TiledLib.Layer;
 
@@ -9,16 +8,16 @@ static class TmxMap
 {
     public static void ReadMapAttributes(this XmlReader reader, Map map)
     {
-        map.Version = reader["version"];
+        map.Version = reader["version"] ?? "1.0";
         map.TiledVersion = reader["tiledversion"];
-        map.Orientation = (Orientation)Enum.Parse(typeof(Orientation), reader["orientation"]);
-        map.RenderOrder = (RenderOrder)Enum.Parse(typeof(RenderOrder), reader["renderorder"]?.Replace("-", ""));
-        map.StaggerAxis = reader["staggeraxis"] == null ? StaggerAxis.None : (StaggerAxis)Enum.Parse(typeof(StaggerAxis), reader["staggeraxis"]);
-        map.StaggerIndex = reader["staggerindex"] == null ? StaggerIndex.None : (StaggerIndex)Enum.Parse(typeof(StaggerIndex), reader["staggerindex"]);
-        map.Width = int.Parse(reader["width"]);
-        map.Height = int.Parse(reader["height"]);
-        map.CellWidth = int.Parse(reader["tilewidth"]);
-        map.CellHeight = int.Parse(reader["tileheight"]);
+        map.Orientation = Enum.Parse<Orientation>(reader["orientation"] ?? throw new NullReferenceException("orientation"));
+        map.RenderOrder = Enum.Parse<RenderOrder>(reader["renderorder"]?.Replace("-", "") ?? throw new NullReferenceException("renderorder"));
+        map.StaggerAxis = reader["staggeraxis"] == null ? StaggerAxis.None : Enum.Parse<StaggerAxis>(reader["staggeraxis"]!);
+        map.StaggerIndex = reader["staggerindex"] == null ? StaggerIndex.None : Enum.Parse<StaggerIndex>(reader["staggerindex"]!);
+        map.Width = int.Parse(reader["width"]!);
+        map.Height = int.Parse(reader["height"]!);
+        map.CellWidth = int.Parse(reader["tilewidth"]!);
+        map.CellHeight = int.Parse(reader["tileheight"]!);
         map.HexSideLength = reader["hexsidelength"].ParseInt32();
         map.Infinite = reader["infinite"].ParseBool().GetValueOrDefault();
         map.NextLayerId = reader["nextlayerid"].ParseInt32().GetValueOrDefault();
@@ -29,7 +28,7 @@ static class TmxMap
     public static void WriteMapAttributes(this XmlWriter writer, Map map)
     {
         writer.WriteAttribute("version", map.Version);
-        writer.WriteAttribute("tiledversion", map.TiledVersion);
+        writer.WriteAttribute("tiledversion", map.TiledVersion ?? "");
 
         writer.WriteAttribute("orientation", map.Orientation);
         writer.WriteAttribute("renderorder", map.RenderOrder);
@@ -42,7 +41,7 @@ static class TmxMap
         writer.WriteAttribute("staggerindex", map.StaggerIndex);
         if (map.BackgroundColor != null)
             writer.WriteAttribute("backgroundcolor", map.BackgroundColor);
-        
+
         if (Version.TryParse(map.Version, out var version) && version >= new Version(1, 2) || map.Infinite)
             writer.WriteAttribute("infinite", map.Infinite);
 
@@ -66,25 +65,25 @@ static class TmxMap
                     if (reader["source"] == null)
                     {
                         var xmlSerializer = new XmlSerializer(typeof(Tileset));
-                        tilesets.Add((Tileset)xmlSerializer.Deserialize(reader));
+                        tilesets.Add((Tileset)xmlSerializer.Deserialize(reader)!);
                     }
                     else
                     {
-                        tilesets.Add(new ExternalTileset { FirstGid = int.Parse(reader["firstgid"]), Source = reader["source"] });
+                        tilesets.Add(new ExternalTileset { FirstGid = int.Parse(reader["firstgid"]!), Source = reader["source"]! });
                         reader.Read();
                     }
                     break;
                 case "layer":
                     var xmlSerializer1 = new XmlSerializer(typeof(TileLayer));
-                    layers.Add((BaseLayer)xmlSerializer1.Deserialize(reader));
+                    layers.Add((BaseLayer)xmlSerializer1.Deserialize(reader)!);
                     break;
                 case "objectgroup":
                     var xmlSerializer2 = new XmlSerializer(typeof(ObjectLayer));
-                    layers.Add((BaseLayer)xmlSerializer2.Deserialize(reader));
+                    layers.Add((BaseLayer)xmlSerializer2.Deserialize(reader)!);
                     break;
                 case "imagelayer":
                     var xmlSerializer3 = new XmlSerializer(typeof(ImageLayer));
-                    layers.Add((BaseLayer)xmlSerializer3.Deserialize(reader));
+                    layers.Add((BaseLayer)xmlSerializer3.Deserialize(reader)!);
                     break;
                 case "properties":
                     reader.ReadProperties(map.Properties);
@@ -104,8 +103,8 @@ static class TmxMap
                 throw new XmlException(reader.Name);
         }
 
-        map.Tilesets = tilesets.ToArray();
-        map.Layers = layers.ToArray();
+        map.Tilesets = [.. tilesets];
+        map.Layers = [.. layers];
     }
 
     public static void WriteMapElements(this XmlWriter writer, Map map)
@@ -117,7 +116,8 @@ static class TmxMap
                 case ExternalTileset ts:
                     writer.WriteStartElement("tileset");
                     writer.WriteAttribute("firstgid", ts.FirstGid);
-                    writer.WriteAttribute("source", ts.Source);
+                    if (ts.Source != null)
+                        writer.WriteAttribute("source", ts.Source);
                     writer.WriteEndElement();
                     break;
                 case Tileset ts:
@@ -157,7 +157,7 @@ static class TmxMap
 
                         writer.WriteStartElement("image");
                         {
-                            writer.WriteAttribute("source", ts.ImagePath);
+                            writer.WriteAttribute("source", ts.ImagePath ?? throw new NullReferenceException(nameof(ts.ImagePath)));
                             if (ts.ImageWidth != 0)
                                 writer.WriteAttribute("width", ts.ImageWidth);
                             if (ts.ImageHeight != 0)
@@ -215,7 +215,7 @@ static class TmxMap
 
                         writer.WriteStartElement("image");
                         {
-                            writer.WriteAttribute("source", l.Image);
+                            writer.WriteAttribute("source", l.Image ?? throw new NullReferenceException(nameof(l.Image)));
                         }
                         writer.WriteEndElement();
                     }

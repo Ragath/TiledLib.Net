@@ -11,8 +11,8 @@ static class TmxProperties
             throw new XmlException(reader.Name);
 
         var parent = XNode.ReadFrom(reader) as XElement;
-        foreach (var e in parent.Elements())
-            properties[e.Attribute("name").Value] = e.IsEmpty ? e.Attribute("value").Value : e.Value;
+        foreach (var e in parent!.Elements())
+            properties[e.Attribute("name")!.Value] = e.IsEmpty ? e.Attribute("value")!.Value : e.Value;
     }
 
     public static void WriteProperties(this XmlWriter writer, Dictionary<string, string> properties)

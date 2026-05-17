@@ -86,6 +86,8 @@
 
 //------------------------------------------------------------------------------
 
+#pragma warning disable
+
 using System.Text;
 
 namespace TiledLib.Zlib;

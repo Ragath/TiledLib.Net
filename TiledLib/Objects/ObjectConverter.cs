@@ -2,7 +2,7 @@
 
 class ObjectConverter : JsonConverter<BaseObject>
 {
-    public override BaseObject Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    public override BaseObject? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         var jo = JsonElement.ParseValue(ref reader);
 

@@ -1,6 +1,4 @@
 ﻿using System.Globalization;
-using System.Reflection.PortableExecutable;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Xml;
@@ -35,9 +33,9 @@ static class TmxLayers
 
             writer.WriteStartElement("data");
             {
-                writer.WriteAttribute("encoding", layer.Encoding);
+                writer.WriteAttribute("encoding", layer.Encoding ?? "csv");
                 //TODO: writer.WriteAttribute("compression", layer.Compression);
-                switch (layer.Encoding)
+                switch (layer.Encoding ?? "csv")
                 {
                     case "csv":
                         writer.WriteCSV(layer);
@@ -88,7 +86,7 @@ static class TmxLayers
             sb.Clear();
             for (int x = 0; x < layer.Width; x++, i++)
             {
-                sb.Append(layer.Data[i]);
+                sb.Append(layer.Data![i]);
                 sb.Append(',');
             }
             if (y + 1 == layer.Height)
@@ -112,7 +110,7 @@ static class TmxLayers
             "" or null => MemoryMarshal.AsBytes(layer.Data.AsSpan()).ToArray(),
             _ => throw new NotImplementedException($"Compression method: <{layer.Compression}>")
         };
-        writer.WriteBase64(buffer.Array, buffer.Offset, buffer.Count);
+        writer.WriteBase64(buffer.Array!, buffer.Offset, buffer.Count);
         writer.WriteRaw(Environment.NewLine);
     }
 
@@ -137,12 +135,12 @@ static class TmxLayers
 
         var gid = reader["gid"].ParseInt32();
 
-        var x = reader["x"].ParseDouble().Value;
-        var y = reader["y"].ParseDouble().Value;
+        var x = reader["x"].ParseDouble()!.Value;
+        var y = reader["y"].ParseDouble()!.Value;
         var w = reader["width"].ParseDouble();
         var h = reader["height"].ParseDouble();
 
-        BaseObject result = null;
+        BaseObject? result = null;
         var properties = new Dictionary<string, string>();
         if (reader.IsEmptyElement)
             reader.Skip();
@@ -162,8 +160,8 @@ static class TmxLayers
                             Id = id,
                             X = x,
                             Y = y,
-                            Width = w.Value,
-                            Height = h.Value,
+                            Width = w!.Value,
+                            Height = h!.Value,
                             Name = name,
                             IsEllipse = true,
                             ObjectType = type
@@ -222,8 +220,8 @@ static class TmxLayers
                 Gid = gid.Value,
                 X = x,
                 Y = y,
-                Width = w.Value,
-                Height = h.Value,
+                Width = w!.Value,
+                Height = h!.Value,
                 Name = name,
                 ObjectType = type
             };
@@ -313,7 +311,7 @@ static class TmxLayers
 
 
     static IEnumerable<Position> ReadPoints(this XmlReader reader)
-        => from p in reader["points"].Split(' ')
+        => from p in reader["points"]?.Split(' ') ?? []
            let split = p.IndexOf(',')
            select new Position(double.Parse(p[..split], CultureInfo.InvariantCulture), double.Parse(p[(split + 1)..], CultureInfo.InvariantCulture));
 

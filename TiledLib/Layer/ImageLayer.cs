@@ -8,9 +8,9 @@ namespace TiledLib.Layer;
 public class ImageLayer : BaseLayer, IXmlSerializable
 {
     [JsonPropertyName("image")]
-    public string Image { get; set; }
+    public string? Image { get; set; }
 
-    public XmlSchema GetSchema() => null;
+    public XmlSchema? GetSchema() => null;
 
     public void ReadXml(XmlReader reader)
     {
@@ -38,6 +38,6 @@ public class ImageLayer : BaseLayer, IXmlSerializable
         reader.ReadEndElement();
     }
 
-    public void WriteXml(XmlWriter writer) 
+    public void WriteXml(XmlWriter writer)
         => throw new NotImplementedException();
 }

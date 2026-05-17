@@ -10,9 +10,9 @@ namespace TiledLib.Layer;
 public class ObjectLayer : BaseLayer, IXmlSerializable
 {
     [Required, JsonPropertyName("objects")]
-    public BaseObject[] Objects { get; set; }
+    public BaseObject[] Objects { get; set; } = [];
 
-    public XmlSchema GetSchema() => null;
+    public XmlSchema? GetSchema() => null;
 
     public void ReadXml(XmlReader reader)
     {

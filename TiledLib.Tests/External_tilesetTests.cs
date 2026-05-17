@@ -14,7 +14,7 @@ public class TilesetTests
 
         Tileset LoadTileset(ExternalTileset t)
         {
-            using var stream = File.OpenRead(Path.Combine(Path.GetDirectoryName(file)!, t.Source));
+            using var stream = File.OpenRead(Path.Combine(Path.GetDirectoryName(file)!, t.Source ?? throw new NullReferenceException()));
             return Tileset.FromStream(stream);
         }
 

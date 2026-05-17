@@ -33,11 +33,11 @@ static class TmxMisc
             throw new XmlException(reader.Name);
 
         if (reader["firstgid"] != null)
-            ts.FirstGid = int.Parse(reader["firstgid"]);
+            ts.FirstGid = int.Parse(reader["firstgid"]!);
 
-        ts.Name = reader["name"];
-        ts.TileWidth = int.Parse(reader["tilewidth"]);
-        ts.TileHeight = int.Parse(reader["tileheight"]);
+        ts.Name = reader["name"] ?? throw new NullReferenceException("name");
+        ts.TileWidth = int.Parse(reader["tilewidth"]!);
+        ts.TileHeight = int.Parse(reader["tileheight"]!);
         ts.Spacing = int.Parse(reader["spacing"] ?? "0");
 
         var tileCount = reader["tilecount"].ParseInt32();
@@ -50,24 +50,24 @@ static class TmxMisc
                 case "tileoffset":
                     ts.TileOffset = new TileOffset
                     {
-                        X = int.Parse(reader["x"]),
-                        Y = int.Parse(reader["y"])
+                        X = int.Parse(reader["x"]!),
+                        Y = int.Parse(reader["y"]!)
                     };
                     reader.Skip();
                     break;
                 case "grid":
                     ts.Grid = new Grid
                     {
-                        Width = int.Parse(reader["width"]),
-                        Height = int.Parse(reader["height"]),
-                        Orientation = (Orientation)Enum.Parse(typeof(Orientation), reader["orientation"])
+                        Width = int.Parse(reader["width"]!),
+                        Height = int.Parse(reader["height"]!),
+                        Orientation = (Orientation)Enum.Parse(typeof(Orientation), reader["orientation"]!)
                     };
                     reader.Skip();
                     break;
                 case "image":
-                    ts.ImagePath = reader["source"];
-                    ts.ImageWidth = int.Parse(reader["width"]);
-                    ts.ImageHeight = int.Parse(reader["height"]);
+                    ts.ImagePath = reader["source"] ?? throw new NullReferenceException("source");
+                    ts.ImageWidth = int.Parse(reader["width"]!);
+                    ts.ImageHeight = int.Parse(reader["height"]!);
                     reader.Skip();
                     break;
                 case "properties":
@@ -92,7 +92,7 @@ static class TmxMisc
         if (!reader.IsStartElement("tile"))
             throw new XmlException(reader.Name);
 
-        var id = int.Parse(reader["id"]);
+        var id = int.Parse(reader["id"]!);
         if (!tileProperties.TryGetValue(id, out var properties) || properties == null)
             properties = tileProperties[id] = [];
 
@@ -130,10 +130,7 @@ static class TmxMisc
             throw new XmlException(reader.Name);
 
         var parent = XNode.ReadFrom(reader) as XElement;
-        return parent
-            .Elements()
-            .Select(e => new Frame { TileId = int.Parse(e.Attribute("tileid").Value), Duration_ms = int.Parse(e.Attribute("duration").Value) })
-            .ToArray();
+        return [.. parent!.Elements().Select(e => new Frame { TileId = int.Parse(e.Attribute("tileid")!.Value), Duration_ms = int.Parse(e.Attribute("duration")!.Value) })];
     }
 
     static uint[] ReadCSV(this XmlReader reader, int size)
@@ -181,7 +178,7 @@ static class TmxMisc
         return data;
     }
 
-    public static uint[] ReadData(this XmlReader reader, int count, out string encoding, out string compression)
+    public static uint[] ReadData(this XmlReader reader, int count, out string? encoding, out string? compression)
     {
         encoding = reader["encoding"];
         compression = reader["compression"];

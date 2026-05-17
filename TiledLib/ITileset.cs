@@ -4,12 +4,12 @@
 public interface ITileset
 {
     Tile this[uint gid] { get; }
-    string this[uint gid, string property] { get; }
+    string? this[uint gid, string property] { get; }
 
     int Columns { get; }
     int FirstGid { get; }
     int ImageHeight { get; }
-    string ImagePath { get; }
+    string? ImagePath { get; }
     int ImageWidth { get; }
     int Margin { get; }
     string Name { get; }
@@ -22,8 +22,8 @@ public interface ITileset
     int TileWidth { get; }
 
     Dictionary<int, Dictionary<string, string>> TileProperties { get; }
-    string TransparentColor { get; }
+    string? TransparentColor { get; }
 
-    TileOffset TileOffset { get; }
+    TileOffset? TileOffset { get; }
     Dictionary<int, Frame[]> TileAnimations { get; }
 }

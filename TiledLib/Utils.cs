@@ -5,8 +5,8 @@ public static class Utils
 {
     internal static readonly System.Xml.Serialization.XmlSerializer XmlSerializer = new System.Xml.Serialization.XmlSerializer(typeof(Map));
 
-    public static Map ReadJsonMap(this Stream stream) => JsonSerializer.Deserialize<Map>(stream, new JsonSerializerOptions(JsonSerializerDefaults.Web));
-    public static Map ReadTmxMap(this TextReader reader) => (Map)XmlSerializer.Deserialize(reader);
+    public static Map? ReadJsonMap(this Stream stream) => JsonSerializer.Deserialize<Map>(stream, new JsonSerializerOptions(JsonSerializerDefaults.Web));
+    public static Map? ReadTmxMap(this TextReader reader) => (Map?)XmlSerializer.Deserialize(reader);
 
     public static void WriteTmxMap(this TextWriter writer, Map map) => XmlSerializer.Serialize(writer, map);
 

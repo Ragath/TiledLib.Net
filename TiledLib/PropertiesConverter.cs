@@ -7,17 +7,17 @@ public class PropertiesConverter : JsonConverter<Dictionary<string, string>>
 {
     protected class Property
     {
-        public string Name { get; set; }
-        public string Type { get; set; }
+        public required string Name { get; set; }
+        public string? Type { get; set; }
         [JsonConverter(typeof(JsonStringConverter))]
-        public string Value { get; set; }
+        public required string Value { get; set; }
     }
 
-    public override Dictionary<string, string> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    public override Dictionary<string, string>? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         if (reader.TokenType == JsonTokenType.StartArray)
         {
-            var result = JsonSerializer.Deserialize<Property[]>(ref reader, options).ToDictionary(key => key.Name, value => value.Value.ToString());
+            var result = JsonSerializer.Deserialize<Property[]>(ref reader, options)?.ToDictionary(key => key.Name, value => value.Value.ToString());
             return result;
         }
         else

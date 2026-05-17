@@ -9,16 +9,16 @@ namespace TiledLib.Layer;
 public class TileLayer : BaseLayer, IXmlSerializable
 {
     [JsonPropertyName("encoding")]
-    public string Encoding { get; set; }
+    public string? Encoding { get; set; }
 
     [JsonPropertyName("compression")]
-    public string Compression { get; set; }
+    public string? Compression { get; set; }
 
     [Required]
     [JsonPropertyName("data")]
-    public uint[] Data { get; set; }
+    public uint[]? Data { get; set; }
 
-    public XmlSchema GetSchema() => null;
+    public XmlSchema? GetSchema() => null;
 
     public void ReadXml(XmlReader reader)
     {

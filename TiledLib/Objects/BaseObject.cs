@@ -4,14 +4,14 @@
 public abstract class BaseObject
 {
     [JsonPropertyName("name")]
-    public string Name { get; set; }
+    public string? Name { get; set; }
 
     [JsonPropertyName("type")]
-    public string ObjectType { get; set; }
+    public string? ObjectType { get; set; }
 
 
     [JsonPropertyName("visible")]
-    public bool Visible { get; set; }
+    public bool Visible { get; set; } = true;
 
     [JsonPropertyName("id")]
     public int Id { get; set; }

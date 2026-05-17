@@ -18,13 +18,14 @@ public class TileTests
     public void TestTileIndexer(string filename)
     {
         using var stream = File.OpenRead(filename);
-        var map = Map.FromStream(stream, ts => File.OpenRead(Path.Combine(Path.GetDirectoryName(filename), ts.Source)));
+        var map = Map.FromStream(stream, ts => File.OpenRead(Path.Combine(Path.GetDirectoryName(filename) ?? throw new NullReferenceException(), ts.Source ?? throw new NullReferenceException())));
 
         foreach (var layer in map.Layers.OfType<TileLayer>())
         {
             for (int y = 0, i = 0; y < layer.Height; y++)
                 for (int x = 0; x < layer.Width; x++, i++)
                 {
+                    Assert.IsNotNull(layer.Data);
                     var gid = layer.Data[i];
                     if (gid == 0)
                         continue;

@@ -1,6 +1,4 @@
-﻿using System.IO;
-using System.Linq;
-using Microsoft.Xna.Framework.Content.Pipeline;
+﻿using Microsoft.Xna.Framework.Content.Pipeline;
 
 namespace TiledLib.Pipeline;
 
@@ -9,7 +7,13 @@ public class TiledMapImporter : ContentImporter<Map>
 {
     public override Map Import(string filename, ContentImporterContext context)
     {
-        string GetPath(string path) => Path.IsPathRooted(path) ? path : Path.Combine(Path.GetDirectoryName(filename), path);
+        ArgumentNullException.ThrowIfNull(filename);
+        string GetPath(string? path) => path switch
+        {
+            null => throw new ArgumentNullException(nameof(path)),
+            _ when Path.IsPathRooted(path) => path,
+            _ => Path.Combine(Path.GetDirectoryName(filename) ?? "", path)
+        };
 
         using var stream = File.OpenRead(filename);
         var map = Map.FromStream(stream, ts => File.OpenRead(GetPath(ts.Source)));

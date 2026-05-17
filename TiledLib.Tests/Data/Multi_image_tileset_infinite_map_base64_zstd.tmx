@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="2" nextobjectid="1">
+ <tileset firstgid="1" source="External_tileset.json"/>
+ <tileset firstgid="1441" source="Chests.tsx"/>
+ <tileset firstgid="1444" source="tsx_tileset.tsx"/>
+ <layer id="1" name="Tile Layer 1" width="30" height="20">
+  <data encoding="base64" compression="zstd">
+   <chunk x="0" y="0" width="16" height="16">
+   KLUv/WAAAw0CAPB5AAAAensAoQUAAKIAAAClowChAAWjBckAAADKywANAJ9wFd7VenBiBnbGhiC3VRuukjHOISBhJXlnMZzTrt0b
+  </chunk>
+  </data>
+ </layer>
+</map>

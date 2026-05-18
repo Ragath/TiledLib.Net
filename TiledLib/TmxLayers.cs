@@ -31,21 +31,45 @@ static class TmxLayers
 
             writer.WriteProperties(layer.Properties);
 
+
             writer.WriteStartElement("data");
             {
                 writer.WriteAttribute("encoding", layer.Encoding ?? "csv");
-                //TODO: writer.WriteAttribute("compression", layer.Compression);
-                switch (layer.Encoding ?? "csv")
-                {
-                    case "csv":
-                        writer.WriteCSV(layer);
-                        break;
-                    case "base64":
-                        writer.WriteBase64(layer);
-                        break;
-                    default:
-                        throw new NotImplementedException();
-                }
+                if (layer.Compression != null)
+                    writer.WriteAttribute("compression", layer.Compression);
+                if (layer is ChunkLayer chunkLayer)
+                    foreach (var chunk in chunkLayer.Chunks!)
+                    {
+                        writer.WriteStartElement("chunk");
+                        writer.WriteAttribute("x", chunk.X);
+                        writer.WriteAttribute("y", chunk.Y);
+                        writer.WriteAttribute("width", chunk.Width);
+                        writer.WriteAttribute("height", chunk.Height);
+                        switch (layer.Encoding ?? "csv")
+                        {
+                            case "csv":
+                                writer.WriteCSV(chunk);
+                                break;
+                            case "base64":
+                                writer.WriteBase64(chunk, layer.Compression);
+                                break;
+                            default:
+                                throw new NotImplementedException();
+                        }
+                        writer.WriteEndElement();
+                    }
+                else
+                    switch (layer.Encoding ?? "csv")
+                    {
+                        case "csv":
+                            writer.WriteCSV(layer);
+                            break;
+                        case "base64":
+                            writer.WriteBase64(layer);
+                            break;
+                        default:
+                            throw new NotImplementedException();
+                    }
             }
             writer.WriteEndElement();
         }
@@ -95,6 +119,24 @@ static class TmxLayers
             writer.WriteRaw(sb.ToString());
         }
     }
+    static void WriteCSV(this XmlWriter writer, Chunk chunk)
+    {
+        writer.WriteRaw(Environment.NewLine);
+        var sb = new StringBuilder(chunk.Width * 4);
+        for (int y = 0, i = 0; y < chunk.Height; y++)
+        {
+            sb.Clear();
+            for (int x = 0; x < chunk.Width; x++, i++)
+            {
+                sb.Append(chunk.Data![i]);
+                sb.Append(',');
+            }
+            if (y + 1 == chunk.Height)
+                sb.Length--;
+            sb.AppendLine();
+            writer.WriteRaw(sb.ToString());
+        }
+    }
 
     static void WriteBase64(this XmlWriter writer, TileLayer layer)
     {
@@ -109,6 +151,23 @@ static class TmxLayers
             "zstd" => GetZstdCompressed(MemoryMarshal.AsBytes(layer.Data.AsSpan()).ToArray()),
             "" or null => MemoryMarshal.AsBytes(layer.Data.AsSpan()).ToArray(),
             _ => throw new NotImplementedException($"Compression method: <{layer.Compression}>")
+        };
+        writer.WriteBase64(buffer.Array!, buffer.Offset, buffer.Count);
+        writer.WriteRaw(Environment.NewLine);
+    }
+    static void WriteBase64(this XmlWriter writer, Chunk chunk, string? compression)
+    {
+        // var buffer = new byte[layer.Data.Length * sizeof(int)];
+        // Buffer.BlockCopy(layer.Data, 0, buffer, 0, buffer.Length);
+        //layer.Compression ??= "zlib";
+        writer.WriteRaw(Environment.NewLine);
+        var buffer = compression switch
+        {
+            "gzip" => Zlib.GZipStream.CompressBuffer(MemoryMarshal.AsBytes(chunk.Data.AsSpan()).ToArray()),
+            "zlib" => Zlib.ZlibStream.CompressBuffer(MemoryMarshal.AsBytes(chunk.Data.AsSpan()).ToArray()),
+            "zstd" => GetZstdCompressed(MemoryMarshal.AsBytes(chunk.Data.AsSpan()).ToArray()),
+            "" or null => MemoryMarshal.AsBytes(chunk.Data.AsSpan()).ToArray(),
+            _ => throw new NotImplementedException($"Compression method: <{compression}>")
         };
         writer.WriteBase64(buffer.Array!, buffer.Offset, buffer.Count);
         writer.WriteRaw(Environment.NewLine);

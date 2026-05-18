@@ -21,6 +21,11 @@
 		</Content>
 	</ItemGroup>
 
+
+	<ItemGroup>
+	  <PackageReference Include="XMLUnit.Core" Version="2.11.1" />
+	</ItemGroup>
+
 	<ItemGroup>
 		<ProjectReference Include="..\TiledLib\TiledLib.csproj" />
 	</ItemGroup>

@@ -42,8 +42,8 @@ static class TmxMap
         if (map.BackgroundColor != null)
             writer.WriteAttribute("backgroundcolor", map.BackgroundColor);
 
-        if (Version.TryParse(map.Version, out var version) && version >= new Version(1, 2) || map.Infinite)
-            writer.WriteAttribute("infinite", map.Infinite);
+        //if (Version.TryParse(map.TiledVersion, out var version) && version >= new Version(1, 1) || map.Infinite)
+        writer.WriteAttribute("infinite", map.Infinite);
 
         if (map.NextLayerId != 0)
             writer.WriteAttribute("nextlayerid", map.NextLayerId);
@@ -74,8 +74,16 @@ static class TmxMap
                     }
                     break;
                 case "layer":
-                    var xmlSerializer1 = new XmlSerializer(typeof(TileLayer));
-                    layers.Add((BaseLayer)xmlSerializer1.Deserialize(reader)!);
+                    if (map.Infinite)
+                    {
+                        var xmlSerializer1 = new XmlSerializer(typeof(ChunkLayer));
+                        layers.Add((BaseLayer)xmlSerializer1.Deserialize(reader)!);
+                    }
+                    else
+                    {
+                        var xmlSerializer1 = new XmlSerializer(typeof(TileLayer));
+                        layers.Add((BaseLayer)xmlSerializer1.Deserialize(reader)!);
+                    }
                     break;
                 case "objectgroup":
                     var xmlSerializer2 = new XmlSerializer(typeof(ObjectLayer));

@@ -1,7 +1,10 @@
 using System.ComponentModel.DataAnnotations;
+using System.Text;
 using System.Xml;
+using System.Xml.Linq;
 using System.Xml.Schema;
 using System.Xml.Serialization;
+using ZstdSharp;
 
 namespace TiledLib.Layer;
 
@@ -20,7 +23,7 @@ public class TileLayer : BaseLayer, IXmlSerializable
 
     public XmlSchema? GetSchema() => null;
 
-    public void ReadXml(XmlReader reader)
+    public virtual void ReadXml(XmlReader reader)
     {
         if (!reader.IsStartElement("layer"))
             throw new XmlException();
@@ -38,9 +41,10 @@ public class TileLayer : BaseLayer, IXmlSerializable
                     break;
                 case "data":
                     foundData = true;
-                    Data = reader.ReadData(Width * Height, out var encoding, out var compression);
-                    Encoding = encoding;
-                    Compression = compression;
+
+                    Encoding = reader["encoding"];
+                    Compression = reader["compression"];
+                    Data = reader.ReadData(Width * Height, Encoding, Compression);
                     break;
                 default:
                     throw new XmlException(reader.Name);

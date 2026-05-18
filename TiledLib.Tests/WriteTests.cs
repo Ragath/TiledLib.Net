@@ -1,5 +1,14 @@
-﻿using System.Text;
+﻿using System.Buffers.Text;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Xml;
 using System.Xml.Serialization;
+using Org.XmlUnit.Builder;
+using Org.XmlUnit.Diff;
+using Org.XmlUnit.Util;
+using TiledLib.Layer;
+
 
 namespace TiledLib.Tests;
 
@@ -12,6 +21,7 @@ public class WriteTests
     [DataRow("Data/External_tileset_map.tmx")]
     [DataRow("Data/tileset_map_base64.tmx")]
     [DataRow("Data/External_tileset_map_base64.tmx")]
+    [DataRow("Data/Multi_image_tileset_infinite_map_base64_zstd.tmx")]
     public void TestWriting(string file)
     {
         using var original = new MemoryStream();
@@ -28,25 +38,81 @@ public class WriteTests
         {
             new XmlSerializer(typeof(Map)).Serialize(writer, map);
         }
+        original.Seek(0, SeekOrigin.Begin);
+        output.Seek(0, SeekOrigin.Begin);
 
         var expected = Encoding.UTF8.GetString(original.ToArray()).Replace("UTF-8", "utf-8");
-        var result = Encoding.UTF8.GetString(output.ToArray())[1..]; //Skip BOM
+        var result = Encoding.UTF8.GetString(output.ToArray()).TrimStart('\uFEFF');
 
-        while (expected.Length > 0 && result.Length > 0 && char.ToLowerInvariant(expected[0]) == char.ToLowerInvariant(result[0]))
-        {
-            expected = expected[1..].Trim();
-            //TODO: Implement support for property types.
-            var attributes = new List<string>() { "type=\"bool\"", "type=\"int\"" };
-            // expect migration
-            if (map.Version == "1.0")
-                attributes.Add("infinite=\"0\"");
 
-            foreach (var item in attributes)
-                while (expected.StartsWith(item))
-                    expected = expected[item.Length..].Trim();
+        var xmlDiff = DiffBuilder.Compare(Input.FromString(expected))
+            .WithTest(Input.FromString(result))
+            .CheckForSimilar() // Similar handles different element/attribute ordering safely
+            .WithNodeMatcher(new DefaultNodeMatcher(ElementSelectors.ByNameAndAllAttributes(a => a switch
+            {
+                { Name: "type", OwnerElement.Name: "property" } => false,
+                { Name: "infinite", OwnerElement.Name: "map" } => false,
+                _ => true
+            })))
+            //.WithNodeMatcher(new DefaultNodeMatcher(ElementSelectors.ByNameAndAllAttributes))
+            .IgnoreWhitespace()
+            .IgnoreElementContentWhitespace()
+            .IgnoreComments()
+            .WithDifferenceEvaluator((c, o) => o == ComparisonResult.DIFFERENT && c switch
+            {
+                // 1. Attribute count matches on a <property> element
+                {
+                    Type: ComparisonType.ELEMENT_NUM_ATTRIBUTES,
+                    ControlDetails.Target.Name: "property" or "map"
+                } => true,
+                // 2. The 'type' attribute is missing on a <property> element
+                {
+                    ControlDetails.Target: XmlAttribute { Name: "type", OwnerElement.Name: "property" }
+                } => true,
+                // 3. The 'type' attribute value is different on a <property> element
+                {
+                    TestDetails.Target: XmlAttribute { Name: "type", OwnerElement.Name: "property" }
+                } => true,
+                {
+                    Type: ComparisonType.ATTR_NAME_LOOKUP,
+                    ControlDetails.Target.Name: "property",
+                    ControlDetails.Value: XmlQualifiedName { Name: "type" }
+                } => true,
+                {
+                    Type: ComparisonType.ATTR_NAME_LOOKUP,
+                    ControlDetails.Target.Name: "map",
+                    ControlDetails.Value: XmlQualifiedName { Name: "infinite" }
+                } => true,
+                {
+                    Type: ComparisonType.ATTR_NAME_LOOKUP,
+                    TestDetails.Target.Name: "map",
+                    TestDetails.Value: XmlQualifiedName { Name: "infinite" }
+                } => true,
+                {
+                    Type: ComparisonType.TEXT_VALUE,
+                    ControlDetails.Target.ParentNode.Name: "chunk",
+                } => Enumerable.SequenceEqual(Base64DecompressZstd(c.ControlDetails.Value.ToString()!).ToArray(), Base64DecompressZstd(c.TestDetails.Value.ToString()!).ToArray()),
+                // Fallback for everything else
+                _ => false
+            } ? ComparisonResult.EQUAL : o)
+            .WithDifferenceListeners((comparison, outcome) =>
+            {
+                //File.WriteAllText("expected.xml", expected);
+                //File.WriteAllText("result.xml", result);
+                Assert.Fail($"found a difference: {comparison}");
+            })
+            .Build();
+    }
 
-            result = result[1..].Trim();
-        }
-        Assert.AreEqual(expected, result, ignoreCase: true);
+    static ReadOnlySpan<uint> Base64DecompressZstd(string input)
+    {
+        var ms = new MemoryStream(System.Convert.FromBase64String(input));
+        ms.Seek(0, SeekOrigin.Begin);
+        using var stream = new ZstdSharp.DecompressionStream(ms);
+        using var ms_output = new MemoryStream();
+        stream.CopyTo(ms_output);
+        var bytes = ms_output.ToArray();
+        var data = MemoryMarshal.Cast<byte, uint>(bytes);
+        return data;
     }
 }

@@ -178,11 +178,8 @@ static class TmxMisc
         return data;
     }
 
-    public static uint[] ReadData(this XmlReader reader, int count, out string? encoding, out string? compression)
+    public static uint[] ReadData(this XmlReader reader, int count, string? encoding, string? compression)
     {
-        encoding = reader["encoding"];
-        compression = reader["compression"];
-
         return encoding switch
         {
             "csv" => reader.ReadCSV(count),
@@ -196,6 +193,32 @@ static class TmxMisc
             },
             _ => throw new NotImplementedException($"Encoding: {encoding}"),
         };
+    }
+
+    public static Chunk ReadChunk(this XmlReader reader, string? encoding, string? compression)
+    {
+        var chunk = new Chunk
+        {
+            X = reader["x"].ParseInt32()!.Value,
+            Y = reader["y"].ParseInt32()!.Value,
+            Width = reader["width"].ParseInt32()!.Value,
+            Height = reader["height"].ParseInt32()!.Value,
+        };
+        var count = chunk.Width * chunk.Height;
+        chunk.Data = encoding switch
+        {
+            "csv" => reader.ReadCSV(count),
+            "base64" => compression switch
+            {
+                "" or null => reader.ReadBase64(count),
+                "gzip" => reader.ReadBase64Decompress((stream, mode) => new Zlib.GZipStream(stream, mode), count),
+                "zlib" => reader.ReadBase64Decompress((stream, mode) => new Zlib.ZlibStream(stream, mode), count),
+                "zstd" => reader.ReadBase64Decompress((stream, mode) => new ZstdSharp.DecompressionStream(stream), count),
+                _ => throw new XmlException(compression),
+            },
+            _ => throw new NotImplementedException($"Encoding: {encoding}"),
+        };
+        return chunk;
     }
 
     public static void WriteAttribute(this XmlWriter writer, string localName, int? value)

@@ -4,6 +4,9 @@
  <tileset firstgid="1441" source="Chests.tsx"/>
  <tileset firstgid="1444" source="tsx_tileset.tsx"/>
  <layer id="1" name="Tile Layer 1" width="30" height="20">
+  <properties>
+   <property name="abc" type="int" value="123"/>
+  </properties>
   <data encoding="base64" compression="zstd">
    <chunk x="0" y="0" width="16" height="16">
    KLUv/WAAAw0CAPB5AAAAensAoQUAAKIAAAClowChAAWjBckAAADKywANAJ9wFd7VenBiBnbGhiC3VRuukjHOISBhJXlnMZzTrt0b

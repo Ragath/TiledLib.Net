@@ -26,4 +26,5 @@ public interface ITileset
 
     TileOffset? TileOffset { get; }
     Dictionary<int, Frame[]> TileAnimations { get; }
+    Wang.WangSet[]? WangSets { get; }
 }

@@ -36,6 +36,7 @@ public class ExternalTileset : ITileset
     public Dictionary<string, string> Properties => Tileset.Properties;
     public Dictionary<int, Dictionary<string, string>> TileProperties => Tileset.TileProperties;
     public Dictionary<int, Frame[]> TileAnimations => Tileset.TileAnimations;
+    public Wang.WangSet[]? WangSets => Tileset.WangSets;
 
     public Tile this[uint gid] => Tileset[gid];
     public string? this[uint gid, string property] => Tileset[gid, property];

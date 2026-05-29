@@ -1,10 +1,7 @@
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 using System.Xml;
-using System.Xml.Linq;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-using ZstdSharp;
 
 namespace TiledLib.Layer;
 

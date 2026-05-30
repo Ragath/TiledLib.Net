@@ -182,13 +182,13 @@ static class TmxLayers
     }
 
 
-    public static BaseObject ReadObject(this XmlReader reader)
+    public static BaseObject ReadObject(this XmlReader reader, bool isTemplate = false)
     {
         if (!reader.IsStartElement("object"))
             throw new XmlException(reader.Name);
 
         var id = reader["id"].ParseInt32() ?? 0;
-
+        var template = isTemplate ? null : reader["template"];
         var name = reader["name"];
         var type = reader["type"];
 
@@ -223,7 +223,8 @@ static class TmxLayers
                             Height = h!.Value,
                             Name = name,
                             IsEllipse = true,
-                            ObjectType = type
+                            ObjectType = type,
+                            Template = template
                         };
                         reader.Skip();
                         break;
@@ -235,7 +236,8 @@ static class TmxLayers
                             Y = y,
                             Name = name,
                             Polygon = reader.ReadPoints().ToArray(),
-                            ObjectType = type
+                            ObjectType = type,
+                            Template = template
                         };
                         reader.Skip();
                         break;
@@ -247,7 +249,8 @@ static class TmxLayers
                             Y = y,
                             Name = name,
                             Polyline = reader.ReadPoints().ToArray(),
-                            ObjectType = type
+                            ObjectType = type,
+                            Template = template
                         };
                         reader.Skip();
                         break;
@@ -258,7 +261,8 @@ static class TmxLayers
                             X = x,
                             Y = y,
                             Name = name,
-                            ObjectType = type
+                            ObjectType = type,
+                            Template = template
                         };
                         reader.Skip();
                         break;
@@ -282,26 +286,35 @@ static class TmxLayers
                 Width = w!.Value,
                 Height = h!.Value,
                 Name = name,
-                ObjectType = type
+                ObjectType = type,
+                Template = template
             };
 
-        return result ?? new RectangleObject(properties)
+        if (result == null)
         {
-            Id = id,
-            X = x,
-            Y = y,
-            Width = w ?? 0,
-            Height = h ?? 0,
-            Name = name,
-            ObjectType = type
-        };
+            result = template != null
+                ? new TemplateObject(properties)
+                : new RectangleObject(properties);
+            result.Id = id;
+            result.X = x;
+            result.Y = y;
+            result.Width = w ?? 0;
+            result.Height = h ?? 0;
+            result.Name = name;
+            result.ObjectType = type;
+            result.Template = template;
+        }
+        return result;
     }
 
-    public static void WriteObject(this XmlWriter writer, BaseObject entity)
+    public static void WriteObject(this XmlWriter writer, BaseObject entity, bool isTemplate = false)
     {
         writer.WriteStartElement("object");
         if (entity.Id != 0)
             writer.WriteAttribute("id", entity.Id);
+
+        if (!isTemplate && entity.Template != null)
+            writer.WriteAttribute("template", entity.Template);
 
         if (entity is TileObject t)
             writer.WriteAttribute("gid", t.Gid);
@@ -330,6 +343,10 @@ static class TmxLayers
 
                 writer.WriteStartElement("ellipse");
                 writer.WriteEndElement();
+                break;
+            case TemplateObject _:
+                writer.WriteProperties(entity.Properties);
+
                 break;
             case RectangleObject _:
                 HW();

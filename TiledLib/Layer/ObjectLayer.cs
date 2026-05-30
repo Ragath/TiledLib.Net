@@ -45,6 +45,6 @@ public class ObjectLayer : BaseLayer, IXmlSerializable
 
     public void WriteXml(XmlWriter writer)
     {
-        throw new NotImplementedException();
+        writer.WriteObjectLayer(this);
     }
 }

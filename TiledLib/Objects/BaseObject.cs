@@ -1,7 +1,7 @@
 ﻿namespace TiledLib.Objects;
 
 [JsonConverter(typeof(ObjectConverter))]
-public abstract class BaseObject
+public abstract class BaseObject(Dictionary<string, string> properties)
 {
     [JsonPropertyName("name")]
     public string? Name { get; set; }
@@ -16,6 +16,9 @@ public abstract class BaseObject
     [JsonPropertyName("id")]
     public int Id { get; set; }
 
+    [JsonPropertyName("template")]
+    public string? Template { get; set; }
+
     [JsonPropertyName("x")]
     public double X { get; set; }
     [JsonPropertyName("y")]
@@ -27,7 +30,5 @@ public abstract class BaseObject
 
     [JsonPropertyName("properties")]
     [JsonConverter(typeof(PropertiesConverter))]
-    public Dictionary<string, string> Properties { get; init; } = [];
-
-    public BaseObject(Dictionary<string, string> properties) { Properties = properties; }
+    public Dictionary<string, string> Properties { get; init; } = properties;
 }

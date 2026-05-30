@@ -12,6 +12,7 @@ class ObjectConverter : JsonConverter<BaseObject>
             var a when a.TryGetProperty("polygon", out var _) => a.Deserialize<PolygonObject>(options),
             var a when a.TryGetProperty("polyline", out var _) => a.Deserialize<PolyLineObject>(options),
             var a when a.TryGetProperty("ellipse", out var _) => a.Deserialize<EllipseObject>(options),
+            var a when a.TryGetProperty("template", out var _) => a.Deserialize<TemplateObject>(options),
             _ => jo.Deserialize<RectangleObject>(options)
         };
     }

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="2" nextobjectid="1">
+ <tileset firstgid="1" name="External_Tileset" tilewidth="16" tileheight="16" tilecount="1440" columns="40">
+  <image source="Overworld.png" width="640" height="576"/>
+  <tile id="123">
+   <animation>
+    <frame tileid="123" duration="100"/>
+    <frame tileid="124" duration="100"/>
+    <frame tileid="125" duration="100"/>
+    <frame tileid="163" duration="100"/>
+    <frame tileid="164" duration="100"/>
+    <frame tileid="165" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="128">
+   <properties>
+    <property name="foo" value="bar"/>
+   </properties>
+  </tile>
+  <tile id="168">
+   <properties>
+    <property name="foo" value="bar"/>
+   </properties>
+  </tile>
+  <wangsets>
+   <wangset name="Unnamed Set" type="corner" tile="-1">
+    <wangcolor name="" color="#ff0000" tile="-1" probability="1"/>
+    <wangtile tileid="0" wangid="1,1,1,1,1,1,1,1"/>
+    <wangtile tileid="1174" wangid="1,1,0,0,0,1,1,1"/>
+    <wangtile tileid="1175" wangid="1,1,0,0,0,0,0,1"/>
+    <wangtile tileid="1176" wangid="1,1,1,1,0,0,0,1"/>
+    <wangtile tileid="1214" wangid="0,0,0,0,0,1,1,1"/>
+    <wangtile tileid="1216" wangid="0,1,1,1,0,0,0,0"/>
+    <wangtile tileid="1254" wangid="0,0,0,1,1,1,1,1"/>
+    <wangtile tileid="1255" wangid="0,0,0,1,1,1,0,0"/>
+    <wangtile tileid="1256" wangid="0,1,1,1,1,1,0,0"/>
+    <wangtile tileid="1294" wangid="0,0,0,1,0,0,0,0"/>
+    <wangtile tileid="1295" wangid="0,0,0,0,0,1,0,0"/>
+    <wangtile tileid="1334" wangid="0,1,0,0,0,0,0,0"/>
+    <wangtile tileid="1335" wangid="0,0,0,0,0,0,0,1"/>
+   </wangset>
+  </wangsets>
+ </tileset>
+ <layer id="1" name="Tile Layer 1" width="30" height="20">
+  <data encoding="base64" compression="zstd">
+   KLUv/WBgCJUGAFKEDRawJek+dGr70ClSDMMwkP+Q84PjPUkBFaUn49Di4VmFKRlLi4fHQmI6gqe1aP7wPAJuPQNfOkWgMInLxgGQAhOI2JQHFahWiBWchhqPYEvK5H4pKNM5HZf4kxA7kOdF6HhOxwLb62mGEX6Fbwho7EtOmDxb5PwNi1wmjlewenl54QehKYp0qrWzhehtgHeUhNtStGzHdHeg//LdD3II22L8BTqnlweLodiSdjfndONMRxZOzG92zwnovT34YePid4Mh3oKsFzAYc+Son0L3fA==
+  </data>
+ </layer>
+</map>

@@ -188,6 +188,8 @@ static class TmxMap
                             }
                             writer.WriteEndElement();
                         }
+
+                        writer.WriteWangSets(ts.WangSets);
                     }
                     writer.WriteEndElement();
                     break;

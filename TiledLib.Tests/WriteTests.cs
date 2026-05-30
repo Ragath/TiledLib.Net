@@ -1,13 +1,9 @@
-﻿using System.Buffers.Text;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 using Org.XmlUnit.Builder;
 using Org.XmlUnit.Diff;
-using Org.XmlUnit.Util;
-using TiledLib.Layer;
 
 
 namespace TiledLib.Tests;
@@ -22,6 +18,7 @@ public class WriteTests
     [DataRow("Data/tileset_map_base64.tmx")]
     [DataRow("Data/External_tileset_map_base64.tmx")]
     [DataRow("Data/Multi_image_tileset_infinite_map_base64_zstd.tmx")]
+    [DataRow("Data/tileset_map_base64_zstd_wangsets.tmx")]
     public void TestWriting(string file)
     {
         using var original = new MemoryStream();
@@ -90,7 +87,7 @@ public class WriteTests
                 } => true,
                 {
                     Type: ComparisonType.TEXT_VALUE,
-                    ControlDetails.Target.ParentNode.Name: "chunk",
+                    ControlDetails.Target.ParentNode.Name: "chunk" or "data",
                 } => Enumerable.SequenceEqual(Base64DecompressZstd(c.ControlDetails.Value.ToString()!).ToArray(), Base64DecompressZstd(c.TestDetails.Value.ToString()!).ToArray()),
                 // Fallback for everything else
                 _ => false

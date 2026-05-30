@@ -75,7 +75,7 @@ public class Map : IXmlSerializable
     {
         using var reader = new StreamReader(stream, System.Text.Encoding.UTF8, true, 1024, true);
         var map = reader.ContainsJson() ? reader.BaseStream.ReadJsonMap() : reader.ReadTmxMap();
-        if(map == null)
+        if (map == null)
             throw new NullReferenceException("Failed to parse map from stream");
 
         if (tsLoader != null)

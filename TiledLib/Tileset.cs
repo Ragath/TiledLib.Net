@@ -45,7 +45,7 @@ public class Tileset : ITileset, IXmlSerializable
 
     [JsonIgnore] //TODO: Add json support
     public Dictionary<int, Frame[]> TileAnimations { get; init; } = [];
-    
+
     [JsonPropertyName("wangsets")]
     public Wang.WangSet[]? WangSets { get; set; }
 

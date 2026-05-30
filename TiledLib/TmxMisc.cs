@@ -76,6 +76,9 @@ static class TmxMisc
                 case "tile":
                     reader.ReadTile(ts.TileProperties, ts.TileAnimations);
                     break;
+                case "wangsets":
+                    ts.WangSets = reader.ReadWangSets();
+                    break;
                 default:
                     reader.Skip();
                     break;
@@ -219,6 +222,173 @@ static class TmxMisc
             _ => throw new NotImplementedException($"Encoding: {encoding}"),
         };
         return chunk;
+    }
+
+    static Wang.WangSet[] ReadWangSets(this XmlReader reader)
+    {
+        if (!reader.IsStartElement("wangsets"))
+            throw new XmlException(reader.Name);
+
+        var sets = new List<Wang.WangSet>();
+        reader.ReadStartElement("wangsets");
+        while (reader.IsStartElement())
+            switch (reader.Name)
+            {
+                case "wangset":
+                    sets.Add(reader.ReadWangSet());
+                    break;
+                default:
+                    reader.Skip();
+                    break;
+            }
+        reader.ReadEndElement();
+        return [.. sets];
+    }
+
+    static Wang.WangSet ReadWangSet(this XmlReader reader)
+    {
+        if (!reader.IsStartElement("wangset"))
+            throw new XmlException(reader.Name);
+
+        var ws = new Wang.WangSet
+        {
+            Name = reader["name"] ?? throw new XmlException("wangset missing name"),
+            Class = reader["class"],
+            Tile = reader["tile"].ParseInt32() ?? -1,
+            Type = Enum.TryParse<Wang.WangSetType>(reader["type"], out var t) ? t : null,
+        };
+
+        if (reader.IsEmptyElement)
+        {
+            reader.Read();
+            return ws;
+        }
+
+        reader.ReadStartElement("wangset");
+        while (reader.IsStartElement())
+            switch (reader.Name)
+            {
+                case "properties":
+                    reader.ReadProperties(ws.Properties);
+                    break;
+                case "wangcolor":
+                    ws.Colors.Add(reader.ReadWangColor());
+                    break;
+                case "wangtile":
+                    ws.Tiles.Add(reader.ReadWangTile());
+                    break;
+                default:
+                    reader.Skip();
+                    break;
+            }
+        reader.ReadEndElement();
+        return ws;
+    }
+
+    static Wang.WangColor ReadWangColor(this XmlReader reader)
+    {
+        if (!reader.IsStartElement("wangcolor"))
+            throw new XmlException(reader.Name);
+
+        var wc = new Wang.WangColor
+        {
+            Name = reader["name"] ?? string.Empty,
+            Class = reader["class"],
+            Color = reader["color"] ?? string.Empty,
+            Tile = reader["tile"].ParseInt32() ?? -1,
+            Probability = reader["probability"].ParseDouble() ?? 1.0,
+        };
+
+        if (reader.IsEmptyElement)
+        {
+            reader.Read();
+            return wc;
+        }
+
+        reader.ReadStartElement("wangcolor");
+        while (reader.IsStartElement())
+            switch (reader.Name)
+            {
+                case "properties":
+                    reader.ReadProperties(wc.Properties);
+                    break;
+                default:
+                    reader.Skip();
+                    break;
+            }
+        reader.ReadEndElement();
+        return wc;
+    }
+
+    static Wang.WangTile ReadWangTile(this XmlReader reader)
+    {
+        if (!reader.IsStartElement("wangtile"))
+            throw new XmlException(reader.Name);
+
+        var tileId = reader["tileid"].ParseInt32() ?? throw new XmlException("wangtile missing tileid");
+        // wangid is a comma-separated list of 8 color indexes
+        var wangIdStr = reader["wangid"] ?? throw new XmlException("wangtile missing wangid");
+        var wangIds = wangIdStr
+            .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+            .Select(int.Parse)
+            .ToArray();
+
+        reader.Skip();
+        return new Wang.WangTile { TileId = tileId, WangIds = wangIds };
+    }
+
+    public static void WriteWangSets(this XmlWriter writer, Wang.WangSet[]? wangSets)
+    {
+        if (wangSets == null || wangSets.Length == 0)
+            return;
+
+        writer.WriteStartElement("wangsets");
+        foreach (var ws in wangSets)
+            writer.WriteWangSet(ws);
+        writer.WriteEndElement();
+    }
+
+    static void WriteWangSet(this XmlWriter writer, Wang.WangSet ws)
+    {
+        writer.WriteStartElement("wangset");
+        writer.WriteAttribute("name", ws.Name ?? string.Empty);
+        if (!string.IsNullOrEmpty(ws.Class))
+            writer.WriteAttribute("class", ws.Class);
+        if (ws.Type.HasValue)
+            writer.WriteAttributeString("type", ws.Type.Value.ToString());
+        writer.WriteAttribute("tile", ws.Tile);
+
+        writer.WriteProperties(ws.Properties);
+
+        foreach (var wc in ws.Colors)
+            writer.WriteWangColor(wc);
+        foreach (var wt in ws.Tiles)
+            writer.WriteWangTile(wt);
+
+        writer.WriteEndElement();
+    }
+
+    static void WriteWangColor(this XmlWriter writer, Wang.WangColor wc)
+    {
+        writer.WriteStartElement("wangcolor");
+        writer.WriteAttribute("name", wc.Name);
+        if (!string.IsNullOrEmpty(wc.Class))
+            writer.WriteAttribute("class", wc.Class);
+        writer.WriteAttribute("color", wc.Color);
+        writer.WriteAttribute("tile", wc.Tile);
+        writer.WriteAttribute("probability", wc.Probability);
+
+        writer.WriteProperties(wc.Properties);
+
+        writer.WriteEndElement();
+    }
+
+    static void WriteWangTile(this XmlWriter writer, Wang.WangTile wt)
+    {
+        writer.WriteStartElement("wangtile");
+        writer.WriteAttribute("tileid", wt.TileId);
+        writer.WriteAttributeString("wangid", string.Join(",", wt.WangIds));
+        writer.WriteEndElement();
     }
 
     public static void WriteAttribute(this XmlWriter writer, string localName, int? value)
